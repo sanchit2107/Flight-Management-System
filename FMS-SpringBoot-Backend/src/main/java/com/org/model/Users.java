@@ -1,18 +1,34 @@
 package com.org.model;
 
-public class Users
-		/**
-		 * Class Users
-		 */
-{
-	private int userId;
-	private String userName;
-	private String userPassword;
-	private long userPhone;
-	private String userEmail;
+import java.math.BigInteger;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+@Entity
+public class Users {
 	private String userType;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@OneToMany(mappedBy = "user")
+	private BigInteger userId;
+	@NotEmpty(message = "Name is mandatory")
+	private String userName;
+	@NotEmpty(message = "Password is mandatory")
+	private String userPassword;
+	@NotNull(message = "Phone number is mandatory")
+	private BigInteger userPhone;
+	@NotEmpty(message = "Email is mandatory")
+	@Email(message = "Email should be in proper format")
+	private String userEmail;
 	
-	public Users(int userId, String userName, String userPassword, long userPhone, String userEmail, String userType)
+	public Users(BigInteger userId, String userName, String userPassword, BigInteger userPhone, String userEmail, String userType)
 	/**
 	 * Parameterized Constructors of Users
 	 */
@@ -39,10 +55,10 @@ public class Users
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
-	public int getUserId() {
+	public BigInteger getUserId() {
 		return userId;
 	}
-	public void setUserId(int userId) {
+	public void setUserId(BigInteger userId) {
 		this.userId = userId;
 	}
 	public String getUserName() {
@@ -57,10 +73,10 @@ public class Users
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
-	public long getUserPhone() {
+	public BigInteger getUserPhone() {
 		return userPhone;
 	}
-	public void setUserPhone(long userPhone) {
+	public void setUserPhone(BigInteger userPhone) {
 		this.userPhone = userPhone;
 	}
 	public String getUserEmail() {
