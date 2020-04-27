@@ -2,11 +2,20 @@ package com.org.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
+
+@Entity
 public class Schedule {
 	private Airport sourceAirport;
 	private Airport destinationAirport;
 	private Date arrivalTime;
 	private Date departureTime;
+	
+	@OneToOne(mappedBy = "schedule")
+	private ScheduledFlight scheduleFlightObj;
+	
 	public Schedule() {
 		
 	}
@@ -49,6 +58,20 @@ public class Schedule {
 
 	public void setDepartureTime(Date departureTime) {
 		this.departureTime = departureTime;
+	}
+
+	/**
+	 * @return the scheduleFlightObj
+	 */
+	public ScheduledFlight getScheduleFlightObj() {
+		return scheduleFlightObj;
+	}
+
+	/**
+	 * @param scheduleFlightObj the scheduleFlightObj to set
+	 */
+	public void setScheduleFlightObj(ScheduledFlight scheduleFlightObj) {
+		this.scheduleFlightObj = scheduleFlightObj;
 	}
 	
 	

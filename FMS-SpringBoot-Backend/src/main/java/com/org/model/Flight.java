@@ -1,7 +1,10 @@
 package com.org.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Flight {
@@ -11,6 +14,9 @@ public class Flight {
 	private String carrierName;
 	private String flightModel;
 	private int seatCapacity;
+	
+	@OneToOne(mappedBy = "flight")
+	private ScheduledFlight scheduleFlightObj;
 	
 	public Flight() {}
 	
@@ -75,6 +81,20 @@ public class Flight {
 	 */
 	public void setSeatCapacity(int seatCapacity) {
 		this.seatCapacity = seatCapacity;
+	}
+
+	/**
+	 * @return the scheduleFlightObj
+	 */
+	public ScheduledFlight getScheduleFlightObj() {
+		return scheduleFlightObj;
+	}
+
+	/**
+	 * @param scheduleFlightObj the scheduleFlightObj to set
+	 */
+	public void setScheduleFlightObj(ScheduledFlight scheduleFlightObj) {
+		this.scheduleFlightObj = scheduleFlightObj;
 	}
 	
 	

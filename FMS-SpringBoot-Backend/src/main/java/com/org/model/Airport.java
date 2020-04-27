@@ -1,5 +1,9 @@
 package com.org.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Airport
 /**
  * Class Airport
@@ -7,6 +11,7 @@ public class Airport
 {
 	private String airportName;
 	private String airportLocation;
+	@Id
 	private String airportCode;
 
 	public Airport(String airportName,String airportLocation,String airportCode)
