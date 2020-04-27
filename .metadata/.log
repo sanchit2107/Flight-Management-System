@@ -976,3 +976,35 @@ Caused by: java.lang.NoSuchMethodException: org.springframework.context.annotati
 !MESSAGE Save operation warnings.
 !SUBENTRY 1 org.eclipse.core.resources 2 234 2020-04-27 13:22:55.453
 !MESSAGE The project description file (.project) for 'FMS-POJO' was missing.  This file contains important information about the project.  A new project description file has been created, but some information about the project may have been lost.
+
+!ENTRY org.springframework.ide.eclipse.beans.core 1 0 2020-04-27 13:42:57.223
+!MESSAGE Error occured processing 'com.org.FmsSpringBootBackendApplication'
+!STACK 0
+org.springframework.core.annotation.AnnotationConfigurationException: Attribute 'proxyBeanMethods' in annotation [org.springframework.boot.SpringBootConfiguration] is declared as an @AliasFor nonexistent attribute 'proxyBeanMethods' in annotation [org.springframework.context.annotation.Configuration].; nested exception is java.lang.NoSuchMethodException: org.springframework.context.annotation.Configuration.proxyBeanMethods()
+	at org.springframework.core.annotation.AnnotationUtils$AliasDescriptor.<init>(AnnotationUtils.java:2089)
+	at org.springframework.core.annotation.AnnotationUtils$AliasDescriptor.from(AnnotationUtils.java:2056)
+	at org.springframework.core.annotation.AnnotationUtils.getAttributeAliasNames(AnnotationUtils.java:1726)
+	at org.springframework.core.annotation.AnnotationUtils.isSynthesizable(AnnotationUtils.java:1685)
+	at org.springframework.core.annotation.AnnotationUtils.synthesizeAnnotation(AnnotationUtils.java:1468)
+	at org.springframework.core.annotation.AnnotationUtils.synthesizeAnnotationArray(AnnotationUtils.java:1572)
+	at org.springframework.core.annotation.AnnotationUtils.getAnnotations(AnnotationUtils.java:231)
+	at org.springframework.core.type.classreading.AnnotationAttributesReadingVisitor.visitEnd(AnnotationAttributesReadingVisitor.java:76)
+	at org.springframework.asm.ClassReader.readAnnotationValues(ClassReader.java:2020)
+	at org.springframework.asm.ClassReader.accept(ClassReader.java:676)
+	at org.springframework.asm.ClassReader.accept(ClassReader.java:527)
+	at org.springframework.ide.eclipse.core.java.classreading.JdtConnectedMetadataReader.<init>(JdtConnectedMetadataReader.java:45)
+	at org.springframework.ide.eclipse.core.java.classreading.JdtMetadataReaderFactory.getMetadataReader(JdtMetadataReaderFactory.java:53)
+	at org.springframework.ide.eclipse.core.java.classreading.CachingJdtMetadataReaderFactory.getMetadataReader(CachingJdtMetadataReaderFactory.java:38)
+	at org.springframework.ide.eclipse.beans.core.internal.model.BeansJavaConfig.registerBean(BeansJavaConfig.java:368)
+	at org.springframework.ide.eclipse.beans.core.internal.model.BeansJavaConfig$2.call(BeansJavaConfig.java:229)
+	at org.springframework.ide.eclipse.beans.core.internal.model.BeansJavaConfig$2.call(BeansJavaConfig.java:1)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.NoSuchMethodException: org.springframework.context.annotation.Configuration.proxyBeanMethods()
+	at java.lang.Class.getDeclaredMethod(Unknown Source)
+	at org.springframework.core.annotation.AnnotationUtils$AliasDescriptor.<init>(AnnotationUtils.java:2082)
+	... 22 more
