@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class Schedule {
+	@Id
 	private Airport sourceAirport;
 	private Airport destinationAirport;
 	private Date arrivalTime;
