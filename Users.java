@@ -5,12 +5,12 @@ public class Users
 		 * Class Users
 		 */
 {
-	int userId;
-	String userName;
-	String userPassword;
-	long userPhone;
-	String userEmail;
-	String userType;
+	private int userId;
+	private String userName;
+	private String userPassword;
+	private long userPhone;
+	private String userEmail;
+	private String userType;
 	
 	public Users(int userId, String userName, String userPassword, long userPhone, String userEmail, String userType)
 	/**
