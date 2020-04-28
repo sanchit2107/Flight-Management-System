@@ -21,10 +21,9 @@ public class Booking
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private BigInteger bookingId;
-	
 	private Date bookingDate;
-    
     private int noOfPassengers;
+    
 	public BigInteger getBookingId() {
 		return bookingId;
 	}
