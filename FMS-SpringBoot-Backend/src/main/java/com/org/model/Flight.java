@@ -1,5 +1,7 @@
 package com.org.model;
 
+import java.math.BigInteger;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,7 +12,7 @@ import javax.persistence.OneToOne;
 public class Flight {
 
 	@Id
-	private int flightNo;
+	private BigInteger flightNo;
 	private String carrierName;
 	private String flightModel;
 	private int seatCapacity;
@@ -23,7 +25,7 @@ public class Flight {
 	 * @param flightModel
 	 * @param seatCapacity
 	 */
-	public Flight(int flightNo, String carrierName, String flightModel, int seatCapacity) {
+	public Flight(BigInteger flightNo, String carrierName, String flightModel, int seatCapacity) {
 		super();
 		this.flightNo = flightNo;
 		this.carrierName = carrierName;
@@ -34,13 +36,13 @@ public class Flight {
 	/**
 	 * @return the flightNo
 	 */
-	public int getFlightNo() {
+	public BigInteger getFlightNo() {
 		return flightNo;
 	}
 	/**
 	 * @param flightNo the flightNo to set
 	 */
-	public void setFlightNo(int flightNo) {
+	public void setFlightNo(BigInteger flightNo) {
 		this.flightNo = flightNo;
 	}
 	/**

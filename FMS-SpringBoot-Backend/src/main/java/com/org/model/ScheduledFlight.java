@@ -6,18 +6,20 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-@Entity
+
 public class ScheduledFlight {
+	
 	@Id
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "flightNo")
+	/*@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "flightNo")*/
 	private Flight flightObj;
 	
 	private int availableSeats;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "sourceAirport")
+	/*@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "sourceAirport")*/
 	private Schedule schedule;
 	
 	public ScheduledFlight() {
@@ -54,7 +56,5 @@ public class ScheduledFlight {
 	public void setFlightObj(Flight flightObj) {
 		this.flightObj = flightObj;
 	}
-	
-	
 
 }
