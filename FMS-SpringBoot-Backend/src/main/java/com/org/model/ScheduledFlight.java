@@ -2,12 +2,13 @@ package com.org.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
 public class ScheduledFlight {
-	
+	@Id
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "flightNo")
 	private Flight flightObj;
@@ -27,12 +28,7 @@ public class ScheduledFlight {
 		this.availableSeats = availableSeats;
 		this.schedule = schedule;
 	}
-	public Flight getFlight() {
-		return flightObj;
-	}
-	public void setFlight(Flight flightObj) {
-		this.flightObj = flightObj;
-	}
+	
 	public int getAvailableSeats() {
 		return availableSeats;
 	}
