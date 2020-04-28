@@ -35,5 +35,16 @@ public class ScheduledFlightService {
 		if(find.isPresent()) 
 			dao.delete(scheduledFlight);
 	}
+	
+	public Iterable<ScheduledFlight> viewScheduledFlights(){
+		return dao.findAll();
+	}
+	
+	public ScheduledFlight viewScheduledFlight(ScheduledFlight scheduledFlight) {
+		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getFlightObj());
+		if(!find.isPresent())
+			return null;
+		return find.get();
+	}
 
 }
