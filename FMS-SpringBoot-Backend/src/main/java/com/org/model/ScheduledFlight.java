@@ -1,31 +1,21 @@
 package com.org.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-
-@Entity
 public class ScheduledFlight {
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "flightNo")
 	private Flight flightObj;
 	
 	private int availableSeats;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "sourceAirport")
-	private Schedule schedule;
+
+	//private Schedule schedule;
 	
 	public ScheduledFlight() {
 		
 	}
-	public ScheduledFlight(Flight flightObj, int availableSeats, Schedule schedule) {
+	public ScheduledFlight(Flight flightObj, int availableSeats) {
 		super();
 		this.flightObj = flightObj;
 		this.availableSeats = availableSeats;
-		this.schedule = schedule;
+		//this.schedule = schedule;
 	}
 	public Flight getFlight() {
 		return flightObj;
@@ -39,12 +29,12 @@ public class ScheduledFlight {
 	public void setAvailableSeats(int availableSeats) {
 		this.availableSeats = availableSeats;
 	}
-	public Schedule getSchedule() {
+	/*public Schedule getSchedule() {
 		return schedule;
 	}
 	public void setSchedule(Schedule schedule) {
 		this.schedule = schedule;
-	}
+	}*/
 	/**
 	 * @return the flightObj
 	 */
@@ -58,6 +48,4 @@ public class ScheduledFlight {
 		this.flightObj = flightObj;
 	}
 	
-	
-
 }

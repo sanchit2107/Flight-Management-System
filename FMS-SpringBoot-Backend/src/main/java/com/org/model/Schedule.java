@@ -3,18 +3,18 @@ package com.org.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotEmpty;
 
-@Entity
+
 public class Schedule {
-	@Id
+
 	private Airport sourceAirport;
 	private Airport destinationAirport;
 	private Date arrivalTime;
 	private Date departureTime;
 	
-	@OneToOne(mappedBy = "schedule")
+	//@OneToOne(mappedBy = "schedule")
 	private ScheduledFlight scheduleFlightObj;
 	
 	public Schedule() {

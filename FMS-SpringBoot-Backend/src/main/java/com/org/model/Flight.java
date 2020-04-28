@@ -15,9 +15,6 @@ public class Flight {
 	private String flightModel;
 	private int seatCapacity;
 	
-	@OneToOne(mappedBy = "flight")
-	private ScheduledFlight scheduleFlightObj;
-	
 	public Flight() {}
 	
 	/**
@@ -81,21 +78,5 @@ public class Flight {
 	 */
 	public void setSeatCapacity(int seatCapacity) {
 		this.seatCapacity = seatCapacity;
-	}
-
-	/**
-	 * @return the scheduleFlightObj
-	 */
-	public ScheduledFlight getScheduleFlightObj() {
-		return scheduleFlightObj;
-	}
-
-	/**
-	 * @param scheduleFlightObj the scheduleFlightObj to set
-	 */
-	public void setScheduleFlightObj(ScheduledFlight scheduleFlightObj) {
-		this.scheduleFlightObj = scheduleFlightObj;
-	}
-	
-	
+	}	
 }

@@ -5,7 +5,25 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2020-04-24T01:13:58Z</updated>
+  <updated>2020-04-27T17:27:00Z</updated>
+  <entry>
+    <title>Announcing Spring Cloud Stream Horsham.SR4 (3.0.4.RELEASE) and Spring Cloud Hoxton.SR4</title>
+    <link rel="alternate" href="https://spring.io/blog/2020/04/27/announcing-spring-cloud-stream-horsham-sr4-3-0-4-release-and-spring-cloud-hoxton-sr4" />
+    <category term="releases" label="Releases" />
+    <author>
+      <name>Oleg Zhurakousky</name>
+    </author>
+    <id>tag:spring.io,2020-04-27:4043</id>
+    <updated>2020-04-27T17:27:00Z</updated>
+    <content type="html">&lt;p&gt;We are pleased to announce the release of the Spring Cloud Stream Horsham.SR4 (3.0.4.RELEASE) release train which is available as part of Spring Cloud Hoxton.SR4 and builds on Spring Boot 2.2.6 and Spring Cloud Function 3.0.6.RELEASE which was also just released.&lt;/p&gt;
+&lt;p&gt;Spring Cloud Stream Horsham.SR4 modules are available for use in the &lt;a href="https://repo.maven.apache.org/maven2/org/springframework/cloud/"&gt;Maven Central&lt;/a&gt; repository. &lt;/p&gt;
+&lt;p&gt;This release contains several fixes and enhancements primarily driven by user&amp;rsquo;s feedback, so thank you.&lt;br/&gt;For more details please follow these links:&lt;br/&gt;- &lt;a href="https://github.com/spring-cloud/spring-cloud-stream/issues?q=label%3A%22Backport+Horsham%22+is%3Aclosed"&gt;Spring Cloud Stream Core&lt;/a&gt;&lt;br/&gt;- &lt;a href="https://github.com/spring-cloud/spring-cloud-stream-binder-rabbit/issues?q=label%3A%22Backport+Horsham.SR3%22+is%3Aclosed"&gt;Spring Cloud Stream Rabbit Binder&lt;/a&gt;&lt;br/&gt;- &lt;a href="https://github.com/spring-cloud/spring-cloud-function/issues?q=label%3A3.0.x-backport+is%3Aclosed"&gt;Spring Cloud Function&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;As mentioned, Spring Cloud Hoxton.SR4 was also released, but it only contains updates to Spring Cloud Stream and Spring Cloud Function.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;As always, we welcome feedback and contributions, so please reach out to us on &lt;a href="https://stackoverflow.com/questions/tagged/spring-cloud-stream"&gt;Stackoverflow&lt;/a&gt; or &lt;a href="https://github.com/spring-cloud/spring-cloud-stream/"&gt;GitHub&lt;/a&gt; and or &lt;a href="https://gitter.im/spring-cloud/spring-cloud-stream"&gt;Gitter&lt;/a&gt;&lt;/p&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>A Bootiful Podcast: Linux Kernel Hacker Steve Rostedt on what our busy Spring applications look like from the Kernel's perspective</title>
     <link rel="alternate" href="https://spring.io/blog/2020/04/24/a-bootiful-podcast-linux-kernel-hacker-steve-rostedt-on-what-our-busy-spring-applications-look-like-from-the-kernel-s-perspective" />
@@ -1630,119 +1648,6 @@ class FileConfiguration(private val channels: ChannelsConfiguration) {&#xD;
 &lt;p&gt;The module will remain a part of the Spring Data release trains Neumann and Ockham. We will continue shipping required updates and fixes for the next twelve (plus) months.&lt;/p&gt;
 &lt;p&gt;In case we&amp;rsquo;re not able to find a new maintainer by next year, we will move the project into the attic.&lt;br/&gt;At this point, thanks to everyone who contributed to Spring Data for Apache Solr in the past and, in case you&amp;rsquo;re willing to take the lead, don&amp;rsquo;t hesitate to contact us via the usual channels.&lt;/p&gt;
 &lt;p&gt;Thank you!&lt;/p&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Getting Started With RSocket: Spring Boot Channels</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/04/06/getting-started-with-rsocket-spring-boot-channels" />
-    <category term="engineering" label="Engineering" />
-    <author>
-      <name>Ben Wilcock</name>
-    </author>
-    <id>tag:spring.io,2020-04-01:4021</id>
-    <updated>2020-04-06T00:08:00Z</updated>
-    <content type="html">&lt;p&gt;&lt;strong&gt;Reading Time: about 6 minutes.&lt;br/&gt;Practice Time: about 20 minutes.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;If, like me, you&amp;rsquo;re still at the beginning of your RSocket journey, check out the &lt;a href="https://github.com/rsocket/rsocket/blob/master/Motivations.md"&gt;motivations behind the RSocket protocol&lt;/a&gt;. This short but insightful document includes one message that resonates very strongly with me — &amp;lsquo;a mismatched abstraction increases the cost of developing a system.&amp;rsquo;&lt;/p&gt;
-&lt;p&gt;From a software design point of view, RSocket&amp;rsquo;s four interaction models offer a significant benefit. It means we can model our component-to-component communications using the correct interaction model for each use case. This more productive model could save you lots of time and energy when coding!&lt;/p&gt;
-&lt;p&gt;So far, in this series, we&amp;rsquo;ve already explored &lt;a href="https://spring.io/blog/2020/03/09/getting-started-with-rsocket-spring-boot-client"&gt;request&lt;/a&gt;-&lt;a href="https://spring.io/blog/2020/03/02/getting-started-with-rsocket-spring-boot-server"&gt;response&lt;/a&gt;, &lt;a href="https://spring.io/blog/2020/03/16/getting-started-with-rsocket-spring-boot-fire-and-forget"&gt;fire-and-forget&lt;/a&gt;, and &lt;a href="https://spring.io/blog/2020/03/23/getting-started-with-rsocket-spring-boot-request-stream"&gt;request-stream&lt;/a&gt; messaging. Today you&amp;rsquo;ll add &lt;em&gt;channels&lt;/em&gt; to your client and server code. &lt;/p&gt;&lt;h3&gt;&lt;a href="#what-are-channels" class="anchor" name="what-are-channels"&gt;&lt;/a&gt;What Are Channels?&lt;/h3&gt;
-&lt;p&gt;Channels are bi-directional pipes that allow streams of data to flow in either direction. With channels, a data stream from client-to-server can coexist alongside a data stream from server-to-client. Channels have many real-world uses. Channels could carry video conferencing streams, send and receive two-way chat messages, synchronize data using deltas and diffs, or provide a means to report, observe, and monitor your system.&lt;/p&gt;
-&lt;p&gt;Channels in RSocket are no more complicated than streams or request-response. That said, the scenario you&amp;rsquo;ll implement below is slightly more complicated than you&amp;rsquo;ve attempted previously, so it&amp;rsquo;s best to understand it before you begin. &lt;/p&gt;
-&lt;p&gt;In the exercise that follows, the server streams messages to the client. The client controls the frequency of the messages in the server&amp;rsquo;s stream. It does this using a stream of &amp;lsquo;delay&amp;rsquo; settings. The settings in the client&amp;rsquo;s stream tell the server how long the pause should be between each message it sends. Think of it as a message frequency dial. With the frequency setting high, the pause is shorter, so you’ll see lots of server-sent messages. With the frequency setting low, the pause is longer, so you’ll see fewer server-sent messages. With that outcome in mind, let&amp;rsquo;s start coding.&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;The full code sample is available on &lt;a href="https://github.com/benwilcock/spring-rsocket-demo"&gt;GitHub&lt;/a&gt;. The &lt;code&gt;RSocketController&lt;/code&gt; is in the &lt;code&gt;rsocket-server&lt;/code&gt; folder in the &lt;code&gt;io.pivotal.rsocketserver&lt;/code&gt; package. The &lt;code&gt;RSocketShellClient&lt;/code&gt; is in the &lt;code&gt;rsocket-client&lt;/code&gt; folder in the &lt;code&gt;io.pivotal.rsocketclient&lt;/code&gt; package.&lt;/p&gt;
-&lt;/blockquote&gt;&lt;h3&gt;&lt;a href="#step-1-add-the-channel-method-to-the-code-rsocketcontroller-code" class="anchor" name="step-1-add-the-channel-method-to-the-code-rsocketcontroller-code"&gt;&lt;/a&gt;Step 1: Add The Channel Method To The &lt;code&gt;RSocketController&lt;/code&gt;&lt;/h3&gt;
-&lt;p&gt;In the server-side &lt;code&gt;RSocketController&lt;/code&gt; class, add a method called &lt;code&gt;channel()&lt;/code&gt; which accepts a &lt;code&gt;Flux&amp;lt;Duration&amp;gt;&lt;/code&gt; and returns a &lt;code&gt;Flux&amp;lt;Message&amp;gt;&lt;/code&gt;. This method signature — flux-in, flux out — identifies this method as an RSocket channel method. Annotate the method with &lt;code&gt;@MessageMapping()&lt;/code&gt; using the value &lt;code&gt;&amp;quot;channel&amp;quot;&lt;/code&gt;. The code for this method is below.&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint java"&gt;    @MessageMapping(&amp;quot;channel&amp;quot;)&#xD;
-    Flux&amp;lt;Message&amp;gt; channel(final Flux&amp;lt;Duration&amp;gt; settings) {&#xD;
-        return settings&#xD;
-                    .doOnNext(setting -&amp;gt; log.info(&amp;quot;\nFrequency setting is {} second(s).\n&amp;quot;, setting.getSeconds()))&#xD;
-                    .switchMap(setting -&amp;gt; Flux.interval(setting)&#xD;
-                                                   .map(index -&amp;gt; new Message(SERVER, CHANNEL, index)))&#xD;
-                                                   .log();&#xD;
-    }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;In the code, the &lt;code&gt;.doOnNext()&lt;/code&gt; is listening to the stream of settings coming from the client. Each time a new &lt;code&gt;delay&lt;/code&gt; setting arrives, it writes a message to the log. The &lt;code&gt;.switchMap()&lt;/code&gt; creates a new Flux for each new setting. This new flux emits a new &lt;code&gt;Message&lt;/code&gt; object based on the &lt;code&gt;.interval()&lt;/code&gt; delay contained in the &lt;code&gt;delay&lt;/code&gt; setting. The server sends these new messages back to the client in the stream.&lt;/p&gt;&lt;h3&gt;&lt;a href="#step-2-add-the-channel-method-to-the-code-rsocketshellclient-code" class="anchor" name="step-2-add-the-channel-method-to-the-code-rsocketshellclient-code"&gt;&lt;/a&gt;Step 2: Add The Channel Method To The &lt;code&gt;RSocketShellClient&lt;/code&gt;&lt;/h3&gt;
-&lt;p&gt;In the client-side &lt;code&gt;RSocketShellClient&lt;/code&gt; class, add a new &lt;code&gt;channel()&lt;/code&gt; method and annotate it with the &lt;code&gt;@ShellMethod()&lt;/code&gt; annotation. Add a description of the method&amp;rsquo;s purpose as the annotation value, as shown in the example below.&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint java"&gt;    @ShellMethod(&amp;quot;Stream some settings to the server. Stream of responses will be printed.&amp;quot;)&#xD;
-    public void channel(){&#xD;
-&#xD;
-// Code goes here&#xD;
-&#xD;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Next, in the method, add the code that creates the stream of settings. The code looks like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint java"&gt;Mono&amp;lt;Duration&amp;gt; setting1 = Mono.just(Duration.ofSeconds(1));&#xD;
-Mono&amp;lt;Duration&amp;gt; setting2 = Mono.just(Duration.ofSeconds(3)).delayElement(Duration.ofSeconds(5));&#xD;
-Mono&amp;lt;Duration&amp;gt; setting3 = Mono.just(Duration.ofSeconds(5)).delayElement(Duration.ofSeconds(15));&#xD;
-&#xD;
-Flux&amp;lt;Duration&amp;gt; settings = Flux.concat(setting1, setting2, setting3)&#xD;
-                                        .doOnNext(d -&amp;gt; log.info(&amp;quot;\nSending setting for {}-second interval.\n&amp;quot;, d.getSeconds()));
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Each &lt;code&gt;Mono&lt;/code&gt; contains a single &lt;code&gt;Duration&lt;/code&gt; setting. Each duration controls the pause between each message coming from the server. There are 3 monos in total. The first contains a short pause setting of 1 second. The second has a more relaxed pause setting of 3 seconds, but this mono is told to delay the production of this duration by 5 seconds using the &lt;code&gt;.delayElement()&lt;/code&gt; method. The third mono contains a pause setting of 5 seconds, but won&amp;rsquo;t emit its duration until 15 seconds have passed. These 3 mono&amp;rsquo;s get concatenated into a single &lt;code&gt;Flux&lt;/code&gt; using the &lt;code&gt;.concat()&lt;/code&gt; method. A logging statement is added using &lt;code&gt;.doOnNext()&lt;/code&gt; so you can see what&amp;rsquo;s happening when the code is running.&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;Note: There are many ways to build a &lt;code&gt;Flux&lt;/code&gt; based stream, but for this tutorial, it’s just something simple.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Now you have the stream of settings inside the flux, add to the method the code required to communicate with the server:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint java"&gt;disposable = this.rsocketRequester&#xD;
-                    .route(&amp;quot;channel&amp;quot;)&#xD;
-                    .data(settings)&#xD;
-                    .retrieveFlux(Message.class)&#xD;
-                    .subscribe(message -&amp;gt; log.info(&amp;quot;Received: {} \n(Type &amp;#39;s&amp;#39; to stop.)&amp;quot;, message));
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;If you&amp;rsquo;ve been following the series, this code looks familiar by now. The &lt;code&gt;rsocketRequester&lt;/code&gt; is a global variable you built in the constructor. It provides your RSocket communication link with the server. The &lt;code&gt;.route()&lt;/code&gt; is set to &lt;code&gt;&amp;quot;channel&amp;quot;&lt;/code&gt; to match the message mapping in the server-side code. The &lt;code&gt;.data()&lt;/code&gt; is the stream of mono&amp;rsquo;s you created above. The &lt;code&gt;.retrieveFlux()&lt;/code&gt; is specifying that you expect a stream of &lt;code&gt;Message&lt;/code&gt; objects, and the &lt;code&gt;.subscribe()&lt;/code&gt; begins your subscription and ensures that each message received is printed to the log so you can see what&amp;rsquo;s happening. The &lt;code&gt;Disposable&lt;/code&gt; object created by the subscription is kept and used to control the channel. &lt;/p&gt;
-&lt;p&gt;You can see the complete code for the method &lt;a href="https://github.com/benwilcock/spring-rsocket-demo/blob/master/rsocket-client/src/main/java/io/pivotal/rsocketclient/RSocketShellClient.java"&gt;here&lt;/a&gt;. That&amp;rsquo;s all the code we need. Let&amp;rsquo;s run it!&lt;/p&gt;&lt;h3&gt;&lt;a href="#step-3-build-and-run-the-rsocket-server" class="anchor" name="step-3-build-and-run-the-rsocket-server"&gt;&lt;/a&gt;Step 3: Build And Run The RSocket Server&lt;/h3&gt;
-&lt;p&gt;Open a terminal window and move to the &lt;code&gt;rsocket-server&lt;/code&gt; directory and run the server as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint bash"&gt;cd rsocket-server&#xD;
-./mvnw clean package spring-boot:run -DskipTests=true
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The server starts up on &lt;code&gt;localhost&lt;/code&gt; port &lt;code&gt;7000&lt;/code&gt;.&lt;/p&gt;&lt;h3&gt;&lt;a href="#step-4-build-and-run-the-rsocket-client" class="anchor" name="step-4-build-and-run-the-rsocket-client"&gt;&lt;/a&gt;Step 4: Build And Run The RSocket Client&lt;/h3&gt;
-&lt;p&gt;Open a &lt;em&gt;second&lt;/em&gt; terminal window and move to the &lt;code&gt;rsocket-client&lt;/code&gt; directory. From there, build and run the client as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint bash"&gt;cd rsocket-client&#xD;
-./mvnw clean package spring-boot:run -DskipTests=true
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Once booted, Spring Shell presents you with a new prompt:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint bash"&gt;shell:&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;You request a channel from the server by typing &lt;code&gt;channel&lt;/code&gt; at the prompt. &lt;/p&gt;
-&lt;p&gt;The client creates its stream of delay timer settings and begins to send them to the server. Each duration in the outbound steam gets printed by the client and the server. The server sends back a stream of messages, which the client prints out to the log. The terminal on the client-side looks something like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint none"&gt;shell:&amp;gt;channel&#xD;
-i.p.rsocketclient.RSocketShellClient :&#xD;
-&#xD;
-Sending setting for 1-second interval.&#xD;
-&#xD;
-i.p.rsocketclient.RSocketShellClient : Received: Message(origin=Server, interaction=Channel, index=0, created=1585304561)&#xD;
-(Type &amp;#39;s&amp;#39; to stop.)&#xD;
-&#xD;
-# removed log-lines&#xD;
-&#xD;
-i.p.rsocketclient.RSocketShellClient :&#xD;
-&#xD;
-Sending setting for 3-second interval.&#xD;
-&#xD;
-i.p.rsocketclient.RSocketShellClient : Received: Message(origin=Server, interaction=Channel, index=0, created=1585304568)&#xD;
-(Type &amp;#39;s&amp;#39; to stop.)&#xD;
-&#xD;
-# removed log-lines&#xD;
-&#xD;
-i.p.rsocketclient.RSocketShellClient :&#xD;
-&#xD;
-Sending setting for 5-second interval.&#xD;
-&#xD;
-2020-03-27 10:23:00.243 INFO 5680 --- [tor-tcp-epoll-1] i.p.rsocketclient.RSocketShellClient : Received: Message(origin=Server, interaction=Channel, index=4, created=1585304580)&#xD;
-(Type &amp;#39;s&amp;#39; to stop.)&#xD;
-&#xD;
-# removed log-lines
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To stop the channeling, type &lt;code&gt;s&lt;/code&gt; and then tap &lt;code&gt;Enter&lt;/code&gt;.&lt;/p&gt;&lt;h3&gt;&lt;a href="#step-5-tidy-up" class="anchor" name="step-5-tidy-up"&gt;&lt;/a&gt;Step 5: Tidy Up&lt;/h3&gt;
-&lt;p&gt;You can exit the &lt;code&gt;rsocket-client&lt;/code&gt; by typing &lt;code&gt;exit&lt;/code&gt; at the &lt;code&gt;shell:&amp;gt;&lt;/code&gt; prompt like this.&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint bash"&gt;shell:&amp;gt;exit
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;You can stop the &lt;code&gt;rsocket-server&lt;/code&gt; process by pressing &lt;code&gt;Ctrl-C&lt;/code&gt; in its terminal window.&lt;/p&gt;&lt;h3&gt;&lt;a href="#how-it-works" class="anchor" name="how-it-works"&gt;&lt;/a&gt;How It Works&lt;/h3&gt;
-&lt;p&gt;The client creates a sequence of 3 duration elements. The first duration setting gets emitted immediately, the second after 5 seconds have passed, and the third after 15 seconds have passed. Each time a new duration is emitted, it’s logged to the console. This stream of settings gets sent to the server and controls the server&amp;rsquo;s generated stream of messages.&lt;/p&gt;
-&lt;p&gt;On the server-side, every time a new duration setting gets extracted from the client’s stream, a new stream of messages is created and returned. The most recent setting sent from the client controls the time delay between each message in this server-sent stream. &lt;/p&gt;
-&lt;p&gt;The channeling stops when the subscription&amp;rsquo;s disposable object is disposed of by the client.&lt;/p&gt;&lt;h3&gt;&lt;a href="#final-thoughts" class="anchor" name="final-thoughts"&gt;&lt;/a&gt;Final Thoughts&lt;/h3&gt;
-&lt;p&gt;If you followed the whole series, you&amp;rsquo;ve now seen all four of &lt;a href="https://rsocket.io/"&gt;RSocket&amp;rsquo;s&lt;/a&gt; interaction models in action: &lt;a href="https://spring.io/blog/2020/03/09/getting-started-with-rsocket-spring-boot-client"&gt;request&lt;/a&gt;-&lt;a href="https://spring.io/blog/2020/03/02/getting-started-with-rsocket-spring-boot-server"&gt;response&lt;/a&gt;, &lt;a href="https://spring.io/blog/2020/03/16/getting-started-with-rsocket-spring-boot-fire-and-forget"&gt;fire-and-forget&lt;/a&gt;, &lt;a href="https://spring.io/blog/2020/03/23/getting-started-with-rsocket-spring-boot-request-stream"&gt;request-stream&lt;/a&gt;, and now channels too.&lt;/p&gt;
-&lt;p&gt;With these four communication styles at your disposal, you&amp;rsquo;re far less likely to encounter one of those pesky &amp;lsquo;mismatched abstraction&amp;rsquo; scenarios we discussed at the beginning. With RSocket in your toolbox, you’ll have a flexible, low friction, high-performance messaging protocol you can use in your software — one that’s purpose-built for microservice architectures.&lt;/p&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>
