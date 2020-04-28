@@ -3,7 +3,11 @@ package com.org.controller;
 import java.math.BigInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,31 +21,31 @@ public class BookingController {
 	@Autowired
 	BookingService bookingService;
 	
-	@RequestMapping("/createBooking")
+	@PostMapping("/createBooking")
 	public void addBooking(Booking newBooking) {
 		
 		bookingService.createBooking(newBooking);
 	}
 	
-	@RequestMapping("/readAllBooking")
+	@GetMapping("/readAllBooking")
 	public Iterable<Booking> readAllBookings() {
 		
 		return bookingService.displayAllBooking();
 	}
 	
-	@RequestMapping("/updateBooking")
+	@PutMapping("/updateBooking")
 	public void modifyBooking(Booking updateBooking) {
 		
 		bookingService.updateBooking(updateBooking);
 	}
 	
-	@RequestMapping("/searchBooking/{id}")
+	@GetMapping("/searchBooking/{id}")
 	public Booking searchBookingByID(@PathVariable("id") BigInteger bookingId) {
 		
 		return bookingService.searchBooking(bookingId);
 	}
 	
-	@RequestMapping("/deleteBooking/{id}")
+	@DeleteMapping("/deleteBooking/{id}")
 	public void deleteBookingByID(@PathVariable("id") BigInteger bookingId) {
 		
 		bookingService.deleteBooking(bookingId);

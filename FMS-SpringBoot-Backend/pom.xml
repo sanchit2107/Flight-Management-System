@@ -39,6 +39,10 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+		<!-- <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency> -->
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
