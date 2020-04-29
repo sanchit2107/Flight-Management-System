@@ -17,6 +17,9 @@ public class Flight {
 	private String flightModel;
 	private int seatCapacity;
 	
+	@OneToOne(mappedBy = "flightObj", cascade = CascadeType.ALL)
+	private ScheduledFlight sfObj;
+	
 	public Flight() {}
 	
 	/**
@@ -39,6 +42,7 @@ public class Flight {
 	public BigInteger getFlightNo() {
 		return flightNo;
 	}
+
 	/**
 	 * @param flightNo the flightNo to set
 	 */
@@ -80,5 +84,14 @@ public class Flight {
 	 */
 	public void setSeatCapacity(int seatCapacity) {
 		this.seatCapacity = seatCapacity;
+	}
+
+	public ScheduledFlight getSfObj() {
+		return sfObj;
+	}
+
+	public void setSfObj(ScheduledFlight sfObj) {
+		this.sfObj = sfObj;
 	}	
+	
 }

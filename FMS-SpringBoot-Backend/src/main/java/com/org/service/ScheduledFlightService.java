@@ -1,51 +1,96 @@
-/*package com.org.service;
+package com.org.service;
 
+import java.math.BigInteger;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.org.dao.ScheduledFlightDao;
+import com.org.exceptions.ScheduledFlightNotFoundException;
 import com.org.model.ScheduledFlight;
 
 @Service
 public class ScheduledFlightService {
+	
+	/*
+	 Creating DAO object
+	 */
 	@Autowired
 	ScheduledFlightDao dao;
 	
-	public void addScheduledFlight(ScheduledFlight scheduledFlight) {
-		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getFlightObj());
-		if(!find.isPresent()) {
-			dao.save(scheduledFlight);
+	
+	/*
+	 Service method to add new Scheduled flight to database
+	 */
+	public ResponseEntity<?> addScheduledFlight(ScheduledFlight scheduledFlight) {
+		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getId());
+		try{
+			if(!find.isPresent()) {
+				dao.save(scheduledFlight);
+				return new ResponseEntity<ScheduledFlight>(scheduledFlight, HttpStatus.OK);
+			}
+			else 
+				throw new ScheduledFlightNotFoundException("Record is already present in database");
+		}catch(ScheduledFlightNotFoundException e) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
 	}
 	
+	
+	/*
+	 Service method to modify existing Scheduled flight in database
+	 */
 	public ScheduledFlight modifyScheduledFlight(ScheduledFlight scheduledFlight) {
-		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getFlightObj());
+		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getId());
 		if(find.isPresent()) {
 			ScheduledFlight sf= find.get();
-			sf.setSchedule(scheduledFlight.getSchedule());
+			sf.setArrivalTime(scheduledFlight.getArrivalTime());
+			sf.setDepartureTime(scheduledFlight.getDepartureTime());
 			sf.setAvailableSeats(scheduledFlight.getAvailableSeats());
 		}
 		return scheduledFlight;
 	}
 	
-	public void removeScheduledFlight(ScheduledFlight scheduledFlight) {
-		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getFlightObj());
-		if(find.isPresent()) 
-			dao.delete(scheduledFlight);
+	
+	/*
+	 Service method to remove existing Scheduled flight from database
+	 */
+	public String removeScheduledFlight(BigInteger id) {
+		Optional<ScheduledFlight> find= dao.findById(id);
+		if(find.isPresent()) {
+			dao.deleteById(id);
+			return "Scheduled flight with ID "+id+" is removed";
+		}
+		return "Scheduled flight with ID "+id+" is not found";
 	}
 	
-	public Iterable<ScheduledFlight> viewScheduledFlights(){
+	
+	/*
+	 Service method to view all Scheduled flights in database
+	 */
+	public Iterable<ScheduledFlight> viewAllScheduledFlights(){
 		return dao.findAll();
 	}
 	
-	public ScheduledFlight viewScheduledFlight(ScheduledFlight scheduledFlight) {
-		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getFlightObj());
-		if(!find.isPresent())
-			return null;
-		return find.get();
+	
+	/*
+	 Service method to view a Scheduled flight by ID from database
+	 */
+	public ResponseEntity<?> viewScheduledFlight(BigInteger id) {
+		Optional<ScheduledFlight> find= dao.findById(id);
+		try{
+			if(find.isPresent()) {
+				ScheduledFlight sf= find.get();
+				return new ResponseEntity<ScheduledFlight>(sf, HttpStatus.OK);
+			}
+			else
+				throw new ScheduledFlightNotFoundException("No record found");
+		}catch(ScheduledFlightNotFoundException e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 	}
 
 }
-*/
