@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ public class BookingController {
 	BookingService bookingService;
 	
 	@PostMapping("/createBooking")
-	public void addBooking(Booking newBooking) {
+	public void addBooking(@RequestBody Booking newBooking) {
 		
 		bookingService.createBooking(newBooking);
 	}
@@ -34,7 +35,7 @@ public class BookingController {
 	}
 	
 	@PutMapping("/updateBooking")
-	public void modifyBooking(Booking updateBooking) {
+	public void modifyBooking(@RequestBody Booking updateBooking) {
 		
 		bookingService.updateBooking(updateBooking);
 	}

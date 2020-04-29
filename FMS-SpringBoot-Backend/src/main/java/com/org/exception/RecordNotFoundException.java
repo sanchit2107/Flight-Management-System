@@ -1,4 +1,4 @@
-package com.org.exceptiom;
+package com.org.exception;
 
 public class RecordNotFoundException extends RuntimeException {
 	

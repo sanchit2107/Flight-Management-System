@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.org.dao.BookingDao;
-import com.org.exceptiom.RecordAlreadyPresentException;
-import com.org.exceptiom.RecordNotFoundException;
+import com.org.exception.RecordAlreadyPresentException;
+import com.org.exception.RecordNotFoundException;
 import com.org.model.Booking;
 
 @Service
