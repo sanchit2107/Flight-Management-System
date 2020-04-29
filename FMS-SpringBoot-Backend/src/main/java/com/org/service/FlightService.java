@@ -1,5 +1,5 @@
 package com.org.service;
-
+import com.org.exceptions.*;
 import java.math.BigInteger;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.org.dao.FlightDao;
+import com.org.exceptions.RecordAlreadyPresentException;
 import com.org.model.Flight;
 
 @Service
@@ -14,43 +15,64 @@ public class FlightService
 {
 	@Autowired
 FlightDao flightDao;
-	public String addFlight(Flight flight)
+	/*
+	 * add a flight
+	 */
+	public void addFlight(Flight flight)
 	{
 		Optional<Flight> findById = flightDao.findById(flight.getFlightNo());
 		if (!findById.isPresent())
 		{
 			flightDao.save(flight);
-			return "Flight added";
 	    }
-		return "Flight already exists";
+		else
+			throw new RecordAlreadyPresentException("Flight with number: "+flight.getFlightNo()+" already present");
 	}
+	/*
+	 * view all flights
+	 */
 	public Iterable<Flight> viewAllFlight()
 	{
 		return flightDao.findAll();
 	}
+	/*
+	 * search a flight
+	 */
 	public Flight viewFlight(BigInteger flightNumber)
 	{
 		Optional<Flight> findById=flightDao.findById(flightNumber);
+		if(findById.isPresent())
+		{
 		return findById.get();
+	    }
+		else
+			throw new RecordNotFoundException("Flight with number: "+flightNumber+" not exists");
 	}
-	public String modifyFlight(@RequestBody Flight flight)
+	/*
+	 * modify a flight
+	 */
+	public void modifyFlight(@RequestBody Flight flight)
 	{
 		Optional<Flight> findById=flightDao.findById(flight.getFlightNo());
 		if (findById.isPresent()) 
 		{
 			flightDao.save(flight);
-			return "Flight updated";
 		}
-		return "Flight Not present";
+		else
+			throw new RecordNotFoundException("Flight with number: "+flight.getFlightNo()+" not exists");
 	}
-	public  String removeFlight(BigInteger flightNumber)
+	/*
+	 * remove a flight
+	 */
+	public  void removeFlight(BigInteger flightNumber)
 	{
 		Optional<Flight> findById=flightDao.findById(flightNumber);
 		if (findById.isPresent())
 		{
 		flightDao.deleteById(flightNumber);
-		return "Flight removed";
-	    }
-		return "Flight not present";
+		}
+		else
+			throw new RecordNotFoundException("Flight with number: "+flightNumber+" not exists");
+		
 	}
 }
