@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 
 import com.org.model.ScheduledFlight;
 
-
 public interface ScheduledFlightService {
+	
 	public ResponseEntity<?> addScheduledFlight(ScheduledFlight scheduledFlight);
 	public ScheduledFlight modifyScheduledFlight(ScheduledFlight scheduledFlight);
 	public String removeScheduledFlight(BigInteger id);
