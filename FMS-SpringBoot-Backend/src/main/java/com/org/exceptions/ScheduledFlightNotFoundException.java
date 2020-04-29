@@ -1,6 +1,6 @@
 package com.org.exceptions;
 
-public class ScheduledFlightNotFoundException extends RuntimeException{
+public class ScheduledFlightNotFoundException extends RuntimeException {
 	/**
 	 * 
 	 */
