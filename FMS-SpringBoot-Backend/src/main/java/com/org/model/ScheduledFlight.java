@@ -36,10 +36,18 @@ public class ScheduledFlight {
 	private Date arrivalTime;
 	private Date departureTime;
 	
+	
+	/*
+	 Default constructor
+	 */
 	public ScheduledFlight() {
 		
 	}
-
+	
+	
+	/*
+	 Parameterized constructor
+	 */
 	public ScheduledFlight(BigInteger id, int availableSeats, Date arrivalTime, Date departureTime) {
 		super();
 		this.id = id;
@@ -48,12 +56,20 @@ public class ScheduledFlight {
 		this.departureTime = departureTime;
 	}
 
+	
+	/*
+	 Getter and setter for ID 
+	 */
 	public BigInteger getId() {
 		return id;
 	}
 	public void setId(BigInteger id) {
 		this.id = id;
 	}
+	
+	/*
+	 Getter and setter for Available seats
+	 */
 	public int getAvailableSeats() {
 		return availableSeats;
 	}
@@ -77,6 +93,9 @@ public class ScheduledFlight {
 //		this.destinationAirport = destinationAirport;
 //	}
 
+	/*
+	 Getter and setter for Arrival time
+	 */
 	public Date getArrivalTime() {
 		return arrivalTime;
 	}
@@ -85,6 +104,10 @@ public class ScheduledFlight {
 		this.arrivalTime = arrivalTime;
 	}
 
+	
+	/*
+	 Getter and setter for Departure time
+	 */
 	public Date getDepartureTime() {
 		return departureTime;
 	}
@@ -93,15 +116,13 @@ public class ScheduledFlight {
 		this.departureTime = departureTime;
 	}
 
-	/**
-	 * @return the flightObj
+	/*
+	 Getter and setter for flightObj
 	 */
 	public Flight getFlightObj() {
 		return flightObj;
 	}
-	/**
-	 * @param flightObj the flightObj to set
-	 */
+	
 	public void setFlightObj(Flight flightObj) {
 		this.flightObj = flightObj;
 	}
