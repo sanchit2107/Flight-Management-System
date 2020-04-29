@@ -3,6 +3,7 @@ package com.org.controller;
 import java.math.BigInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.org.model.Booking;
 import com.org.service.BookingService;
 
+@ComponentScan(basePackages = "com")
 @RestController
 @RequestMapping("/booking")
 public class BookingController {
 	
-	@Autowired
+	@Autowired(required=true)
 	BookingService bookingService;
 	
 	@PostMapping("/createBooking")

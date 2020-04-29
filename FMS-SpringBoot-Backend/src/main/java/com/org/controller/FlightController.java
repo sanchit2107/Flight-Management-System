@@ -17,33 +17,32 @@ import com.org.service.FlightService;
 
 @RestController
 @RequestMapping("/flight")
-public class FlightController
-{
-	@Autowired(required=true)
-FlightService flightService;
+public class FlightController {
+	@Autowired(required = true)
+	FlightService flightService;
+
 	@PostMapping("/addFlight")
-	public void addFlight(Flight flight)
-	{
+	public void addFlight(@RequestBody Flight flight) {
 		flightService.addFlight(flight);
 	}
+
 	@RequestMapping("/allFlight")
-	public Iterable<Flight> viewAllFlight()
-	{
+	public Iterable<Flight> viewAllFlight() {
 		return flightService.viewAllFlight();
 	}
+
 	@RequestMapping("/viewFlight/{id}")
-	public Flight viewAirport(@PathVariable("id") BigInteger flightNo)
-	{
-	    return flightService.viewFlight(flightNo);	
+	public Flight viewAirport(@PathVariable("id") BigInteger flightNo) {
+		return flightService.viewFlight(flightNo);
 	}
+
 	@PutMapping("/updateFlight/")
-	public void modifyFlight(Flight flight)
-	{
+	public void modifyFlight(@RequestBody Flight flight) {
 		flightService.modifyFlight(flight);
 	}
+
 	@DeleteMapping("/deleteFlight/{id}")
-	public void removeFlight(@PathVariable("id") BigInteger flightNo)
-	{
+	public void removeFlight(@PathVariable("id") BigInteger flightNo) {
 		flightService.removeFlight(flightNo);
 	}
 }
