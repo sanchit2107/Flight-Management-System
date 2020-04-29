@@ -33,8 +33,8 @@ public class ScheduledFlightController {
 	 */
 	@PostMapping("/add")
 	@ExceptionHandler(ScheduledFlightNotFoundException.class)
-	public void addSF(@RequestBody ScheduledFlight scheduledFlight) {
-		service.addScheduledFlight(scheduledFlight);
+	public ResponseEntity<?> addSF(@RequestBody ScheduledFlight scheduledFlight) {
+		return service.addScheduledFlight(scheduledFlight);
 	}
 	
 	/*
