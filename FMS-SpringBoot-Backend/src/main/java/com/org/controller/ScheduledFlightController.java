@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.org.exceptions.ScheduledFlightAlreadyPresentException;
 import com.org.exceptions.ScheduledFlightNotFoundException;
 import com.org.model.ScheduledFlight;
 import com.org.service.ScheduledFlightService;
@@ -32,9 +33,9 @@ public class ScheduledFlightController {
 	 Controller for adding Scheduled Flights
 	 */
 	@PostMapping("/add")
-	@ExceptionHandler(ScheduledFlightNotFoundException.class)
-	public ResponseEntity<?> addSF(@RequestBody ScheduledFlight scheduledFlight) {
-		return service.addScheduledFlight(scheduledFlight);
+	@ExceptionHandler(ScheduledFlightAlreadyPresentException.class)
+	public void addSF(@RequestBody ScheduledFlight scheduledFlight) {
+		service.addScheduledFlight(scheduledFlight);
 	}
 	
 	/*
