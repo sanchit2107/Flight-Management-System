@@ -8,7 +8,7 @@ import com.org.model.Booking;
 
 public interface BookingService {
 	
-	public String createBooking(Booking newBooking);
+	public ResponseEntity<?> createBooking(Booking newBooking);
 	public Booking updateBooking(Booking newBooking);
 	public String deleteBooking(BigInteger bookingId);
 	public Iterable<Booking> displayAllBooking();
