@@ -1,13 +1,13 @@
 package com.org.dao;
 
+import java.math.BigInteger;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.org.model.Airport;
+import com.org.model.Booking;
 
 @Repository
-public interface AirportDao extends CrudRepository<Airport,String>
-{
+public interface UserDao extends CrudRepository<User, BigInteger> {
 
 }
-

@@ -16,13 +16,9 @@ public class Flight {
 	private String carrierName;
 	private String flightModel;
 	private int seatCapacity;
-
-	@OneToOne(mappedBy = "flightObj", cascade = CascadeType.ALL)
-	private ScheduledFlight sfObj;
-
-	public Flight() {
-	}
-
+	
+	public Flight() {}
+	
 	/**
 	 * @param flightNo
 	 * @param carrierName
@@ -36,73 +32,53 @@ public class Flight {
 		this.flightModel = flightModel;
 		this.seatCapacity = seatCapacity;
 	}
-
+	
 	/**
 	 * @return the flightNo
 	 */
 	public BigInteger getFlightNo() {
 		return flightNo;
 	}
-
 	/**
-	 * @param flightNo
-	 *            the flightNo to set
+	 * @param flightNo the flightNo to set
 	 */
 	public void setFlightNo(BigInteger flightNo) {
 		this.flightNo = flightNo;
 	}
-
 	/**
 	 * @return the carrierName
 	 */
 	public String getCarrierName() {
 		return carrierName;
 	}
-
 	/**
-	 * @param carrierName
-	 *            the carrierName to set
+	 * @param carrierName the carrierName to set
 	 */
 	public void setCarrierName(String carrierName) {
 		this.carrierName = carrierName;
 	}
-
 	/**
 	 * @return the flightModel
 	 */
 	public String getFlightModel() {
 		return flightModel;
 	}
-
 	/**
-	 * @param flightModel
-	 *            the flightModel to set
+	 * @param flightModel the flightModel to set
 	 */
 	public void setFlightModel(String flightModel) {
 		this.flightModel = flightModel;
 	}
-
 	/**
 	 * @return the seatCapacity
 	 */
 	public int getSeatCapacity() {
 		return seatCapacity;
 	}
-
 	/**
-	 * @param seatCapacity
-	 *            the seatCapacity to set
+	 * @param seatCapacity the seatCapacity to set
 	 */
 	public void setSeatCapacity(int seatCapacity) {
 		this.seatCapacity = seatCapacity;
-	}
-
-	public ScheduledFlight getSfObj() {
-		return sfObj;
-	}
-
-	public void setSfObj(ScheduledFlight sfObj) {
-		this.sfObj = sfObj;
-	}
-
+	}	
 }

@@ -19,9 +19,9 @@ import javax.persistence.OneToOne;
 public class Booking 
 {
 	@Id
-//	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private BigInteger bookingId;
-	private String bookingDate;
+	private Date bookingDate;
     private int noOfPassengers;
     
 	public BigInteger getBookingId() {
@@ -30,10 +30,10 @@ public class Booking
 	public void setBookingId(BigInteger bookingId) {
 		this.bookingId = bookingId;
 	}
-	public String getBookingDate() {
+	public Date getBookingDate() {
 		return bookingDate;
 	}
-	public void setBookingDate(String bookingDate) {
+	public void setBookingDate(Date bookingDate) {
 		this.bookingDate = bookingDate;
 	}
 	public int getNoOfPassengers() {

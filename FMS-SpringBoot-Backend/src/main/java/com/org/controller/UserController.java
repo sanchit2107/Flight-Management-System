@@ -15,22 +15,22 @@ import com.org.model.Booking;
 import com.org.service.BookingService;
 
 @RestController
-@RequestMapping("/booking")
+@RequestMapping("/USer")
 public class BookingController {
 	
 	@Autowired
 	BookingService bookingService;
 	
-	@PostMapping("/createBooking")
-	public void addBooking(Booking newBooking) {
+	@PostMapping("/createUser")
+	public void addUser(User newUser) {
 		
-		bookingService.createBooking(newBooking);
+		UserService.createUser(newUser);
 	}
 	
-	@GetMapping("/readAllBooking")
-	public Iterable<Booking> readAllBookings() {
+	@GetMapping("/readAllUsers")
+	public Iterable<User> readAllUsers() {
 		
-		return bookingService.displayAllBooking();
+		return UserService.viewAllUser();
 	}
 	
 	@PutMapping("/updateBooking")
@@ -39,15 +39,15 @@ public class BookingController {
 		bookingService.updateBooking(updateBooking);
 	}
 	
-	@GetMapping("/searchBooking/{id}")
-	public Booking searchBookingByID(@PathVariable("id") BigInteger bookingId) {
+	@GetMapping("/searchUser/{id}")
+	public Booking searchUserByID(@PathVariable("id") BigInteger userId) {
 		
-		return bookingService.searchBooking(bookingId);
+		return UserService.viewUser(userId);
 	}
 	
-	@DeleteMapping("/deleteBooking/{id}")
-	public void deleteBookingByID(@PathVariable("id") BigInteger bookingId) {
+	@DeleteMapping("/deleteUser/{id}")
+	public void deleteUserByID(@PathVariable("id") BigInteger userId) {
 		
-		bookingService.deleteBooking(bookingId);
+		UserService.deleteUser(userId);
 	}
 }
