@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.org.model.Airport;
 import com.org.model.Flight;
 import com.org.service.FlightService;
+import com.org.service.FlightServiceImpl;
 
 @RestController
 @RequestMapping("/flight")
@@ -22,7 +23,8 @@ public class FlightController {
 	FlightService flightService;
 
 	@PostMapping("/addFlight")
-	public void addFlight(@RequestBody Flight flight) {
+	public void addFlight(@RequestBody Flight flight)
+	{
 		flightService.addFlight(flight);
 	}
 
@@ -37,7 +39,8 @@ public class FlightController {
 	}
 
 	@PutMapping("/updateFlight/")
-	public void modifyFlight(@RequestBody Flight flight) {
+	public void modifyFlight(@RequestBody Flight flight)
+	{
 		flightService.modifyFlight(flight);
 	}
 
