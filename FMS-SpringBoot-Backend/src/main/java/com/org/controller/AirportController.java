@@ -13,36 +13,37 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.org.model.Airport;
 import com.org.model.Flight;
+import com.org.service.AirportService;
 import com.org.service.AirportServiceImpl;
 @RestController
 @RequestMapping("/view")
 public class AirportController
 {
 	@Autowired(required=true)
-	AirportServiceImpl airportServiceImpl;
+	AirportService airportService;
 	@RequestMapping("/viewAirport/{id}")
 	public Airport viewAirport(@PathVariable("id") String airportCode)
 	{
-	    return airportServiceImpl.viewAirport(airportCode);	
+	    return airportService.viewAirport(airportCode);	
 	}
 	@RequestMapping("/allAirport")
 	public Iterable<Airport> viewAllAirport()
 	{
-		return airportServiceImpl.viewAllAirport();
+		return airportService.viewAllAirport();
 	}
 	@PostMapping("/addAirport")
 	public void addAirport(Airport airport)
 	{
-		airportServiceImpl.addAirport(airport);
+		airportService.addAirport(airport);
 	}
 	@PutMapping("/updateAirport")
 	public void modifyAirport(Airport airport)
 	{
-		airportServiceImpl.modifyAirport(airport);
+		airportService.modifyAirport(airport);
 	}
 	@DeleteMapping("/deleteAirport/{id}")
 	public void removeAirport(@PathVariable("id")String airportCode)
 	{
-		airportServiceImpl.removeAirport(airportCode);
+		airportService.removeAirport(airportCode);
 	}
 }

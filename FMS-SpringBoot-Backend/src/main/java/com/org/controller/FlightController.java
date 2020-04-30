@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.org.model.Airport;
 import com.org.model.Flight;
+import com.org.service.FlightService;
 import com.org.service.FlightServiceImpl;
 
 @RestController
@@ -20,30 +21,30 @@ import com.org.service.FlightServiceImpl;
 public class FlightController
 {
 	@Autowired(required=true)
-FlightServiceImpl flightServiceImpl;
+FlightService flightService;
 	@PostMapping("/addFlight")
 	public void addFlight(@RequestBody Flight flight)
 	{
-		flightServiceImpl.addFlight(flight);
+		flightService.addFlight(flight);
 	}
 	@RequestMapping("/allFlight")
 	public Iterable<Flight> viewAllFlight()
 	{
-		return flightServiceImpl.viewAllFlight();
+		return flightService.viewAllFlight();
 	}
 	@RequestMapping("/viewFlight/{id}")
 	public Flight viewAirport(@PathVariable("id") BigInteger flightNo)
 	{
-	    return flightServiceImpl.viewFlight(flightNo);	
+	    return flightService.viewFlight(flightNo);	
 	}
 	@PutMapping("/updateFlight/")
 	public void modifyFlight(@RequestBody Flight flight)
 	{
-		flightServiceImpl.modifyFlight(flight);
+		flightService.modifyFlight(flight);
 	}
 	@DeleteMapping("/deleteFlight/{id}")
 	public void removeFlight(@PathVariable("id") BigInteger flightNo)
 	{
-		flightServiceImpl.removeFlight(flightNo);
+		flightService.removeFlight(flightNo);
 	}
 }
