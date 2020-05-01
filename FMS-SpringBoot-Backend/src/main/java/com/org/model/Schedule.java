@@ -17,31 +17,30 @@ public class Schedule {
 	@Id
 	@Column(name = "schedule_Id")
 	private BigInteger scheduleId;
-	
+
 	@OneToOne(fetch = FetchType.EAGER)
 	private Airport sourceAirport;
-	
+
 	@OneToOne(fetch = FetchType.EAGER)
 	private Airport destinationAirport;
-	
+
 	@Column(name = "departure_date_time")
 	@DateTimeFormat(pattern = "mm-dd-yyyy HH:mm:ss")
 	private LocalDateTime departureDateTime;
-	
+
 	@Column(name = "arrival_date_time")
 	@DateTimeFormat(pattern = "mm-dd-yyyy HH:mm:ss")
 	private LocalDateTime arrivalDateTime;
-	
+
 	/*
-	 Default constructor
+	 * Default constructor
 	 */
 	public Schedule() {
-		
+
 	}
-	
-	
+
 	/*
-	 Parameterized constructor
+	 * Parameterized constructor
 	 */
 	public Schedule(BigInteger scheduleId, Airport sourceAirport, Airport destinationAirport,
 			LocalDateTime departureDateTime, LocalDateTime arrivalDateTime) {
@@ -59,42 +58,42 @@ public class Schedule {
 	public BigInteger getScheduleId() {
 		return scheduleId;
 	}
+
 	public void setScheduleId(BigInteger scheduleId) {
 		this.scheduleId = scheduleId;
 	}
 
-
 	public Airport getSourceAirport() {
 		return sourceAirport;
 	}
+
 	public void setSourceAirport(Airport sourceAirport) {
 		this.sourceAirport = sourceAirport;
 	}
-	
-	
+
 	public Airport getDestinationAirport() {
 		return destinationAirport;
 	}
+
 	public void setDestinationAirport(Airport destinationAirport) {
 		this.destinationAirport = destinationAirport;
 	}
 
-
 	public LocalDateTime getDepartureDateTime() {
 		return departureDateTime;
 	}
+
 	public void setDepartureDateTime(LocalDateTime departureDateTime) {
 		this.departureDateTime = departureDateTime;
 	}
 
-
 	public LocalDateTime getArrivalDateTime() {
 		return arrivalDateTime;
 	}
+
 	public void setArrivalDateTime(LocalDateTime arrivalDateTime) {
 		this.arrivalDateTime = arrivalDateTime;
 	}
-
 
 	@Override
 	public String toString() {
@@ -102,7 +101,6 @@ public class Schedule {
 				+ destinationAirport + ", departureDateTime=" + departureDateTime + ", arrivalDateTime="
 				+ arrivalDateTime + "]";
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -115,7 +113,6 @@ public class Schedule {
 		result = prime * result + ((sourceAirport == null) ? 0 : sourceAirport.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -153,7 +150,5 @@ public class Schedule {
 			return false;
 		return true;
 	}
-	
-	
-	
+
 }

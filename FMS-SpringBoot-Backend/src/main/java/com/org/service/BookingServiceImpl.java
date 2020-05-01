@@ -34,7 +34,8 @@ public class BookingServiceImpl implements BookingService {
 				bookingDao.save(newBooking);
 				return new ResponseEntity<Booking>(newBooking, HttpStatus.OK);
 			} else
-				throw new RecordAlreadyPresentException("Booking with Booking Id: " + newBooking.getBookingId() + " already exists!!");
+				throw new RecordAlreadyPresentException(
+						"Booking with Booking Id: " + newBooking.getBookingId() + " already exists!!");
 		} catch (RecordAlreadyPresentException e) {
 
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -58,23 +59,22 @@ public class BookingServiceImpl implements BookingService {
 	/*
 	 * deleteing the booking
 	 */
-	
+
 	@Override
 	public String deleteBooking(BigInteger bookingId) {
 
 		Optional<Booking> findBookingById = bookingDao.findById(bookingId);
-		if(findBookingById.isPresent()) {
+		if (findBookingById.isPresent()) {
 			bookingDao.deleteById(bookingId);
 			return "Booking Deleted!!";
-		}
-		else
+		} else
 			throw new RecordNotFoundException("Booking not found for the entered BookingID");
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.org.service.BookingService#displayAllBooking()
-	 * show all booking
+	 * 
+	 * @see com.org.service.BookingService#displayAllBooking() show all booking
 	 */
 	@Override
 	public Iterable<Booking> displayAllBooking() {
@@ -84,20 +84,20 @@ public class BookingServiceImpl implements BookingService {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.org.service.BookingService#findBookingById(java.math.BigInteger)
 	 * find booking by ID
 	 */
 	@Override
 	public ResponseEntity<?> findBookingById(BigInteger bookingId) {
-		Optional<Booking> findById= bookingDao.findById(bookingId);
-		try{
-			if(findById.isPresent()) {
-				Booking findBooking= findById.get();
+		Optional<Booking> findById = bookingDao.findById(bookingId);
+		try {
+			if (findById.isPresent()) {
+				Booking findBooking = findById.get();
 				return new ResponseEntity<Booking>(findBooking, HttpStatus.OK);
-			}
-			else
-				throw new RecordNotFoundException("No record found with ID "+bookingId);
-		}catch(RecordNotFoundException e) {
+			} else
+				throw new RecordNotFoundException("No record found with ID " + bookingId);
+		} catch (RecordNotFoundException e) {
 			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}

@@ -1,6 +1,5 @@
 package com.org.model;
 
-
 import java.math.BigInteger;
 
 import javax.persistence.CascadeType;
@@ -12,30 +11,29 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class ScheduledFlight {
-	
+
 	@Id
 	@Column(name = "schedule_flight_id")
 	private BigInteger scheduleFlightId;
-	
+
 	@OneToOne(fetch = FetchType.EAGER)
 	private Flight flight;
-	
+
 	@Column(name = "available_seats")
 	private Integer availableSeats;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private Schedule schedule;
 
 	/*
-	 Default constructor
+	 * Default constructor
 	 */
 	public ScheduledFlight() {
-		
+
 	}
-	
-	
+
 	/*
-	 Parameterized constructor
+	 * Parameterized constructor
 	 */
 	public ScheduledFlight(BigInteger scheduleFlightId, com.org.model.Flight flight, Integer availableSeats,
 			com.org.model.Schedule schedule) {
@@ -46,56 +44,55 @@ public class ScheduledFlight {
 		this.schedule = schedule;
 	}
 
-	
 	/*
-	 Getter and setter for ID 
+	 * Getter and setter for ID
 	 */
 	public BigInteger getScheduleFlightId() {
 		return scheduleFlightId;
 	}
+
 	public void setScheduleFlightId(BigInteger scheduleFlightId) {
 		this.scheduleFlightId = scheduleFlightId;
 	}
-	
-	
+
 	/*
-	 Getter and setter for Available seats
+	 * Getter and setter for Available seats
 	 */
 	public int getAvailableSeats() {
 		return availableSeats;
 	}
+
 	public void setAvailableSeats(int availableSeats) {
 		this.availableSeats = availableSeats;
 	}
 
 	/*
-	 Getter and setter for Flight object
+	 * Getter and setter for Flight object
 	 */
 	public Flight getFlight() {
 		return flight;
 	}
+
 	public void setFlight(Flight flight) {
 		this.flight = flight;
 	}
 
-	
 	/*
-	 Getter and setter for Schedule object
+	 * Getter and setter for Schedule object
 	 */
 	public Schedule getSchedule() {
 		return schedule;
 	}
+
 	public void setSchedule(Schedule schedule) {
 		this.schedule = schedule;
 	}
-
 
 	@Override
 	public String toString() {
 		return "ScheduledFlight [scheduleFlightId=" + scheduleFlightId + ", flight=" + flight + ", availableSeats="
 				+ availableSeats + ", schedule=" + schedule + "]";
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -107,7 +104,6 @@ public class ScheduledFlight {
 		result = prime * result + ((scheduleFlightId == null) ? 0 : scheduleFlightId.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -140,6 +136,5 @@ public class ScheduledFlight {
 			return false;
 		return true;
 	}
-	
-	
+
 }

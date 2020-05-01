@@ -29,19 +29,19 @@ import com.org.service.ScheduledFlightService;
 @RequestMapping("/scheduledFlight")
 public class ScheduledFlightController {
 	/*
-	 Creating Service object
+	 * Creating Service object
 	 */
 	@Autowired
 	ScheduledFlightService scheduleFlightService;
-	
+
 	@Autowired
 	AirportService airportService;
-	
+
 	@Autowired
 	FlightService flightService;
-	
+
 	/*
-	 Controller for adding Scheduled Flights
+	 * Controller for adding Scheduled Flights
 	 */
 	@PostMapping("/add")
 	public ResponseEntity<ScheduledFlight> addSF(@ModelAttribute("scheduleFlight") ScheduledFlight scheduledFlight,
@@ -69,44 +69,42 @@ public class ScheduledFlightController {
 		scheduledFlight.setSchedule(schedule);
 		scheduledFlight.setAvailableSeats(scheduledFlight.getFlight().getSeatCapacity());
 		try {
-			return new ResponseEntity<ScheduledFlight>(scheduleFlightService.addScheduledFlight(scheduledFlight), HttpStatus.OK);
+			return new ResponseEntity<ScheduledFlight>(scheduleFlightService.addScheduledFlight(scheduledFlight),
+					HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity("Error adding Flight."+e, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity("Error adding Flight." + e, HttpStatus.BAD_REQUEST);
 		}
 	}
-		
-	
+
 	/*
-	 Controller for modifying existing Scheduled Flights
+	 * Controller for modifying existing Scheduled Flights
 	 */
 	@PutMapping("/modify")
-	public ResponseEntity<ScheduledFlight> modifyScheduleFlight(@ModelAttribute ScheduledFlight scheduleFlight){			
-		ScheduledFlight modifySFlight=scheduleFlightService.modifyScheduledFlight(scheduleFlight);
+	public ResponseEntity<ScheduledFlight> modifyScheduleFlight(@ModelAttribute ScheduledFlight scheduleFlight) {
+		ScheduledFlight modifySFlight = scheduleFlightService.modifyScheduledFlight(scheduleFlight);
 		if (modifySFlight == null) {
 			return new ResponseEntity("Flight not modified", HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
 			return new ResponseEntity<ScheduledFlight>(modifySFlight, HttpStatus.OK);
 		}
-		
+
 	}
-	
-	
+
 	/*
-	 Controller for deleting existing Scheduled Flights
+	 * Controller for deleting existing Scheduled Flights
 	 */
 	@DeleteMapping("/delete/{id}")
-	public String deleteSF(@PathVariable("id") BigInteger id) throws RecordNotFoundException{
+	public String deleteSF(@PathVariable("id") BigInteger id) throws RecordNotFoundException {
 		return scheduleFlightService.removeScheduledFlight(id);
 	}
-	
-	
+
 	/*
-	 Controller for viewing a Scheduled Flight by ID
+	 * Controller for viewing a Scheduled Flight by ID
 	 */
 	@GetMapping("/view/{id}")
 	@ExceptionHandler(ScheduledFlightNotFoundException.class)
 	public ResponseEntity<ScheduledFlight> viewSF(@PathVariable("id") BigInteger flightId) {
-		ScheduledFlight searchSFlight= scheduleFlightService.viewScheduledFlight(flightId);
+		ScheduledFlight searchSFlight = scheduleFlightService.viewScheduledFlight(flightId);
 		if (searchSFlight == null) {
 			return new ResponseEntity("Flight not present", HttpStatus.BAD_REQUEST);
 		} else {
@@ -114,9 +112,8 @@ public class ScheduledFlightController {
 		}
 	}
 
-	
 	/*
-	 Controller for viewing all Scheduled Flights
+	 * Controller for viewing all Scheduled Flights
 	 */
 	@GetMapping("/viewAll")
 	public Iterable<ScheduledFlight> viewAllSF() {

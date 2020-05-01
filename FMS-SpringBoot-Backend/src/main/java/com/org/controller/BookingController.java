@@ -24,41 +24,41 @@ import com.org.service.BookingService;
 @RestController
 @RequestMapping("/booking")
 public class BookingController {
-	
+
 	@Autowired
 	BookingService bookingService;
-	
+
 	@PostMapping("/createBooking")
 	@ExceptionHandler(RecordAlreadyPresentException.class)
 	public void addBooking(@RequestBody Booking newBooking) {
-		
+
 		bookingService.createBooking(newBooking);
 	}
-	
+
 	@GetMapping("/readAllBooking")
 	public Iterable<Booking> readAllBookings() {
-		
+
 		return bookingService.displayAllBooking();
 	}
-	
+
 	@PutMapping("/updateBooking")
 	@ExceptionHandler(RecordNotFoundException.class)
 	public void modifyBooking(@RequestBody Booking updateBooking) {
-		
+
 		bookingService.updateBooking(updateBooking);
 	}
-	
+
 	@GetMapping("/searchBooking/{id}")
 	@ExceptionHandler(RecordNotFoundException.class)
 	public ResponseEntity<?> searchBookingByID(@PathVariable("id") BigInteger bookingId) {
-		
+
 		return bookingService.findBookingById(bookingId);
 	}
-	
+
 	@DeleteMapping("/deleteBooking/{id}")
 	@ExceptionHandler(RecordNotFoundException.class)
 	public void deleteBookingByID(@PathVariable("id") BigInteger bookingId) {
-		
+
 		bookingService.deleteBooking(bookingId);
 	}
 }

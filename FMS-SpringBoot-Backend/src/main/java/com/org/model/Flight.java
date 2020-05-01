@@ -17,8 +17,10 @@ public class Flight {
 	private String flightModel;
 	private int seatCapacity;
 
-	@OneToOne(mappedBy = "flightObj", cascade = CascadeType.ALL)
-	private ScheduledFlight sfObj;
+	/*
+	 * @OneToOne(mappedBy = "flightObj", cascade = CascadeType.ALL) private
+	 * ScheduledFlight sfObj;
+	 */
 
 	public Flight() {
 	}
@@ -97,12 +99,10 @@ public class Flight {
 		this.seatCapacity = seatCapacity;
 	}
 
-	public ScheduledFlight getSfObj() {
-		return sfObj;
-	}
-
-	public void setSfObj(ScheduledFlight sfObj) {
-		this.sfObj = sfObj;
-	}
+	/*
+	 * public ScheduledFlight getSfObj() { return sfObj; }
+	 * 
+	 * public void setSfObj(ScheduledFlight sfObj) { this.sfObj = sfObj; }
+	 */
 
 }

@@ -1,4 +1,5 @@
 package com.org.service;
+
 import com.org.service.AirportService;
 import java.math.BigInteger;
 import java.util.Optional;
@@ -16,68 +17,60 @@ import com.org.exceptions.RecordAlreadyPresentException;
 import com.org.exceptions.RecordNotFoundException;
 
 @Service
-public class AirportServiceImpl implements AirportService
-{
+public class AirportServiceImpl implements AirportService {
 	@Autowired
 	AirportDao airportDao;
+
 	/*
 	 * view all Airports
 	 */
-	public Iterable<Airport> viewAllAirport()
-	{
-	    return airportDao.findAll();
+	public Iterable<Airport> viewAllAirport() {
+		return airportDao.findAll();
 	}
+
 	/*
 	 * view airport by airportCode
 	 */
-	public Airport viewAirport(String airportCode)
-	{
-		Optional<Airport> findById=airportDao.findById(airportCode);
-		if(findById.isPresent())
-		{
-		return findById.get();
-	    }
-		else
-			throw new RecordNotFoundException("Airport with airport code: "+airportCode+"not exists");
-    }
+	public Airport viewAirport(String airportCode) {
+		Optional<Airport> findById = airportDao.findById(airportCode);
+		if (findById.isPresent()) {
+			return findById.get();
+		} else
+			throw new RecordNotFoundException("Airport with airport code: " + airportCode + "not exists");
+	}
+
 	/*
 	 * add a airport
 	 */
-	public void addAirport(Airport airport)
-	{
+	public void addAirport(Airport airport) {
 		Optional<Airport> findById = airportDao.findById(airport.getAirportCode());
-		if (!findById.isPresent())
-		{
+		if (!findById.isPresent()) {
 			airportDao.save(airport);
-	    }
-		else
-			throw new RecordAlreadyPresentException("Airport with code : "+airport.getAirportCode()+" already present");
+		} else
+			throw new RecordAlreadyPresentException(
+					"Airport with code : " + airport.getAirportCode() + " already present");
 	}
+
 	/*
 	 * modify an Airport
 	 */
-	public void modifyAirport(Airport airport)
-	{
-		Optional<Airport> findById=airportDao.findById(airport.getAirportCode());
-		if (findById.isPresent()) 
-		{
+	public void modifyAirport(Airport airport) {
+		Optional<Airport> findById = airportDao.findById(airport.getAirportCode());
+		if (findById.isPresent()) {
 			airportDao.save(airport);
-		}
-		else
-			throw new RecordNotFoundException("Airport with code: "+airport.getAirportCode()+" not exists");
+		} else
+			throw new RecordNotFoundException("Airport with code: " + airport.getAirportCode() + " not exists");
 	}
+
 	/*
 	 * remove an airport
 	 */
-	public  void removeAirport(String airportCode)
-	{
-		Optional<Airport> findById=airportDao.findById(airportCode);
-		if (findById.isPresent())
-		{
-		airportDao.deleteById(airportCode);
-		}
-		else
-			throw new RecordNotFoundException("Airport with code: "+airportCode+" not exists");
-		
+	public void removeAirport(String airportCode) {
+		Optional<Airport> findById = airportDao.findById(airportCode);
+		if (findById.isPresent()) {
+			airportDao.deleteById(airportCode);
+		} else
+			throw new RecordNotFoundException("Airport with code: " + airportCode + " not exists");
+
 	}
 }

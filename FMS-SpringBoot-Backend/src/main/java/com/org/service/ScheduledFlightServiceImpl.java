@@ -19,29 +19,29 @@ import com.org.model.ScheduledFlight;
 
 @Service
 public class ScheduledFlightServiceImpl implements ScheduledFlightService {
-	
+
 	/*
-	 Creating DAO object
+	 * Creating DAO object
 	 */
 	@Autowired
 	ScheduledFlightDao dao;
-	
+
 	@Autowired
 	ScheduleDao scheduleDao;
-	
+
 	@Autowired
 	BookingService bookingService;
+
 	/*
-	 Service method to add new Scheduled flight to database
+	 * Service method to add new Scheduled flight to database
 	 */
 	@Override
 	public ScheduledFlight addScheduledFlight(ScheduledFlight scheduledFlight) {
-				return dao.save(scheduledFlight);
+		return dao.save(scheduledFlight);
 	}
-	
-	
+
 	/*
-	 Service method to modify existing Scheduled flight in database
+	 * Service method to modify existing Scheduled flight in database
 	 */
 	@Override
 	public ScheduledFlight modifyScheduledFlight(ScheduledFlight scheduleFlight) {
@@ -54,10 +54,9 @@ public class ScheduledFlightServiceImpl implements ScheduledFlightService {
 		updateSchedule.setDepartureDateTime(scheduleFlight.getSchedule().getDepartureDateTime());
 		return scheduleFlight;
 	}
-	
-	
+
 	/*
-	 Service method to remove existing Scheduled flight from database
+	 * Service method to remove existing Scheduled flight from database
 	 */
 	@Override
 	public String removeScheduledFlight(BigInteger flightId) throws RecordNotFoundException {
@@ -67,39 +66,38 @@ public class ScheduledFlightServiceImpl implements ScheduledFlightService {
 		if (!scheduleFlight.isPresent())
 			throw new RecordNotFoundException("Enter a valid Flight Id");
 		else {
-//			try {
-//				cancelBookings(flightId);
-//			} catch (RecordNotFoundException e) {
-//				System.out.println("No Bookings Found");
-//			}
+			// try {
+			// cancelBookings(flightId);
+			// } catch (RecordNotFoundException e) {
+			// System.out.println("No Bookings Found");
+			// }
 			dao.deleteById(flightId);
 		}
-		return "Scheduled flight with ID "+flightId+" is not found";
+		return "Scheduled flight with ID " + flightId + " is not found";
 	}
-	
-//	@Override
-//	public boolean cancelBookings(BigInteger flightId) throws RecordNotFoundException {
-//		Iterable<Booking> bookingList = bookingService.displayAllBooking();
-//		for (Booking booking : bookingList) {
-//			if (booking.getScheduleFlight().getScheduleFlightId().equals(flightId)) {
-//				bookingService.deleteBooking(booking.getBookingId());
-//			}
-//		}
-//		return true;
-//	}
 
+	// @Override
+	// public boolean cancelBookings(BigInteger flightId) throws
+	// RecordNotFoundException {
+	// Iterable<Booking> bookingList = bookingService.displayAllBooking();
+	// for (Booking booking : bookingList) {
+	// if (booking.getScheduleFlight().getScheduleFlightId().equals(flightId)) {
+	// bookingService.deleteBooking(booking.getBookingId());
+	// }
+	// }
+	// return true;
+	// }
 
 	/*
-	 Service method to view all Scheduled flights in database
+	 * Service method to view all Scheduled flights in database
 	 */
 	@Override
-	public Iterable<ScheduledFlight> viewAllScheduledFlights(){
+	public Iterable<ScheduledFlight> viewAllScheduledFlights() {
 		return dao.findAll();
 	}
-	
-	
+
 	/*
-	 Service method to view a Scheduled flight by ID from database
+	 * Service method to view a Scheduled flight by ID from database
 	 */
 	@Override
 	public ScheduledFlight viewScheduledFlight(BigInteger flightId) throws ScheduledFlightNotFoundException {

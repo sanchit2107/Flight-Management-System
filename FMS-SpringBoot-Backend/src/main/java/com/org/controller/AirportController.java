@@ -1,4 +1,5 @@
 package com.org.controller;
+
 import java.math.BigInteger;
 import java.util.List;
 
@@ -15,35 +16,35 @@ import com.org.model.Airport;
 import com.org.model.Flight;
 import com.org.service.AirportService;
 import com.org.service.AirportServiceImpl;
+
 @RestController
 @RequestMapping("/view")
-public class AirportController
-{
-	@Autowired(required=true)
+public class AirportController {
+	@Autowired(required = true)
 	AirportService airportService;
+
 	@RequestMapping("/viewAirport/{id}")
-	public Airport viewAirport(@PathVariable("id") String airportCode)
-	{
-	    return airportService.viewAirport(airportCode);	
+	public Airport viewAirport(@PathVariable("id") String airportCode) {
+		return airportService.viewAirport(airportCode);
 	}
+
 	@RequestMapping("/allAirport")
-	public Iterable<Airport> viewAllAirport()
-	{
+	public Iterable<Airport> viewAllAirport() {
 		return airportService.viewAllAirport();
 	}
+
 	@PostMapping("/addAirport")
-	public void addAirport(Airport airport)
-	{
+	public void addAirport(Airport airport) {
 		airportService.addAirport(airport);
 	}
+
 	@PutMapping("/updateAirport")
-	public void modifyAirport(Airport airport)
-	{
+	public void modifyAirport(Airport airport) {
 		airportService.modifyAirport(airport);
 	}
+
 	@DeleteMapping("/deleteAirport/{id}")
-	public void removeAirport(@PathVariable("id")String airportCode)
-	{
+	public void removeAirport(@PathVariable("id") String airportCode) {
 		airportService.removeAirport(airportCode);
 	}
 }
