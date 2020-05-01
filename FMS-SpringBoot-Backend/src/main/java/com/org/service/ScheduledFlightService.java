@@ -4,14 +4,17 @@ import java.math.BigInteger;
 
 import org.springframework.http.ResponseEntity;
 
+import com.org.exceptions.RecordNotFoundException;
+import com.org.exceptions.ScheduledFlightNotFoundException;
 import com.org.model.ScheduledFlight;
 
+
 public interface ScheduledFlightService {
-	
-	public ResponseEntity<?> addScheduledFlight(ScheduledFlight scheduledFlight);
+	public ScheduledFlight addScheduledFlight(ScheduledFlight scheduledFlight);
 	public ScheduledFlight modifyScheduledFlight(ScheduledFlight scheduledFlight);
-	public String removeScheduledFlight(BigInteger id);
+	public String removeScheduledFlight(BigInteger id) throws RecordNotFoundException;
 	public Iterable<ScheduledFlight> viewAllScheduledFlights();
-	public ResponseEntity<?> viewScheduledFlight(BigInteger id);
+	public ScheduledFlight viewScheduledFlight(BigInteger id) throws ScheduledFlightNotFoundException;
+//	boolean cancelBookings(BigInteger flightId) throws RecordNotFoundException;
 
 }
