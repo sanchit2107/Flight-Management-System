@@ -1,6 +1,7 @@
 package com.org.service;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.org.model.Schedule;
+import com.org.model.Booking;
+import com.org.dao.ScheduleDao;
 import com.org.dao.ScheduledFlightDao;
-import com.org.exceptions.ScheduledFlightAlreadyPresentException;
+import com.org.exceptions.RecordNotFoundException;
 import com.org.exceptions.ScheduledFlightNotFoundException;
 import com.org.model.ScheduledFlight;
 
@@ -22,23 +26,17 @@ public class ScheduledFlightServiceImpl implements ScheduledFlightService {
 	@Autowired
 	ScheduledFlightDao dao;
 	
+	@Autowired
+	ScheduleDao scheduleDao;
 	
+	@Autowired
+	BookingService bookingService;
 	/*
 	 Service method to add new Scheduled flight to database
 	 */
 	@Override
-	public ResponseEntity<?> addScheduledFlight(ScheduledFlight scheduledFlight) {
-		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getId());
-		try{
-			if(!find.isPresent()) {
-				dao.save(scheduledFlight);
-				return new ResponseEntity<ScheduledFlight>(scheduledFlight, HttpStatus.OK);
-			}
-			else 
-				throw new ScheduledFlightAlreadyPresentException("Record is already present in database");
-		}catch(ScheduledFlightAlreadyPresentException e) {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
-		}
+	public ScheduledFlight addScheduledFlight(ScheduledFlight scheduledFlight) {
+				return dao.save(scheduledFlight);
 	}
 	
 	
@@ -46,15 +44,15 @@ public class ScheduledFlightServiceImpl implements ScheduledFlightService {
 	 Service method to modify existing Scheduled flight in database
 	 */
 	@Override
-	public ScheduledFlight modifyScheduledFlight(ScheduledFlight scheduledFlight) {
-		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getId());
-		if(find.isPresent()) {
-			ScheduledFlight sf= find.get();
-			sf.setArrivalTime(scheduledFlight.getArrivalTime());
-			sf.setDepartureTime(scheduledFlight.getDepartureTime());
-			sf.setAvailableSeats(scheduledFlight.getAvailableSeats());
-		}
-		return scheduledFlight;
+	public ScheduledFlight modifyScheduledFlight(ScheduledFlight scheduleFlight) {
+		ScheduledFlight updateScheduleFlight = dao.findById(scheduleFlight.getScheduleFlightId()).get();
+		Schedule updateSchedule = scheduleDao.findById(scheduleFlight.getSchedule().getScheduleId()).get();
+		updateScheduleFlight.setAvailableSeats(scheduleFlight.getAvailableSeats());
+		updateSchedule.setSourceAirport(scheduleFlight.getSchedule().getSourceAirport());
+		updateSchedule.setDestinationAirport(scheduleFlight.getSchedule().getDestinationAirport());
+		updateSchedule.setArrivalDateTime(scheduleFlight.getSchedule().getArrivalDateTime());
+		updateSchedule.setDepartureDateTime(scheduleFlight.getSchedule().getDepartureDateTime());
+		return scheduleFlight;
 	}
 	
 	
@@ -62,16 +60,35 @@ public class ScheduledFlightServiceImpl implements ScheduledFlightService {
 	 Service method to remove existing Scheduled flight from database
 	 */
 	@Override
-	public String removeScheduledFlight(BigInteger id) {
-		Optional<ScheduledFlight> find= dao.findById(id);
-		if(find.isPresent()) {
-			dao.deleteById(id);
-			return "Scheduled flight with ID "+id+" is removed";
+	public String removeScheduledFlight(BigInteger flightId) throws RecordNotFoundException {
+		if (flightId == null)
+			throw new RecordNotFoundException("Enter flight Id");
+		Optional<ScheduledFlight> scheduleFlight = dao.findById(flightId);
+		if (!scheduleFlight.isPresent())
+			throw new RecordNotFoundException("Enter a valid Flight Id");
+		else {
+//			try {
+//				cancelBookings(flightId);
+//			} catch (RecordNotFoundException e) {
+//				System.out.println("No Bookings Found");
+//			}
+			dao.deleteById(flightId);
 		}
-		return "Scheduled flight with ID "+id+" is not found";
+		return "Scheduled flight with ID "+flightId+" is not found";
 	}
 	
-	
+//	@Override
+//	public boolean cancelBookings(BigInteger flightId) throws RecordNotFoundException {
+//		Iterable<Booking> bookingList = bookingService.displayAllBooking();
+//		for (Booking booking : bookingList) {
+//			if (booking.getScheduleFlight().getScheduleFlightId().equals(flightId)) {
+//				bookingService.deleteBooking(booking.getBookingId());
+//			}
+//		}
+//		return true;
+//	}
+
+
 	/*
 	 Service method to view all Scheduled flights in database
 	 */
@@ -85,18 +102,14 @@ public class ScheduledFlightServiceImpl implements ScheduledFlightService {
 	 Service method to view a Scheduled flight by ID from database
 	 */
 	@Override
-	public ResponseEntity<?> viewScheduledFlight(BigInteger id) {
-		Optional<ScheduledFlight> find= dao.findById(id);
-		try{
-			if(find.isPresent()) {
-				ScheduledFlight sf= find.get();
-				return new ResponseEntity<ScheduledFlight>(sf, HttpStatus.OK);
-			}
-			else
-				throw new ScheduledFlightNotFoundException("No record found with ID "+id);
-		}catch(ScheduledFlightNotFoundException e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
-		}
+	public ScheduledFlight viewScheduledFlight(BigInteger flightId) throws ScheduledFlightNotFoundException {
+		if (flightId == null)
+			throw new ScheduledFlightNotFoundException("Enter flight Id");
+		Optional<ScheduledFlight> scheduleFlight = dao.findById(flightId);
+		if (!scheduleFlight.isPresent())
+			throw new ScheduledFlightNotFoundException("Enter a valid Flight Id");
+		else
+			return scheduleFlight.get();
 	}
 
 }

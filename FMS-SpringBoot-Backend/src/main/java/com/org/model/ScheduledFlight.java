@@ -2,39 +2,28 @@ package com.org.model;
 
 
 import java.math.BigInteger;
-import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
-import javax.persistence.SecondaryTables;
-import javax.persistence.Table;
 
 @Entity
 public class ScheduledFlight {
 	
 	@Id
-	@Column(name = "ID")
-	private BigInteger id;
+	@Column(name = "schedule_flight_id")
+	private BigInteger scheduleFlightId;
 	
-	@OneToOne
-	@JoinColumn(name="id")
-	@MapsId
+	@OneToOne(fetch = FetchType.EAGER)
 	private Flight flight;
 	
-	private int availableSeats;
+	@Column(name = "available_seats")
+	private Integer availableSeats;
 	
-	
-	@OneToOne
-	@JoinColumn(name = "sourceAirport")
-	@JoinColumn(name = "destinationAirport")
+	@OneToOne(cascade = CascadeType.ALL)
 	private Schedule schedule;
 
 	/*
@@ -48,9 +37,10 @@ public class ScheduledFlight {
 	/*
 	 Parameterized constructor
 	 */
-	public ScheduledFlight(BigInteger id, int availableSeats, Flight flight, Schedule schedule) {
+	public ScheduledFlight(BigInteger scheduleFlightId, com.org.model.Flight flight, Integer availableSeats,
+			com.org.model.Schedule schedule) {
 		super();
-		this.id = id;
+		this.scheduleFlightId = scheduleFlightId;
 		this.flight = flight;
 		this.availableSeats = availableSeats;
 		this.schedule = schedule;
@@ -60,12 +50,13 @@ public class ScheduledFlight {
 	/*
 	 Getter and setter for ID 
 	 */
-	public BigInteger getId() {
-		return id;
+	public BigInteger getScheduleFlightId() {
+		return scheduleFlightId;
 	}
-	public void setId(BigInteger id) {
-		this.id = id;
+	public void setScheduleFlightId(BigInteger scheduleFlightId) {
+		this.scheduleFlightId = scheduleFlightId;
 	}
+	
 	
 	/*
 	 Getter and setter for Available seats
@@ -80,10 +71,10 @@ public class ScheduledFlight {
 	/*
 	 Getter and setter for Flight object
 	 */
-	public Flight getFlightObj() {
+	public Flight getFlight() {
 		return flight;
 	}
-	public void setFlightObj(Flight flight) {
+	public void setFlight(Flight flight) {
 		this.flight = flight;
 	}
 
@@ -97,4 +88,58 @@ public class ScheduledFlight {
 	public void setSchedule(Schedule schedule) {
 		this.schedule = schedule;
 	}
+
+
+	@Override
+	public String toString() {
+		return "ScheduledFlight [scheduleFlightId=" + scheduleFlightId + ", flight=" + flight + ", availableSeats="
+				+ availableSeats + ", schedule=" + schedule + "]";
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((availableSeats == null) ? 0 : availableSeats.hashCode());
+		result = prime * result + ((flight == null) ? 0 : flight.hashCode());
+		result = prime * result + ((schedule == null) ? 0 : schedule.hashCode());
+		result = prime * result + ((scheduleFlightId == null) ? 0 : scheduleFlightId.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ScheduledFlight other = (ScheduledFlight) obj;
+		if (availableSeats == null) {
+			if (other.availableSeats != null)
+				return false;
+		} else if (!availableSeats.equals(other.availableSeats))
+			return false;
+		if (flight == null) {
+			if (other.flight != null)
+				return false;
+		} else if (!flight.equals(other.flight))
+			return false;
+		if (schedule == null) {
+			if (other.schedule != null)
+				return false;
+		} else if (!schedule.equals(other.schedule))
+			return false;
+		if (scheduleFlightId == null) {
+			if (other.scheduleFlightId != null)
+				return false;
+		} else if (!scheduleFlightId.equals(other.scheduleFlightId))
+			return false;
+		return true;
+	}
+	
+	
 }
