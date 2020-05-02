@@ -12,6 +12,8 @@ import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class Schedule {
 	@Id
@@ -25,12 +27,12 @@ public class Schedule {
 	private Airport destinationAirport;
 
 	@Column(name = "departure_date_time")
-	@DateTimeFormat(pattern = "mm-dd-yyyy HH:mm:ss")
-	private LocalDateTime departureDateTime;
+//	@JsonFormat(pattern = "mm-dd-yyyy HH:mm:ss")
+	private String departureDateTime;
 
 	@Column(name = "arrival_date_time")
-	@DateTimeFormat(pattern = "mm-dd-yyyy HH:mm:ss")
-	private LocalDateTime arrivalDateTime;
+//	@JsonFormat(pattern = "mm-dd-yyyy HH:mm:ss")
+	private String arrivalDateTime;
 
 	/*
 	 * Default constructor
@@ -43,7 +45,7 @@ public class Schedule {
 	 * Parameterized constructor
 	 */
 	public Schedule(BigInteger scheduleId, Airport sourceAirport, Airport destinationAirport,
-			LocalDateTime departureDateTime, LocalDateTime arrivalDateTime) {
+			String departureDateTime, String arrivalDateTime) {
 		super();
 		this.scheduleId = scheduleId;
 		this.sourceAirport = sourceAirport;
@@ -79,19 +81,19 @@ public class Schedule {
 		this.destinationAirport = destinationAirport;
 	}
 
-	public LocalDateTime getDepartureDateTime() {
+	public String getDepartureDateTime() {
 		return departureDateTime;
 	}
 
-	public void setDepartureDateTime(LocalDateTime departureDateTime) {
+	public void setDepartureDateTime(String departureDateTime) {
 		this.departureDateTime = departureDateTime;
 	}
 
-	public LocalDateTime getArrivalDateTime() {
+	public String getArrivalDateTime() {
 		return arrivalDateTime;
 	}
 
-	public void setArrivalDateTime(LocalDateTime arrivalDateTime) {
+	public void setArrivalDateTime(String arrivalDateTime) {
 		this.arrivalDateTime = arrivalDateTime;
 	}
 
