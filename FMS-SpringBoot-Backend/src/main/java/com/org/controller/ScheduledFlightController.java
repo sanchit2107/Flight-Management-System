@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +45,7 @@ public class ScheduledFlightController {
 	 * Controller for adding Scheduled Flights
 	 */
 	@PostMapping("/add")
-	public ResponseEntity<ScheduledFlight> addSF(@ModelAttribute("scheduleFlight") ScheduledFlight scheduledFlight,
+	public ResponseEntity<ScheduledFlight> addSF(@RequestBody ScheduledFlight scheduledFlight,
 			@RequestParam("source_airport") String source, @RequestParam("destination_airport") String destination,
 			@RequestParam("departure_time") String departureTime, @RequestParam("arrival_time") String arrivalTime) {
 		Schedule schedule = new Schedule();
@@ -59,8 +60,8 @@ public class ScheduledFlightController {
 		} catch (RecordNotFoundException e) {
 			return new ResponseEntity("Airport Not Found", HttpStatus.BAD_REQUEST);
 		}
-		schedule.setDepartureDateTime(LocalDateTime.parse(departureTime));
-		schedule.setArrivalDateTime(LocalDateTime.parse(arrivalTime));
+		schedule.setDepartureDateTime(departureTime);
+		schedule.setArrivalDateTime(arrivalTime);
 		try {
 			scheduledFlight.setFlight(flightService.viewFlight(scheduledFlight.getScheduleFlightId()));
 		} catch (RecordNotFoundException e1) {
