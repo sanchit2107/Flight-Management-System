@@ -1,51 +1,22 @@
-/*package com.org.service;
+package com.org.service;
 
-import java.util.Optional;
+import java.math.BigInteger;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import com.org.dao.ScheduledFlightDao;
+import com.org.exceptions.RecordNotFoundException;
+import com.org.exceptions.ScheduledFlightNotFoundException;
 import com.org.model.ScheduledFlight;
 
-@Service
-public class ScheduledFlightService {
-	@Autowired
-	ScheduledFlightDao dao;
-	
-	public void addScheduledFlight(ScheduledFlight scheduledFlight) {
-		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getFlightObj());
-		if(!find.isPresent()) {
-			dao.save(scheduledFlight);
-		}
-	}
-	
-	public ScheduledFlight modifyScheduledFlight(ScheduledFlight scheduledFlight) {
-		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getFlightObj());
-		if(find.isPresent()) {
-			ScheduledFlight sf= find.get();
-			sf.setSchedule(scheduledFlight.getSchedule());
-			sf.setAvailableSeats(scheduledFlight.getAvailableSeats());
-		}
-		return scheduledFlight;
-	}
-	
-	public void removeScheduledFlight(ScheduledFlight scheduledFlight) {
-		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getFlightObj());
-		if(find.isPresent()) 
-			dao.delete(scheduledFlight);
-	}
-	
-	public Iterable<ScheduledFlight> viewScheduledFlights(){
-		return dao.findAll();
-	}
-	
-	public ScheduledFlight viewScheduledFlight(ScheduledFlight scheduledFlight) {
-		Optional<ScheduledFlight> find= dao.findById(scheduledFlight.getFlightObj());
-		if(!find.isPresent())
-			return null;
-		return find.get();
-	}
+public interface ScheduledFlightService {
+	public ScheduledFlight addScheduledFlight(ScheduledFlight scheduledFlight);
+
+	public ScheduledFlight modifyScheduledFlight(ScheduledFlight scheduledFlight);
+
+	public String removeScheduledFlight(BigInteger id) throws RecordNotFoundException;
+
+	public Iterable<ScheduledFlight> viewAllScheduledFlights();
+
+	public ScheduledFlight viewScheduledFlight(BigInteger id) throws ScheduledFlightNotFoundException;
+	// boolean cancelBookings(BigInteger flightId) throws RecordNotFoundException;
 
 }
-*/
