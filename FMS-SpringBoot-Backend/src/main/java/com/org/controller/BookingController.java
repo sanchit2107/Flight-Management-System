@@ -25,7 +25,7 @@ import com.org.service.BookingService;
 @RequestMapping("/booking")
 public class BookingController {
 
-	@Autowired
+	@Autowired(required= true)
 	BookingService bookingService;
 
 	@PostMapping("/createBooking")
