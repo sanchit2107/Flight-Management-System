@@ -3,15 +3,12 @@ package com.org.model;
 import java.math.BigInteger;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Users {
 	private String userType;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private BigInteger userId;
 	private String userName;
 	private String userPassword;
@@ -21,13 +18,14 @@ public class Users {
 	/**
 	 * Parameterized Constructors of Users
 	 */
-	public Users(String userName, String userPassword, BigInteger userPhone, String userEmail,
-			String userType) {
+	public Users(String userName, String userPassword, BigInteger userPhone, String userEmail, String userType,
+			BigInteger userId) {
 		this.userName = userName;
 		this.userPassword = userPassword;
 		this.userPhone = userPhone;
 		this.userEmail = userEmail;
 		this.userType = userType;
+		this.userId = userId;
 	}
 
 	/**

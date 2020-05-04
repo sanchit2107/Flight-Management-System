@@ -5,7 +5,78 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2020-05-01T05:31:01Z</updated>
+  <updated>2020-05-04T13:25:25Z</updated>
+  <entry>
+    <title>Spring Cloud Function Native Images</title>
+    <link rel="alternate" href="https://spring.io/blog/2020/05/04/spring-cloud-function-native-images" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Dave Syer</name>
+    </author>
+    <id>tag:spring.io,2020-05-04:4053</id>
+    <updated>2020-05-04T13:25:25Z</updated>
+    <content type="html">&lt;p&gt;Here&amp;rsquo;s the latest graph of memory versus billing for Spring Cloud Function on AWS Lambda. It shows the billing metric GBsec as a function of memory allocation in Lambda for two custom runtimes, one in plain Java and one using a &lt;a href="https://www.graalvm.org/docs/reference-manual/native-image/"&gt;GraalVM native image&lt;/a&gt;, as described recently in this blog by &lt;a href="https://spring.io/blog/2020/04/09/spring-graal-native-0-6-0-released"&gt;Andy Clement&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQRWYdp_BpzQg7nA9P7xi9bjTapxu6cYrLi7PFvBmnnKM2zCuVuYzAh25KpFuz0hX0fqJyo1nJO5fyN/pubchart?oid=918725258&amp;format=image" alt="aws-billing-3.x" /&gt;&lt;/p&gt;
+&lt;p&gt;In both cases the functionality is identical (a simple POJO-POJO function), and they both show only the results for cold start. Warm starts, where the function was already active when the request came in, were much faster and cheaper (except for the smallest memory setting they all cost the same because there is a minimum charge for all functions in AWS). You can see that the native images start up very fast and that they are more than two times cheaper to run than the regular JVM. The fastest startup was in the 1000MB container - it only took 19ms to start the app, but it took AWS 700ms to prepare the container, so it was billed at 800ms. In fact, all of the cold starts were billed at 800ms for the native image. For the regular JVM the fastest startup was also in the 1000MB container at 300ms, but it was billed at 2200ms.&lt;/p&gt;
+&lt;p&gt;For comparison, here&amp;rsquo;s the a similar graph that I published over a year ago when Spring Cloud Function reached its 2.0 release. It showed significant improvements over the 1.x version, and also featured the custom runtime which I am using again here (so the orange bars are the equivalent of the red bars in the graph above):&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQRWYdp_BpzQg7nA9P7xi9bjTapxu6cYrLi7PFvBmnnKM2zCuVuYzAh25KpFuz0hX0fqJyo1nJO5fyN/pubchart?oid=459598255&amp;format=image" alt="aws-billing" /&gt;&lt;/p&gt;
+&lt;p&gt;The custom runtime in the regular JVM is roughly the same in version 3.x, but you can use it at lower memory settings because of Spring Boot optimizations that have been released since then.&lt;/p&gt;&lt;h2&gt;&lt;a href="#building-the-sample" class="anchor" name="building-the-sample"&gt;&lt;/a&gt;Building the Sample&lt;/h2&gt;
+&lt;p&gt;The sample app was taken from the &lt;a href="https://github.com/spring-projects-experimental/spring-graal-native/tree/master/spring-graal-native-samples/function-aws"&gt;Spring Graal Native Feature&lt;/a&gt;, but modified to be a function of POJO to POJO, forcing Spring to do some extra work. So compared to the sample in Github I modified the function:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint java"&gt;class Foobar implements Function&amp;lt;Foo, Foo&amp;gt; {&#xD;
+&#xD;
+	@Override&#xD;
+	public Foo apply(Foo input) {&#xD;
+		System.err.println(&amp;quot;HI: &amp;quot; + input.getName());&#xD;
+		return new Foo(&amp;quot;hi &amp;quot; + input.getName() + &amp;quot;!&amp;quot;);&#xD;
+	}&#xD;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;where the &lt;code&gt;Foo&lt;/code&gt; is defined like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint java"&gt;class Foo {&#xD;
+	private String name;&#xD;
+&#xD;
+	public String getName() {&#xD;
+		return name;&#xD;
+	}&#xD;
+&#xD;
+	public void setName(String name) {&#xD;
+		this.name = name;&#xD;
+	}&#xD;
+&#xD;
+	public Foo(String name) {&#xD;
+		this.name = name;&#xD;
+	}&#xD;
+&#xD;
+	Foo() {&#xD;
+	}&#xD;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and the function is registered in the main application:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint java"&gt;	@Override&#xD;
+	public void initialize(GenericApplicationContext context) {&#xD;
+		context.registerBean(&amp;quot;foobar&amp;quot;, FunctionRegistration.class,&#xD;
+				() -&amp;gt; new FunctionRegistration&amp;lt;&amp;gt;(new Foobar())&#xD;
+						.type(FunctionType.from(Foo.class).to(Foo.class)));&#xD;
+	}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Note that I am using the &lt;a href="https://spring.io/blog/2018/10/22/functional-bean-registrations-in-spring-cloud-function"&gt;functional bean registration style&lt;/a&gt;, although it doesn&amp;rsquo;t make much difference for such a simple application.&lt;/p&gt;
+&lt;p&gt;I also had to modify the tests to make sure they work with the new POJO signature. You could just delete the tests and the &lt;code&gt;verify.sh&lt;/code&gt; to avoid having to do that, if you just want somethine quick to work. If you want to see what I did&lt;/p&gt;
+&lt;p&gt;Then I built the application in the same way as the other samples. This creates the native image and dumps it in the &lt;code&gt;target&lt;/code&gt; directory:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;$ ./build.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It also creates a &lt;code&gt;.zip&lt;/code&gt; file to upload to AWS. This one is the regular JVM version:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;$ ls -l target/*.zip&#xD;
+-rw-rw-r-- 1 dsyer dsyer 32577121 Apr 21 09:37 target/function-aws-0.0.1-SNAPSHOT-java-zip.zip
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and then this creates a &lt;code&gt;.zip&lt;/code&gt; file for the native image:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;$ ./mvnw package -P native&#xD;
+$ ls -l target/*.zip&#xD;
+-rw-rw-r-- 1 dsyer dsyer 32577121 Apr 21 09:37 target/function-aws-0.0.1-SNAPSHOT-java-zip.zip&#xD;
+-rw-rw-r-- 1 dsyer dsyer 26284838 Apr 21 09:28 target/function-aws-0.0.1-SNAPSHOT-native-zip.zip
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;&lt;a href="#conclusion" class="anchor" name="conclusion"&gt;&lt;/a&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Using Spring Cloud Function is a very convenient way to develop functions that run on AWS and other platforms. If you also use the experimental Spring Graal Native Feature project to compile the result to a native binary executable they can run faster than the same application on a regular JVM. Note that there is &lt;a href="https://github.com/spring-projects-experimental/spring-graal-native/tree/master/spring-graal-native-samples/function-netty"&gt;another sample&lt;/a&gt; in the Spring Graal Native Feature project that makes a function into a standalone web application (there is also a functional bean registration version of the same sample). You can run that on a lot of platforms that allow you to &amp;ldquo;bring your own container&amp;rdquo;.&lt;/p&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>Spring Boot 2.3.0.RC1 available now</title>
     <link rel="alternate" href="https://spring.io/blog/2020/05/01/spring-boot-2-3-0-rc1-available-now" />
@@ -1400,208 +1471,6 @@ WebClientCustomizer webClientCustomizer(HypermediaWebClientConfigurer configurer
 &amp;lt;/dependency&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;a href="https://spring.io/projects/spring-cloud-app-broker"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-cloud/spring-cloud-app-broker"&gt;GitHub&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-cloud-app-broker/docs/1.0.5.RELEASE/reference/html5"&gt;Reference Doc&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-cloud-app-broker/docs/1.0.5.RELEASE/api/"&gt;API Doc&lt;/a&gt;&lt;/p&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Cloud 2020.0.0-M1 Released</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/04/17/spring-cloud-2020-0-0-m1-released" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Spencer Gibb</name>
-    </author>
-    <id>tag:spring.io,2020-04-16:4031</id>
-    <updated>2020-04-17T18:52:00Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the community, I am pleased to announce that the Milestone 1 (M1) of the &lt;a href="https://cloud.spring.io"&gt;Spring Cloud 2020.0.0&lt;/a&gt; (Code Name: &lt;code&gt;Ilford&lt;/code&gt;) Release Train is available today. The release can be found in the &lt;a href="https://repo.spring.io/milestone/"&gt;Spring Milestone&lt;/a&gt; repository. You can check out the 2020 &lt;a href="https://github.com/spring-projects/spring-cloud/wiki/Spring-Cloud-2020.0.0-Release-Notes"&gt;release notes for more information&lt;/a&gt;.&lt;/p&gt;&lt;h2&gt;&lt;a href="#notable-changes-in-the-2020-release-train" class="anchor" name="notable-changes-in-the-2020-release-train"&gt;&lt;/a&gt;Notable Changes in the 2020 Release Train&lt;/h2&gt;
-&lt;p&gt;We have changed our release train versioning scheme. We now follow &lt;a href="https://calver.org/"&gt;Calendar Versioning&lt;/a&gt; or calver for short. We will follow the &lt;code&gt;YYYY.MINOR.MICRO&lt;/code&gt; &lt;a href="https://calver.org/#scheme"&gt;scheme&lt;/a&gt; where &lt;code&gt;MINOR&lt;/code&gt; is an incrementing number that starts at zero each year. The &lt;code&gt;MICRO&lt;/code&gt; segment corresponds to suffixes previously used: &lt;code&gt;.0&lt;/code&gt; is analogous to &lt;code&gt;.RELEASE&lt;/code&gt; and &lt;code&gt;.2&lt;/code&gt; is analogous to &lt;code&gt;.SR2&lt;/code&gt;. Pre-release suffixes will also change from using a &lt;code&gt;.&lt;/code&gt; to a &lt;code&gt;-&lt;/code&gt; for the separator, for example &lt;code&gt;2020.0.0-M1&lt;/code&gt; and &lt;code&gt;2020.0.0-RC2&lt;/code&gt;. We will also stop prefixing snapshots with &lt;code&gt;BUILD-&lt;/code&gt; &amp;ndash; for example &lt;code&gt;2020.0.0-SNAPSHOT&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;We will continue to use London Tube Station names for code names. The current codename is &lt;code&gt;Ilford&lt;/code&gt;. These names will no longer be used in versions published to maven repositories.&lt;/p&gt;
-&lt;p&gt;Spring Cloud AWS and Spring Cloud GCP are no longer part of the release train. They will continue to be part of Hoxton as long as it is supported &amp;ndash; at least thru June of 2021. Spring Cloud GCP will continue on as a separate project in &lt;a href="https://github.com/GoogleCloudPlatform"&gt;https://github.com/GoogleCloudPlatform&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Initial milestones are based on Spring Boot 2.3.x but will shift to 2.4.x once that line has started.&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;2020.0&lt;/code&gt; Release Train will be available on &lt;a href="https://start.spring.io"&gt;https://start.spring.io&lt;/a&gt; once development has started on the next feature release of Spring Boot (2.4.0). Please see &lt;a href="#gettingstarted"&gt;Getting Started&lt;/a&gt;, below, for instructions on including this release in your project.&lt;/p&gt;
-&lt;p&gt;In all, a total of 183 issues, enhancements, bugs and pull requests were included in this release. See the &lt;a href="https://github.com/orgs/spring-cloud/projects/32"&gt;GitHub project&lt;/a&gt; for details. &lt;/p&gt;&lt;h3&gt;&lt;a href="#spring-cloud-netflix" class="anchor" name="spring-cloud-netflix"&gt;&lt;/a&gt;Spring Cloud Netflix&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;All of the maintence mode projects have been removed and all dependent projects were updated accordingly.&lt;/li&gt;
-  &lt;li&gt;Added zoned loadBalancer implementation support &lt;a href="https://github.com/spring-cloud/spring-cloud-netflix/pull/3720"&gt;#3720&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Removed deprecated EurekaDiscoveryClient.EurekaServiceInstance &lt;a href="https://github.com/spring-cloud/spring-cloud-netflix/issues/3742"&gt;#3742&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;h3&gt;&lt;a href="#spring-cloud-sleuth" class="anchor" name="spring-cloud-sleuth"&gt;&lt;/a&gt;Spring Cloud Sleuth&lt;/h3&gt;
-&lt;p&gt;Updated to support the latest version of Brave.&lt;/p&gt;&lt;h3&gt;&lt;a href="#spring-cloud-consul" class="anchor" name="spring-cloud-consul"&gt;&lt;/a&gt;Spring Cloud Consul&lt;/h3&gt;
-&lt;p&gt;Support was added for Consul Service Metadata rather than using tags as metadata.&lt;/p&gt;&lt;h3&gt;&lt;a href="#spring-cloud-gateway" class="anchor" name="spring-cloud-gateway"&gt;&lt;/a&gt;Spring Cloud Gateway&lt;/h3&gt;
-&lt;p&gt;Service Instance metadata is now added to Route metadata. Support was added for modifying request or response bodies even if the body was empty. An option to ignore route definition errors was added.&lt;/p&gt;&lt;h3&gt;&lt;a href="#spring-cloud-circuitbreaker" class="anchor" name="spring-cloud-circuitbreaker"&gt;&lt;/a&gt;Spring Cloud CircuitBreaker&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Upgraded Resilience4J to 1.3.1&lt;/li&gt;
-&lt;/ul&gt;&lt;h3&gt;&lt;a href="#spring-cloud-contract" class="anchor" name="spring-cloud-contract"&gt;&lt;/a&gt;Spring Cloud Contract&lt;/h3&gt;
-&lt;p&gt;Support was added for incremental test generation in the Maven plugin. Support was added for Spring Cloud Loadbalancer in stubrunner.&lt;/p&gt;&lt;h3&gt;&lt;a href="#spring-cloud-zookeeper" class="anchor" name="spring-cloud-zookeeper"&gt;&lt;/a&gt;Spring Cloud Zookeeper&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Switch Ribbon-based functionalities were added to Spring Cloud LoadBalancer &lt;a href="https://github.com/spring-cloud/spring-cloud-zookeeper/pull/240"&gt;#240&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;h3&gt;&lt;a href="#spring-cloud-commons" class="anchor" name="spring-cloud-commons"&gt;&lt;/a&gt;Spring Cloud Commons&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Added a property source that produces a random value that is cached &lt;a href="https://github.com/spring-cloud/spring-cloud-commons/pull/719"&gt;#719&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Removed Spring Cloud LoadBalancer Ribbon integration &lt;a href="https://github.com/spring-cloud/spring-cloud-commons/pull/691"&gt;#691&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;h3&gt;&lt;a href="#spring-cloud-openfeign" class="anchor" name="spring-cloud-openfeign"&gt;&lt;/a&gt;Spring Cloud Openfeign&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Adjusted to LoadBalancer implementation changes &lt;a href="https://github.com/spring-cloud/spring-cloud-openfeign/pull/300"&gt;#300&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;h3&gt;&lt;a href="#included-modules" class="anchor" name="included-modules"&gt;&lt;/a&gt;Included Modules&lt;/h3&gt;
-&lt;p&gt;The following modules were updated as part of 2020.0.0-M1:&lt;/p&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Module &lt;/th&gt;
-      &lt;th&gt;Version &lt;/th&gt;
-      &lt;th&gt;Issues&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Netflix &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;(&lt;a href="https://github.com/spring-cloud/spring-cloud-netflix/milestone/88?closed=1"&gt;issues&lt;/a&gt;)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Function &lt;/td&gt;
-      &lt;td&gt;3.1.0.M1 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Sleuth &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;(&lt;a href="https://github.com/spring-cloud/spring-cloud-sleuth/milestone/74?closed=1"&gt;issues&lt;/a&gt;)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Consul &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;(&lt;a href="https://github.com/spring-cloud/spring-cloud-consul/milestone/47?closed=1"&gt;issues&lt;/a&gt;)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Kubernetes &lt;/td&gt;
-      &lt;td&gt;2.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Gateway &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;(&lt;a href="https://github.com/spring-cloud/spring-cloud-gateway/milestone/36?closed=1"&gt;issues&lt;/a&gt;)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Circuitbreaker &lt;/td&gt;
-      &lt;td&gt;2.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Contract &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;(&lt;a href="https://github.com/spring-cloud/spring-cloud-contract/milestone/63?closed=1"&gt;issues&lt;/a&gt;)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Config &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Build &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Cloudfoundry &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Security &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Bus &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Vault &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Zookeeper &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;(&lt;a href="https://github.com/spring-cloud/spring-cloud-zookeeper/milestone/28?closed=1"&gt;issues&lt;/a&gt;)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Commons &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;(&lt;a href="https://github.com/spring-cloud/spring-cloud-commons/milestone/72?closed=1"&gt;issues&lt;/a&gt;)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Openfeign &lt;/td&gt;
-      &lt;td&gt;3.0.0.M1 &lt;/td&gt;
-      &lt;td&gt;(&lt;a href="https://github.com/spring-cloud/spring-cloud-openfeign/milestone/23?closed=1"&gt;issues&lt;/a&gt;)&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;As always, we welcome feedback on &lt;a href="https://github.com/spring-cloud/"&gt;GitHub&lt;/a&gt;, on &lt;a href="https://gitter.im/spring-cloud/spring-cloud"&gt;Gitter&lt;/a&gt;, on &lt;a href="https://stackoverflow.com/questions/tagged/spring-cloud"&gt;Stack Overflow&lt;/a&gt;, and on &lt;a href="https://twitter.com/SpringCloud"&gt;Twitter&lt;/a&gt;.&lt;/p&gt;&lt;h2&gt;&lt;a href="#getting-started" class="anchor" name="getting-started"&gt;&lt;/a&gt;Getting Started&lt;/h2&gt;
-&lt;div id="gettingstarted"&gt;To get started with Maven with a BOM (dependency management only):&lt;/div&gt;
-&lt;pre&gt;&lt;code class="prettyprint xml"&gt;&amp;lt;repositories&amp;gt;&#xD;
-    &amp;lt;repository&amp;gt;&#xD;
-        &amp;lt;id&amp;gt;spring-milestones&amp;lt;/id&amp;gt;&#xD;
-        &amp;lt;name&amp;gt;Spring Milestones&amp;lt;/name&amp;gt;&#xD;
-        &amp;lt;url&amp;gt;https://repo.spring.io/milestone&amp;lt;/url&amp;gt;&#xD;
-        &amp;lt;snapshots&amp;gt;&#xD;
-            &amp;lt;enabled&amp;gt;false&amp;lt;/enabled&amp;gt;&#xD;
-        &amp;lt;/snapshots&amp;gt;&#xD;
-    &amp;lt;/repository&amp;gt;&#xD;
-&amp;lt;/repositories&amp;gt;&#xD;
-&#xD;
-&amp;lt;dependencyManagement&amp;gt;&#xD;
-    &amp;lt;dependencies&amp;gt;&#xD;
-        &amp;lt;dependency&amp;gt;&#xD;
-            &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;&#xD;
-            &amp;lt;artifactId&amp;gt;spring-cloud-dependencies&amp;lt;/artifactId&amp;gt;&#xD;
-            &amp;lt;version&amp;gt;2020.0.0-M1&amp;lt;/version&amp;gt;&#xD;
-            &amp;lt;type&amp;gt;pom&amp;lt;/type&amp;gt;&#xD;
-            &amp;lt;scope&amp;gt;import&amp;lt;/scope&amp;gt;&#xD;
-        &amp;lt;/dependency&amp;gt;&#xD;
-    &amp;lt;/dependencies&amp;gt;&#xD;
-&amp;lt;/dependencyManagement&amp;gt;&#xD;
-&#xD;
-&amp;lt;dependencies&amp;gt;&#xD;
-    &amp;lt;dependency&amp;gt;&#xD;
-        &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;&#xD;
-        &amp;lt;artifactId&amp;gt;spring-cloud-starter-config&amp;lt;/artifactId&amp;gt;&#xD;
-    &amp;lt;/dependency&amp;gt;&#xD;
-    &amp;lt;dependency&amp;gt;&#xD;
-        &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;&#xD;
-        &amp;lt;artifactId&amp;gt;spring-cloud-starter-netflix-eureka-client&amp;lt;/artifactId&amp;gt;&#xD;
-    &amp;lt;/dependency&amp;gt;&#xD;
-    &amp;lt;!-- ... --&amp;gt;&#xD;
-&amp;lt;/dependencies&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To get started with Gradle:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint groovy"&gt;plugins {&#xD;
-  id &amp;#39;org.springframework.boot&amp;#39; version &amp;#39;2.3.0.M4&amp;#39;&#xD;
-  id &amp;#39;io.spring.dependency-management&amp;#39; version &amp;#39;1.0.9.RELEASE&amp;#39;&#xD;
-  id &amp;#39;java&amp;#39;&#xD;
-}&#xD;
-&#xD;
-repositories {&#xD;
-  mavenCentral()&#xD;
-  maven { url &amp;#39;https://repo.spring.io/milestone&amp;#39; }&#xD;
-}&#xD;
-&#xD;
-ext {&#xD;
-  set(&amp;#39;springCloudVersion&amp;#39;, &amp;quot;2020.0.0-M1&amp;quot;)&#xD;
-}&#xD;
-&#xD;
-dependencyManagement {&#xD;
-  imports {&#xD;
-    mavenBom &amp;quot;org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}&amp;quot;&#xD;
-  }&#xD;
-}&#xD;
-&#xD;
-dependencies {&#xD;
-  compile &amp;#39;org.springframework.cloud:spring-cloud-starter-config&amp;#39;&#xD;
-  compile &amp;#39;org.springframework.cloud:spring-cloud-starter-netflix-eureka-client&amp;#39;&#xD;
-  //...&#xD;
-}
-&lt;/code&gt;&lt;/pre&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>

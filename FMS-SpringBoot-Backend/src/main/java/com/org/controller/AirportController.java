@@ -18,7 +18,7 @@ import com.org.service.AirportService;
 import com.org.service.AirportServiceImpl;
 
 @RestController
-@RequestMapping("/view")
+@RequestMapping("/airport")
 public class AirportController {
 	@Autowired(required = true)
 	AirportService airportService;

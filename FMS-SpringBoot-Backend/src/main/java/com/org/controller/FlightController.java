@@ -37,7 +37,7 @@ public class FlightController {
 		return flightService.viewFlight(flightNo);
 	}
 
-	@PutMapping("/updateFlight/")
+	@PutMapping("/updateFlight")
 	public void modifyFlight(@RequestBody Flight flight) {
 		flightService.modifyFlight(flight);
 	}
