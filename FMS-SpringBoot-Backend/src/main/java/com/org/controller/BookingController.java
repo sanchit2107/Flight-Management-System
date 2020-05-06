@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import com.org.exceptions.RecordNotFoundException;
 import com.org.model.Booking;
 import com.org.service.BookingService;
 
+@CrossOrigin("http://localhost:4200")
 @ComponentScan(basePackages = "com")
 @RestController
 @RequestMapping("/booking")
