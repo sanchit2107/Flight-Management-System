@@ -5,7 +5,53 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2020-05-04T13:25:25Z</updated>
+  <updated>2020-05-05T11:00:00Z</updated>
+  <entry>
+    <title>This Week in Spring - May 5th, 2020</title>
+    <link rel="alternate" href="https://spring.io/blog/2020/05/05/this-week-in-spring-may-5th-2020" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2020-05-06:4055</id>
+    <updated>2020-05-05T11:00:00Z</updated>
+    <content type="html">&lt;p&gt;Hi, Spring fans! Welcome to another installment fo &lt;em&gt;This Week in Spring&lt;/em&gt;! How&amp;rsquo;re you all holding up? Me? I&amp;rsquo;m doing well, thanks. We&amp;rsquo;ve got a ton of stuff to get to so let&amp;rsquo;s! &lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/05/04/spring-cloud-function-native-images"&gt;Spring Cloud Function Native Images&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/05/01/spring-boot-2-3-0-rc1-available-now"&gt;Spring Boot 2.3.0.RC1 available now&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/05/01/adrian-cole-founder-or-co-founder-of-feign-jclouds-and-spring-cloud-sleuth-and-major-contributor-to-openzipkin"&gt;Adrian Cole, founder or co-founder of Feign, JClouds, and Spring Cloud Sleuth and a major contributor to OpenZipkin&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/04/30/spring-for-apache-kafka-2-5-0-release-candidate"&gt;Spring for Apache Kafka 2.5.0 Release Candidate&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/04/30/spring-integration-5-3-rc1-5-2-6-5-1-10-available"&gt;Spring Integration 5.3 RC1, 5.2.6 &amp;amp; 5.1.10 Available&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/04/30/updates-to-spring-versions"&gt;Updates to Spring Versions&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/04/29/spring-tips-the-wavefront-observability-platform"&gt;Spring Tips: The Wavefront Observability Platform&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;I loved this blog &lt;a href="https://medium.com/swlh/cqrs-command-query-responsibility-segregation-72db08ee8282"&gt;on CQRS with Spring Boot and Axon&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://t.co/fVY0X5QYOm"&gt;How many different ways does VMware Tanzu support hybrid-cloud on #AWS? &lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://toparvion.pro/en/post/2020/integraph/"&gt;How to visualize a Spring Integration graph with Neo4j?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://groups.google.com/d/msg/lettuce-redis-client-users/6h96s-FN1lw/HZtnsDj4BQAJ"&gt;LettuceDriver: Lettuce 5.3.0.RELEASE is out now&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;This Thursday! Learn how to configure @WavefrontHQ for @springboot Starter and explore &lt;a href="https://t.co/XTmXSddNAn"&gt;free dashboards for instant visibility into your applications&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://techcrunch.com/2020/04/30/cloud-foundry-renews-its-focus-on-developer-experience-as-it-looks-beyond-the-enterprise/"&gt;&amp;ldquo;Developers stick to a few rules and, in return, they can easily push their apps to Cloud Foundry with a single command (“cf push”) and know that it will run&amp;hellip;&amp;rdquo;&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;the Call for Paper for SpringOne 2020 is now up! &lt;a href="https://twitter.com/springcloud/status/1257710332656697344"&gt;Please send proposals!&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Get the &lt;a href="https://www.cloudfoundry.org/blog/bi-weekly-round-up-technical-ecosystem-updates-from-cloud-foundry-5-05-20/"&gt;latest updates in the Cloud Foundry community&lt;/a&gt; with this week&amp;rsquo;s Technical Ecosystem roundup including a new Tutorial Hub and updates on #CFSummit going virtual.&lt;/li&gt;
+  &lt;li&gt;Join us today to review how VMware combined #Kubernetes and @cloudfoundry (and more) into a new enterprise application platform: Tanzu Application Service for Kubernetes, now a public beta. &lt;a href="https://t.co/lMNH59a2Xv"&gt;Sign up here&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://t.co/ZEQaFx6bpD"&gt;SDKMAN 5.8.1 is rolling out, featuring the new &lt;code&gt;sdk env&lt;/code&gt; command for switching SDKs per project.&lt;/a&gt; This is suepr useful: now with one tool you can easily switch Java versions and - even better - you can version control a file in your application that SDKMAN will know about and read to switch to another version of the JDK.&lt;/li&gt;
+  &lt;li&gt;A nice blog on Okta Developer: &lt;a href="https://developer.okta.com/blog/2020/05/04/spring-vault"&gt;Secure Secrets With Spring Cloud Config and Vault &lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Have you checked out our new &lt;a href="https://twitter.com/cloudfoundry/status/1257370923797274624"&gt;CloudFoundry tutorial hub yet&lt;/a&gt;? We have a variety of free #cloudnative tutorials built by the community.&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://twitter.com/springcentral/status/1257316593660391424"&gt;Your favorites from the #cloudnative community are going on tour&lt;/a&gt;! Join us virtually for the #SpringOneTour for a mix of presentations, interactive demos, and panel discussions.&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.marcobehler.com/guides/spring-mvc"&gt;Spring MVC: Building Web Sites &amp;amp; RESTful services&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://thenewstack.io/service-mesh-is-just-the-tip-of-the-iceberg/"&gt;Service Mesh Is Just the Tip of the Iceberg – The New Stack&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;An oldie-but-a-goodie: &lt;a href="https://www.baeldung.com/spring-boot-log-groups"&gt;Log Groups in Spring Boot 2.1&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Philipp Hauer &lt;a href="https://twitter.com/SpringData/status/1256275605970173953"&gt;just updated his blog about #MongoDB and #Kotlin&lt;/a&gt;. It now also describes a great feature that was added to Spring Data&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.vmware.com/company/news/updates/modern-apps-help-communities-covid-19.html"&gt;How Our Customers Are Using Modern Apps to Help Their Communities through COVID-19&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Want to learn all about Kubernetes? &lt;a href="https://t.co/TLUrJlQfx5"&gt;Check out KubeAcademy, provided for free by VMWare&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;The April update of Java on VS Code is out. This update brings you more performance boost, Java 14 support, semantic highlighting, refactoring preview, and some usability improvements.&lt;/li&gt;
+  &lt;li&gt;Check out this early &lt;a href="https://t.co/qijNC0N8A3"&gt;access build to project Loom&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Check out the early-access release of Mark Heckler&amp;rsquo;s &lt;a href="https://learning.oreilly.com/library/view/spring-boot-up/9781492076971/"&gt;&lt;em&gt;Spring Boot Book&lt;/em&gt;!&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://cl4es.github.io/2020/04/27/Zip-Lookups.html"&gt;&amp;ldquo;On the Spring PetClinic application, these improvements have improved startup time by a few hundred milliseconds.&amp;rdquo;&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://developer.aliyun.com/live/2700"&gt;China&amp;rsquo;s largest Java User Group is presenting a live broadcast series on Spring&lt;/a&gt;. I spoke on April 30th, and there are some more interesting talks coming up - don&amp;rsquo;t miss them!&lt;/li&gt;
+  &lt;li&gt;Why are the curly braces required for &lt;a href="https://mail.openjdk.java.net/pipermail/amber-dev/2020-April/005899.html"&gt;a minimal &lt;code&gt;record&lt;/code&gt; declaration in Java 14&lt;/a&gt;?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>Spring Cloud Function Native Images</title>
     <link rel="alternate" href="https://spring.io/blog/2020/05/04/spring-cloud-function-native-images" />
@@ -14,7 +60,7 @@
       <name>Dave Syer</name>
     </author>
     <id>tag:spring.io,2020-05-04:4053</id>
-    <updated>2020-05-04T13:25:25Z</updated>
+    <updated>2020-05-04T13:25:00Z</updated>
     <content type="html">&lt;p&gt;Here&amp;rsquo;s the latest graph of memory versus billing for Spring Cloud Function on AWS Lambda. It shows the billing metric GBsec as a function of memory allocation in Lambda for two custom runtimes, one in plain Java and one using a &lt;a href="https://www.graalvm.org/docs/reference-manual/native-image/"&gt;GraalVM native image&lt;/a&gt;, as described recently in this blog by &lt;a href="https://spring.io/blog/2020/04/09/spring-graal-native-0-6-0-released"&gt;Andy Clement&lt;/a&gt;:&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQRWYdp_BpzQg7nA9P7xi9bjTapxu6cYrLi7PFvBmnnKM2zCuVuYzAh25KpFuz0hX0fqJyo1nJO5fyN/pubchart?oid=918725258&amp;format=image" alt="aws-billing-3.x" /&gt;&lt;/p&gt;
 &lt;p&gt;In both cases the functionality is identical (a simple POJO-POJO function), and they both show only the results for cold start. Warm starts, where the function was already active when the request came in, were much faster and cheaper (except for the smallest memory setting they all cost the same because there is a minimum charge for all functions in AWS). You can see that the native images start up very fast and that they are more than two times cheaper to run than the regular JVM. The fastest startup was in the 1000MB container - it only took 19ms to start the app, but it took AWS 700ms to prepare the container, so it was billed at 800ms. In fact, all of the cold starts were billed at 800ms for the native image. For the regular JVM the fastest startup was also in the 1000MB container at 300ms, but it was billed at 2200ms.&lt;/p&gt;
@@ -60,7 +106,7 @@
 	}
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Note that I am using the &lt;a href="https://spring.io/blog/2018/10/22/functional-bean-registrations-in-spring-cloud-function"&gt;functional bean registration style&lt;/a&gt;, although it doesn&amp;rsquo;t make much difference for such a simple application.&lt;/p&gt;
-&lt;p&gt;I also had to modify the tests to make sure they work with the new POJO signature. You could just delete the tests and the &lt;code&gt;verify.sh&lt;/code&gt; to avoid having to do that, if you just want somethine quick to work. If you want to see what I did&lt;/p&gt;
+&lt;p&gt;I also had to modify the tests to make sure they work with the new POJO signature. You could just delete the tests and the &lt;code&gt;verify.sh&lt;/code&gt; to avoid having to do that, if you just want something quick to work. If you want to see what I did look at the &lt;a href="https://github.com/dsyer/spring-graal-feature/tree/foo/spring-graal-native-samples/function-aws"&gt;foo branch&lt;/a&gt; in my fork.&lt;/p&gt;
 &lt;p&gt;Then I built the application in the same way as the other samples. This creates the native image and dumps it in the &lt;code&gt;target&lt;/code&gt; directory:&lt;/p&gt;
 &lt;pre&gt;&lt;code class="prettyprint"&gt;$ ./build.sh
 &lt;/code&gt;&lt;/pre&gt;
@@ -1441,36 +1487,6 @@ WebClientCustomizer webClientCustomizer(HypermediaWebClientConfigurer configurer
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Cloud App Broker 1.0.5 released</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/04/17/spring-cloud-app-broker-1-0-5-released" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Roy Clarkson</name>
-    </author>
-    <id>tag:spring.io,2020-04-17:4033</id>
-    <updated>2020-04-17T20:12:51Z</updated>
-    <content type="html">&lt;p&gt;We are pleased to announce the release of Spring Cloud App Broker 1.0.5. This release includes the following fixes and improvements:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Upgrade to Spring Boot 2.1.13.RELEASE&lt;/li&gt;
-  &lt;li&gt;Allow a &lt;code&gt;ServiceInstanceService&lt;/code&gt; bean to be provided by a consuming application&lt;/li&gt;
-  &lt;li&gt;Correct an issue where the backing app environment was not being updated when the service instance was upgraded&lt;/li&gt;
-  &lt;li&gt;If specified, the &lt;code&gt;routes&lt;/code&gt; property now takes precedence over &lt;code&gt;host&lt;/code&gt;, &lt;code&gt;hosts&lt;/code&gt;, &lt;code&gt;domain&lt;/code&gt; and &lt;code&gt;domains&lt;/code&gt; properties&lt;/li&gt;
-  &lt;li&gt;Correct an issue where synchronous binding and unbinding requests were not being properly handled&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Gradle:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint"&gt;implementation(&amp;quot;org.springframework.cloud:spring-cloud-starter-app-broker-cloudfoundry:1.0.5.RELEASE&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Maven:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint"&gt;&amp;lt;dependency&amp;gt;&#xD;
-  &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;&#xD;
-  &amp;lt;artifactId&amp;gt;spring-cloud-starter-app-broker-cloudfoundry&amp;lt;/artifactId&amp;gt;&#xD;
-  &amp;lt;version&amp;gt;1.0.5.RELEASE&amp;lt;/version&amp;gt;&#xD;
-&amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;a href="https://spring.io/projects/spring-cloud-app-broker"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-cloud/spring-cloud-app-broker"&gt;GitHub&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-cloud-app-broker/docs/1.0.5.RELEASE/reference/html5"&gt;Reference Doc&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-cloud-app-broker/docs/1.0.5.RELEASE/api/"&gt;API Doc&lt;/a&gt;&lt;/p&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>
