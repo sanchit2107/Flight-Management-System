@@ -5,7 +5,113 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2020-05-05T11:00:00Z</updated>
+  <updated>2020-05-06T23:40:00Z</updated>
+  <entry>
+    <title>Spring Tips: Season 7 Recap</title>
+    <link rel="alternate" href="https://spring.io/blog/2020/05/06/spring-tips-season-7-recap" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2020-05-06:4059</id>
+    <updated>2020-05-06T23:40:00Z</updated>
+    <content type="html">&lt;p&gt;Hi, Spring fans! Welcome to the recap installment for the seventh season of &lt;em&gt;Spring Tips&lt;/em&gt;! I can&amp;rsquo;t believe we&amp;rsquo;re already on season seven! In October of 2020, it&amp;rsquo;ll be 4 straight years of doing these videos. Hopefully, they&amp;rsquo;re helping.&lt;/p&gt;
+&lt;p&gt;Every season consists of 11 episodes and one recap blog post. Sometimes, I&amp;rsquo;ll do an occasional extra episode or I&amp;rsquo;ll do an episode during the interregnum between seasons as the situations sometimes demand. But, for now, I&amp;rsquo;m done for a little while - not as long as last time, for sure! But a little while. I need time to gather my resources, prepare new content, finish the &lt;a href="http://ReactiveSpring.io"&gt;Reactive Spring book&lt;/a&gt;, and produce those new episodes. &lt;/p&gt;
+&lt;p&gt;This is where &lt;em&gt;you&lt;/em&gt; come in, dear reader: what would you like to see in the latest episodes? &lt;a href="http://twitter.com/Starbuxman"&gt;What content would you like me to introduce? Sound off on Twitter (@starbuxman) to me personally&lt;/a&gt; or to the &lt;a href="http://twitter.com/SpringTipsLive"&gt;@SpringTipsLive account&lt;/a&gt; or &lt;a href="mailto:josh@joshlong.com"&gt;by email (josh@joshlong.com)&lt;/a&gt;. I&amp;rsquo;d love to hear from you! Your contributions and ideas are a huge inspiration to me - indeed I do most of the work because of you, the most amazing community on earth Thank you for everything. Thank you for your ideas which help to keep things interesting.&lt;/p&gt;
+&lt;p&gt;I want things to be interesting! I &lt;em&gt;try&lt;/em&gt; to mix things up every now and then. Every season tries to introduce some combination of the following categories of video:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;CONCEPTUAL FUNDAMENTALS&lt;/em&gt;: things that are common to lots of Spring developers (like Java 14, or configuration, or testing reactive applications, or the Kotlin programming language). These videos tend to look at how a theme applies across a number of portfolio projects.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;PROJECT-SPECIFIC INTRODUCTIONS&lt;/em&gt;: I like to introduce projects - projects that people may or may not have heard of - like &lt;em&gt;Spring Cloud Data Flow&lt;/em&gt; or &lt;em&gt;Spring Batch&lt;/em&gt; or &lt;em&gt;Spring Cloud for Alibaba&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;INTEGRATIONS&lt;/em&gt;: I love to introduce integrations for various projects. These are some of my favorite videos to make. I think of them sort of like the Avengers: team-ups make things even more exciting and feasible. These videos look at third party projects that, while they exist independent of the Spring ecosystem, they also happen to work really well with Spring. Examples in this vein include &lt;em&gt;MyBatis&lt;/em&gt; (as a way to map SQL queries to repository methods), &lt;em&gt;JOOQ&lt;/em&gt; (as another way to do SQL-centric queries), &lt;em&gt;Apache Camel&lt;/em&gt; (as another way to support enterprise integration patterns), &lt;em&gt;Flowable&lt;/em&gt; (as another way to do business process management), etc.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;SPECIFIC FEATURES&lt;/em&gt;: I like to look at individual features in a larger umbrella project or theme. I&amp;rsquo;ve done this many times looking at individual features of Spring Boot, Spring Cloud, reactive programming, etc. While I may have done an introduction video to some of these, no video could hope to capture every new feature. So, I do followup videos that dive deeper into some specific features. I did this when looking at distributed locks with &lt;em&gt;Spring Integration&lt;/em&gt;, or coroutines with Spring, &lt;em&gt;Reactor&lt;/em&gt; and &lt;em&gt;Kotlin&lt;/em&gt;, for example.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;NEW AND NOVEL&lt;/em&gt;: I enjoy bringing you information about the new and nice stuff coming from the Spring team and beyond. We saw some of these kinds of videos when we looked at the Spring Graal feature, functional bean registration, functional reactive endpoints, and Spring Cloud Gateway. These videos were all done against milestones or snapshots - I live on the cutting edge so you don&amp;rsquo;t have to! Sometimes my videos end up being obviated by some newer developments, but that&amp;rsquo;s OK - at least you know what&amp;rsquo;s coming and are ready to use them when these projects do finally land.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This season had a little of all of those categories! Also, this season, I tried - wherever possible - to do shorter videos. There are some one-hour-ish long videos in this season, to be sure, but that&amp;rsquo;s because they&amp;rsquo;re more broad in scope. One example that leaps to mind is the one on Configuration.&lt;/p&gt;
+&lt;p&gt;So, here is a list of every video in the Spring Tips series &lt;em&gt;so far&lt;/em&gt;. The first 11 entries are the most recent, from season seven. Enjoy! In the meantime, if you&amp;rsquo;ve binge-watched all these videos, and you still want your fill, check out my weekly roundup of the wonderful and wild world of Springdom - &lt;em&gt;This Week in Spring&lt;/em&gt; - every Tuesday on &lt;a href="http://spring.io/blog"&gt;the Spring blog&lt;/a&gt;. Or, check out my podcast, &lt;a href="http://BootifulPodcast.fm"&gt;&lt;em&gt;A Bootiful Podcast&lt;/em&gt; (@BootifulPodcast)&lt;/a&gt;, with new episodes every Friday available for listening on your favorite podcatcher. &lt;/p&gt;
+&lt;p&gt;Enjoy!&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=R8RAgTJvbEc"&gt;(2020-04-29) Wavefront&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=PsNNGuLi0ns"&gt;(2020-04-23) Configuration&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=u1XJTI1PVLw"&gt;(2020-04-16) Spring Graal Feature&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=1llAwgOKjTY"&gt;(2020-04-07) The Spring Integration Kotlin DSL&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=Hu5DzNogV0E"&gt;(2020-04-01) The Spring Cloud Cloud Foundry Java Autoconfiguration&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=FDeOoKRKgkM"&gt;(2020-03-25) Spring Cloud Loadbalancer&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=PkWiinQCPxQ"&gt;(2020-03-18) Remote File System Integrations with Spring Integration&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=mr-7kGy8Yao"&gt;(2020-03-11) Java 14: Can Your Java Do This?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=V1ce8RdTdo0"&gt;(2020-03-04) Kotlin and Spring Security&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=vwHk8HVQAJE"&gt;(2020-02-26) Apache RocketMQ&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=ER-mbWp2xYg"&gt;(2020-02-18) RSocket and Spring Security&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=firwCHbC7-c"&gt;(2019-06-19) Distributed Locks with Spring Integration&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=3xu5xttCrVk"&gt;(2019-06-12) Spring&amp;rsquo;s Support for Kotlin Coroutines&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=D33awJnlhWg"&gt;(2019-06-05) Organizational Consistency in your Spring Boot Applications&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=0oI_-xBhAK8"&gt;(2019-05-29) Debuggng Reactive Transactions&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=9henAE6VUbk"&gt;(2019-05-22) Reactive Transactions&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=UJesCn731G4"&gt;(2019-05-15) Spring Batch and Apache Kafka&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=ewpJ9EUAz5s"&gt;(2019-05-08) Reactive Web Views&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=s5-leUCti5o"&gt;(2019-04-24) Spring Cloud Circuit Breaker&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=BxHqeq58xrE"&gt;(2019-04-15) RSocket Messaging in Spring Boot 2.2&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=vZV2_9KVHJU"&gt;(2019-04-03) Webmvc.fn - the Functional DSL for Spring MVC&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=DvO4zLVDkMs"&gt;(2019-03-20) Reactive MySQL Support with JAsync SQL and R2DBC&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=_m4xpHUf55E"&gt;(2019-03-14) Be Lazy and Fast with Spring Boot 2.2.M1&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=dmBMs-mubHA"&gt;(2019-02-13) Apache Geode&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=RPmTXiw-dHA"&gt;(2019-02-06) Testing Reactive Code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=5tlZddM5Jo0"&gt;(2019-01-30) The Reactor Context&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=SLG8gUGvdx4"&gt;(2019-01-23) Reactively Hedging Client Requests with a Service Registry&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=lPy9mc_O_gU"&gt;(2019-01-16) JavaFX&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=43_OLrxU3so"&gt;(2019-01-09) Flowable&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=GDIDSzZLjjg"&gt;(2019-01-02) RSocket&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=B60y65wexgI"&gt;(2018-12-26) Alibaba&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=fIMdlE5Hvzk"&gt;(2018-12-19) Reactive SQL Data Access with Spring Data R2DBC&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=j-QYp8eYRe8"&gt;(2018-12-12) Google Cloud Platform&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=jRgZe7kWDnU"&gt;(2018-12-05) Microsoft Azure&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=-yJ53wzG_lg"&gt;(2018-06-13) Spring Fu&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=2E8_0Qxi6Tg"&gt;(2018-06-06) JPA&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=TUOwlaqZ0eo"&gt;(2018-05-30) JDBC&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=-KupcZ3bA-Y"&gt;(2018-05-23) Apache Camel&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=E55oAtOhWZU"&gt;(2018-05-16) Project Riff and Spring Cloud Function &lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=gSUeGi4sLlA"&gt;(2018-05-09) Spring Security 5 OAuth Clients&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=JAdxO1XboJY"&gt;(2018-05-02) Metrics Collection in Spring Boot 2 with Micrometer&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=M4Aa45Gpc4w"&gt;(2018-04-25) Spring Statemachine&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=_M8xoagybzU"&gt;(2018-04-18) Redis &lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=EtxD_RzKSwk"&gt;(2018-04-11) The Cloud Foundry Java Client&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=YPDzcmqwCNo"&gt;(2018-04-04) Spring Cloud Stream Kafka Streams&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=nh2seTeGw5A"&gt;(2017-12-15) Bootiful Banners&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=m-AOu6vzJMQ"&gt;(2017-12-04) Spring Tool Suite 4&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=TwVtlNX-2Hs"&gt;(2017-11-29) Spring Cloud Gateway&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=lTSJCr7xdbM"&gt;(2017-11-22) Bootiful Testing&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=arOqTOEtAVA"&gt;(2017-11-15) Spring Boot Build Plugin&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=P3yI_YhG5pk"&gt;(2017-11-08) Bootiful Kotlin Redux&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=h6nMjjxJWjk"&gt;(2017-11-01) Spring Shell&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=Ki54FB2B25U"&gt;(2017-10-25) Spring Cloud Contract (HTTP)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=deB70lfUJBU"&gt;(2017-10-18) Bootiful JAX-RS&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=E_YZwrv-zTk"&gt;(2017-10-11) Bootiful, Reactive Scala&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=GlvyHIqT3K4"&gt;(2017-09-27) Reactive WebSockets with Spring Framework 5&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=EoK5a99Bmjc"&gt;(2017-04-05) Creating a Spring Security OAuth Auth Service&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;[(2017-03-29) The Spring Framework *Utils Classes](&lt;a href="https://www.youtube.com/watch?v=Zo9e3i8HxX4"&gt;https://www.youtube.com/watch?v=Zo9e3i8HxX4&lt;/a&gt;)
+&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=ogqxbFY_dpY"&gt;(2017-03-22) Servlet Container Deployment Options&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=leZdgr-O4LE"&gt;(2017-03-15) the Spring Web Flux Reactive Client&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=2To3_mYT2hc"&gt;(2017-03-08) Server Sent Events (SSE)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=Q_P28p7XsbQ"&gt;(2017-03-01) Programmatic Bean Registration in Spring Framework 5&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=JyythoOXdbU"&gt;(2017-02-22) MyBatis&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=j5QqHSIEcPE"&gt;(2017-02-15) JOOQ&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=CFLZJSwbYI0"&gt;(2017-02-08) Distributed Tracing with Zipkin&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=x4nBNLoizOc"&gt;(2017-02-01) Spring Batch&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=NONg7xrOhPA"&gt;(2017-01-26) Couchbase&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=Sw7I70vjN0E"&gt;(2016-12-14) Demystifying Bootiful Magic&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=u1QnlAbCFys"&gt;(2016-12-07) Bootiful Dashboards&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=356eqR8XcqE"&gt;(2016-11-30) JTA&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=T9KcS8s0RPs"&gt;(2016-11-23) Cloud Foundry&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=GaHgRw-3K84"&gt;(2016-11-16) Spring Cloud Data Flow&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=HQ00E60kB6c"&gt;(2016-11-09) Spring Cloud Stream&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=O8nIzE99BJY"&gt;(2016-11-02) Spring Aware Beans&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=Kc7dDxn9cUg"&gt;(2016-10-27) Circuit Breakers&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=90WRtrbRi0Y"&gt;(2016-10-19) The Kotlin Programming Language&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=MTKlk8_9aAw"&gt;(2016-10-13) Spring Integration&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=JjrAmhlTjug"&gt;(2016-10-05) Functional Reactive Endpoints with Spring Framework 5.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>This Week in Spring - May 5th, 2020</title>
     <link rel="alternate" href="https://spring.io/blog/2020/05/05/this-week-in-spring-may-5th-2020" />
@@ -1447,43 +1553,6 @@ WebClientCustomizer webClientCustomizer(HypermediaWebClientConfigurer configurer
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
 &lt;p&gt;&lt;a href="https://github.com/spring-projects/spring-boot-data-geode/issues"&gt;Issues&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot-data-geode/pulls"&gt;PR&lt;/a&gt; | &lt;a href="https://stackoverflow.com/questions/tagged/spring-boot"&gt;StackOverflow&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Session for Apache Geode &amp; Pivotal GemFire 2.3.0.RC2 Available</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/04/20/spring-session-for-apache-geode-pivotal-gemfire-2-3-0-rc2-available" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>John Blum</name>
-    </author>
-    <id>tag:spring.io,2020-04-20:4035</id>
-    <updated>2020-04-20T18:03:00Z</updated>
-    <content type="html">&lt;div class="paragraph"&gt;
-&lt;p&gt;On behalf of the Spring, Apache Geode &amp;amp; Pivotal GemFire communities, it is my pleasure to announce the release of &lt;em&gt;Spring Session for Apache Geode &amp;amp; Pivotal GemFire&lt;/em&gt; (SSDG) &lt;code&gt;2.3.0.RC2&lt;/code&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;SSDG &lt;code&gt;2.3.0.RC2&lt;/code&gt; builds on Spring Framework 5.2.5.RELEASE, Spring Data Neumann-RC1 and Spring Session core 2.3.0.RC1&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;SSDG &lt;code&gt;2.3.0.RC2&lt;/code&gt; pulls in transitive dependencies determined by Spring Boot 2.3.0.M4. Indeed, SSDG &lt;code&gt;2.3.0.RC2&lt;/code&gt; is suited to be used with Spring Boot 2.3.0.M4.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Release bits are available in Spring&amp;#8217;s &lt;a href="https://repo.spring.io/milestone/org/springframework/session/spring-session-data-geode/2.3.0.RC2/"&gt;Milestone Repository&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Please see the &lt;a href="https://github.com/spring-projects/spring-session-data-geode/blob/master/spring-session-data-geode/src/main/resources/changelog.txt#L7-L18"&gt;changelog&lt;/a&gt; for further details.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="feedback"&gt;&lt;a class="anchor" href="#feedback"&gt;&lt;/a&gt;Feedback&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;As always, any feedback is highly appreciated and welcomed.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;&lt;a href="https://github.com/spring-projects/spring-session-data-geode/issues"&gt;Issues&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-session-data-geode/pulls"&gt;PR&lt;/a&gt; | &lt;a href="https://stackoverflow.com/questions/tagged/spring-session"&gt;StackOverflow&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
