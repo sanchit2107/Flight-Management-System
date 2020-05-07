@@ -1,9 +1,8 @@
-.page-footer{
-  flex-shrink: 0;
-  position: fixed;
-            padding: 10px 10px 0px 10px;
-            bottom: 0;
-            width: 100%;
-            /* Height of the footer*/
-            height: 40px;
+#aboutus{
+  position: absolute;
+  right: 100px;
+}
+
+.footer{
+  background-image: linear-gradient(15deg, #00000025 0%, #00000025 100%);
 }
