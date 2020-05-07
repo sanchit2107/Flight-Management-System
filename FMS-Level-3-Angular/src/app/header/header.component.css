@@ -1,0 +1,30 @@
+a {
+  cursor: pointer;
+  color: white;
+  font-weight: 700;
+}
+
+a:hover{
+  text-decoration: none;
+}
+
+.navbar-brand{
+  font-weight: 700;
+  color: white;
+}
+.logInBtn{
+  font-weight: 700;
+  margin-right: 15px;
+  border-radius: 0;
+}
+#navbarSupportedContent{
+  position: absolute;
+  right: 0;
+}
+.btn{
+  border-radius: 0;
+  margin-right: 20px;
+}
+.navbar{
+  background-image: linear-gradient(15deg, #00000025 0%, #00000025 100%);
+}
