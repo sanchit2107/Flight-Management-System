@@ -12,6 +12,7 @@ import { BookingDetailsComponent } from './booking-details/booking-details.compo
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { UpdateBookingComponent } from './update-booking/update-booking.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { UpdateBookingComponent } from './update-booking/update-booking.componen
     CreateBookingComponent,
     BookingListComponent,
     BookingDetailsComponent,
-    UpdateBookingComponent
+    UpdateBookingComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
