@@ -1,0 +1,34 @@
+<h3>Add a Flight</h3>
+<div [hidden]="submitted" style="width: 400px;">
+  <form (ngSubmit)="onSubmit()">
+    <!--<div class="form-group">
+      <label for="name">Flight Number</label>
+      <input type="text" class="form-control" id="flightNo" required [(ngModel)]="flight.flightNo" name="flightNo">
+    </div>-->
+    <div class="form-group">
+      <label for="name">Flight Number</label>
+      <input type="text" class="form-control" id="flightNo" required [(ngModel)]="flight.flightNo" name="flightNo">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Carrier Name</label>
+      <input type="text" class="form-control" id="carrierName" required [(ngModel)]="flight.carrierName" name="carrierName">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Flight Model</label>
+      <input type="text" class="form-control" id="flightModel" required [(ngModel)]="flight.flightModel" name="flightModel">
+    </div>
+    <div class="form-group">
+        <label for="name">Seat Capacity</label>
+        <input type="text" class="form-control" id="seatCapacity" required [(ngModel)]="flight.seatCapacity" name="seatCapacity">
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+</div>
+
+<div [hidden]="!submitted">
+  <h4>You submitted successfully!</h4>
+  <!--<button class="btn btn-success" (click)="newFlight()">Add</button>-->
+</div>
