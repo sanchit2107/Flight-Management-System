@@ -46,14 +46,14 @@ public class Schedule {
 	/*
 	 * Parameterized constructor
 	 */
-	public Schedule(BigInteger scheduleId, Airport sourceAirport, Airport destinationAirport,
-			String departureDateTime, String arrivalDateTime) {
+	public Schedule(BigInteger scheduleId, Airport srcAirport, Airport dstnAirport,
+			String deptDateTime, String arrDateTime) {
 		super();
 		this.scheduleId = scheduleId;
-		this.srcAirport = sourceAirport;
-		this.dstnAirport = destinationAirport;
-		this.deptDateTime = departureDateTime;
-		this.arrDateTime = arrivalDateTime;
+		this.srcAirport = srcAirport;
+		this.dstnAirport = dstnAirport;
+		this.deptDateTime = deptDateTime;
+		this.arrDateTime = arrDateTime;
 	}
 
 	/*
@@ -67,36 +67,36 @@ public class Schedule {
 		this.scheduleId = scheduleId;
 	}
 
-	public Airport getSourceAirport() {
+	public Airport getSrcAirport() {
 		return srcAirport;
 	}
 
-	public void setSourceAirport(Airport sourceAirport) {
-		this.srcAirport = sourceAirport;
+	public void setSrcAirport(Airport srcAirport) {
+		this.srcAirport = srcAirport;
 	}
 
-	public Airport getDestinationAirport() {
+	public Airport getDstnAirport() {
 		return dstnAirport;
 	}
 
-	public void setDestinationAirport(Airport destinationAirport) {
-		this.dstnAirport = destinationAirport;
+	public void setDstnAirport(Airport dstnAirport) {
+		this.dstnAirport = dstnAirport;
 	}
 
-	public String getDepartureDateTime() {
+	public String getDeptDateTime() {
 		return deptDateTime;
 	}
 
-	public void setDepartureDateTime(String departureDateTime) {
-		this.deptDateTime = departureDateTime;
+	public void setDeptDateTime(String deptDateTime) {
+		this.deptDateTime = deptDateTime;
 	}
 
-	public String getArrivalDateTime() {
+	public String getArrDateTime() {
 		return arrDateTime;
 	}
 
-	public void setArrivalDateTime(String arrivalDateTime) {
-		this.arrDateTime = arrivalDateTime;
+	public void setArrDateTime(String arrDateTime) {
+		this.arrDateTime = arrDateTime;
 	}
 
 	@Override
