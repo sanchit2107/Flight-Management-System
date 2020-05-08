@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent implements OnInit {
 
-  user: User={"userId": null, "userName":"", "userPassword":"", "userPhone": null, "email":"", "active": null, "roles":};
+  user: User={"userId": null, "userName":"", "userPassword":"", "userPhone": null, "email":"", "active": null, "roles":""};
 
   public barLabel: string = "Password strength:";
   public myColors = ['#DD2C00', '#FF6D00', '#FFD600', '#AEEA00', '#00C853'];

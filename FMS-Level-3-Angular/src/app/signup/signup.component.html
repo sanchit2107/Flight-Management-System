@@ -1,7 +1,7 @@
 <div class="wrapper">
   <div class="row">
       <div class="card col-md-4 offset-md-4 shadow-lg p-3 mb-5 bg-white">
-          <h3 style="margin-top: 20px;">Sign Up</h3>
+          <h3 style="margin-top: 20px; font-size: x-large;">Sign Up</h3>
           <small>With a FMS account you can make bookings and manage
               them quickly and easily.
           </small>
@@ -12,7 +12,8 @@
           <div class="row">
               Password : <input class="form-control" type="password" name="password" [(ngModel)]="user.userPassword" #password="ngModel"
               minlength="5" maxlength="50" required>
-              <ng2-password-strength-bar [passwordToCheck]="user.userPassword" [barLabel]="barLabel" [barColors]="myColors"></ng2-password-strength-bar>
+              <!-- <ng2-password-strength-bar [passwordToCheck]="user.userPassword" [barLabel]="barLabel" [barColors]="myColors"></ng2-password-strength-bar> -->
+              <password-strength-meter [password]="user.userPassword" [minPasswordLength]=8 [colors]="barLabel" [enableFeedback]=true></password-strength-meter>
           </div>
           <div class="row">
               Phone No : <input (blur)="validatePhone(); enableButton();" class="form-control" type="number" name="phone" [(ngModel)]="user.userPhone">
