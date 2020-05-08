@@ -16,7 +16,8 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { SignupComponent } from './signup/signup.component';
-import { PasswordStrengthBarModule } from 'ng2-password-strength-bar';
+// import { PasswordStrengthBarModule } from 'ng2-password-strength-bar';
+import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { PasswordStrengthBarModule } from 'ng2-password-strength-bar';
     NgbModule,
     FormsModule,
     HttpClientModule,
-    PasswordStrengthBarModule
+    // PasswordStrengthBarModule
+    PasswordStrengthMeterModule
   ],
   providers: [],
   bootstrap: [AppComponent]
