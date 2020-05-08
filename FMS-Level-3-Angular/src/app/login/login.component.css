@@ -24,3 +24,13 @@
   width: 100px;
   margin-bottom: 25px;
 }
+
+a {
+  cursor: pointer;
+  color: white;
+  font-weight: 700;
+}
+
+a:hover{
+  text-decoration: none;
+}
