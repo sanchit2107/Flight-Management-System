@@ -6,6 +6,7 @@ import { UpdateBookingComponent } from './update-booking/update-booking.componen
 import { BookingDetailsComponent } from './booking-details/booking-details.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { LogoutComponent } from './logout/logout.component';
 
 
 const routes: Routes = [
@@ -16,7 +17,8 @@ const routes: Routes = [
   {path: 'details/:id', component: BookingDetailsComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
-  {path: 'login', component: LoginComponent}
+  {path: 'login', component: LoginComponent},
+  {path: 'logout', component: LogoutComponent},
 ];
 
 @NgModule({
