@@ -15,6 +15,8 @@ import { UpdateBookingComponent } from './update-booking/update-booking.componen
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
+import { SignupComponent } from './signup/signup.component';
+import { PasswordStrengthBarModule } from 'ng2-password-strength-bar';
 
 @NgModule({
   declarations: [
@@ -27,14 +29,16 @@ import { LogoutComponent } from './logout/logout.component';
     UpdateBookingComponent,
     HomeComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    PasswordStrengthBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
