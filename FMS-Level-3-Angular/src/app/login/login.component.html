@@ -1,0 +1,30 @@
+<div class="wrapper">
+  <div class="row">
+      <div class="card col-md-4 offset-md-4 shadow-lg p-3 mb-5 bg-white">
+          <h3 style="margin-top: 20px;">Login</h3>
+          <small>With a FMS account you can make bookings and manage them quickly and easily.
+          </small>
+          <div class="row">
+              User Name : <input class="form-control" type="text" name="username" [(ngModel)]="username">
+          </div>
+          <div class="row">
+              Password : <input class="form-control" type="password" name="password" [(ngModel)]="password">
+          </div>
+          <div class="row">
+              <button (click)=checkLogin() class="logInBtn btn btn-success">
+                  Login
+                </button>
+          </div>
+          <hr>
+          <div class="row">
+              <span style="margin-left: auto; margin-right: auto;">
+                  OR<br>
+                  Sign Up for a new account
+              </span>
+          </div>
+          <div class="row">
+              <button type="button" class="btn btn-primary signUpBtn">SIGN UP</button>
+          </div>
+      </div>
+  </div>
+</div>
