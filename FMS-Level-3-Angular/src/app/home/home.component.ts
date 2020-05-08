@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Airport } from '../model/app.airport';
-import { AirportService } from '../services/app.airportservice';
+import { AirportService } from '../services/airport.service';
 
 @Component({
   selector: 'home',
@@ -47,6 +47,5 @@ export class HomeComponent implements OnInit {
         alert("Thank You for reaching out to us.");
         this.router.navigate(["/home"]);
     }
-
 
 }

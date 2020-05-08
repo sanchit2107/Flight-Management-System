@@ -5,6 +5,7 @@ import { CreateBookingComponent } from './create-booking/create-booking.componen
 import { UpdateBookingComponent } from './update-booking/update-booking.component';
 import { BookingDetailsComponent } from './booking-details/booking-details.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
 
 
 const routes: Routes = [
@@ -14,7 +15,8 @@ const routes: Routes = [
   {path: 'update/:id', component: UpdateBookingComponent},
   {path: 'details/:id', component: BookingDetailsComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent}
+  {path: 'home', component: HomeComponent},
+  {path: 'login', component: LoginComponent}
 ];
 
 @NgModule({
