@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class ScheduledFlight {
@@ -17,11 +18,14 @@ public class ScheduledFlight {
 	private BigInteger scheduleFlightId;
 
 	@OneToOne(fetch = FetchType.EAGER)
+	@NotNull
 	private Flight flight;
 
 	@Column(name = "available_seats")
+	@NotNull
 	private Integer availableSeats;
 
+	@NotNull
 	@OneToOne(cascade = CascadeType.ALL)
 	private Schedule schedule;
 
@@ -36,7 +40,7 @@ public class ScheduledFlight {
 	 * Parameterized constructor
 	 */
 	public ScheduledFlight(BigInteger scheduleFlightId, com.org.model.Flight flight, Integer availableSeats,
-			com.org.model.Schedule schedule) {
+			Schedule schedule) {
 		super();
 		this.scheduleFlightId = scheduleFlightId;
 		this.flight = flight;
