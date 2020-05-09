@@ -1,8 +1,12 @@
-<h3>Flight reservation system
+<!--<h3>Flight reservation system
     <button type="submit" class="btn btn-danger btn-lg float-right">logout</button>
-</h3>
+</h3>-->
 <div class="container" style="width: 400px;">
     <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name">Flight Number</label>
+            <input [disabled]="true" type="text" class="form-control" id="flightNo" required [(ngModel)]="flight.flightNo" name="flightNo">
+          </div>
       <div class="form-group">
         <label for="name">Carrier Name</label>
         <input type="text" class="form-control" id="carrierName" required [(ngModel)]="flight.carrierName" name="carrierName">
