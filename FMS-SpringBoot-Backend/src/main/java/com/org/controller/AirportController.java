@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ import com.org.model.Airport;
 import com.org.model.Flight;
 import com.org.service.AirportService;
 import com.org.service.AirportServiceImpl;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/airport")
 public class AirportController {
