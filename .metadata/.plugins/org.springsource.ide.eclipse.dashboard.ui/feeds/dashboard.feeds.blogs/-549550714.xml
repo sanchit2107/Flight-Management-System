@@ -5,7 +5,20 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2020-05-07T17:54:00Z</updated>
+  <updated>2020-05-07T23:30:00Z</updated>
+  <entry>
+    <title>A Bootiful Podcast: Spring and Java community member Eddú Meléndez on his journey to contributing to Spring</title>
+    <link rel="alternate" href="https://spring.io/blog/2020/05/07/a-bootiful-podcast-spring-and-java-community-member-edd-mel-ndez-on-his-journey-to-contributing-to-spring" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2020-05-08:4064</id>
+    <updated>2020-05-07T23:30:00Z</updated>
+    <content type="html">&lt;p&gt;Hi, Spring fans! This week I rant about push-button simple deployments and then talk to our friend and Spring and Java community member Eddú Meléndez about working in open-source, his journey to Spring and its community, his various contributions to Spring and more.&lt;br/&gt;&lt;!-- A Bootiful Podcast: Spring and Java community member Eddú Meléndez about working in open-source, his journey to Spring and its community, contributing to Spring and more.--&gt;&lt;/p&gt;
+&lt;iframe title="Spring and Java community member Eddú Meléndez about working in open-source, his journey to Spring and its community, contributing to Spring and more." src="https://www.podbean.com/media/player/cr5hw-dbb6ff?from=usersite&amp;vjs=1&amp;skin=1&amp;fonts=Helvetica&amp;auto=0&amp;download=1" height="315" width="100%" style="border: none;" scrolling="no" data-name="pb-iframe-player"&gt;&lt;/iframe&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>Tanzu Observability by Wavefront Spring Boot Starter</title>
     <link rel="alternate" href="https://spring.io/blog/2020/05/07/tanzu-observability-by-wavefront-spring-boot-starter" />
@@ -1047,31 +1060,6 @@ https://wavefront.surf/us/cY69hp561D&#xD;
   &lt;li&gt;Steve is on IRC on #LINUX-RT on OFT&lt;/li&gt;
   &lt;li&gt;&lt;a href="http://LWN.net"&gt;LWN.net&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Cloud Data Flow 2.5.0.RC1 Released</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/04/23/spring-cloud-data-flow-2-5-0-rc1-released" />
-    <category term="engineering" label="Engineering" />
-    <author>
-      <name>Ilayaperumal Gopinathan</name>
-    </author>
-    <id>tag:spring.io,2020-04-23:4040</id>
-    <updated>2020-04-23T17:38:28Z</updated>
-    <content type="html">&lt;p&gt;Spring Cloud Data Flow team is pleased to announce the first milestone release of 2.5.0.RC1.&lt;/p&gt;
-&lt;p&gt;This first release candidate of 2.5.0 adds some bug fixes and the following features:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-  &lt;p&gt;Support application &lt;code&gt;metadata&lt;/code&gt; as part of the &lt;code&gt;Container&lt;/code&gt; images. Before this release, we only supported application property &lt;a href="https://dataflow.spring.io/docs/2.5.0.SNAPSHOT/feature-guides/general/application-metadata/#metadata-container-image-label"&gt;whitelisting&lt;/a&gt; when using a maven artifact.&lt;/p&gt;&lt;/li&gt;
-  &lt;li&gt;
-  &lt;p&gt;Support for &lt;code&gt;Azure AD&lt;/code&gt; integration using OAuth 2.0. Spring Cloud Data Flow, Spring Cloud Skipper servers along with the Spring Cloud Data Flow shell can be &lt;a href="https://docs.spring.io/spring-cloud-dataflow/docs/2.5.0.RC1/reference/htmlsingle/#identity-providers"&gt;configured&lt;/a&gt; to integrate with Azure AD for authentication and authorization.&lt;/p&gt;&lt;/li&gt;
-  &lt;li&gt;
-  &lt;p&gt;Removal of Scheduler task launcher component when scheduling tasks. In Spring Cloud Data Flow 2.3.x, the scheduling of tasks was designed to have an intermediate scheduler task launcher component to enhance the continuous deployment user experience. Since this component added some additional complexities and overhead on Kubernetes, the 2.5.x release removed this intermediary task launcher. We also added a &lt;a href="https://github.com/spring-cloud/spring-cloud-dataflow-samples/tree/master/dataflow-migrate-schedules"&gt;migration tool&lt;/a&gt; to migrate the schedules from 2.3.x and 2.4.x &lt;/p&gt;&lt;/li&gt;
-  &lt;li&gt;
-  &lt;p&gt;Unification of Kubernetes Scheduler properties. This &lt;a href="https://github.com/spring-cloud/spring-cloud-deployer-kubernetes/issues/331"&gt;feature&lt;/a&gt; lets the user configure any supported/applicable task deployment properties at the time of scheduling them as well.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;We are wrapping up the 2.5.0 GA related changes and looking forward to sharing the GA announcement soon!&lt;/p&gt;&lt;h2&gt;&lt;a href="#stay-in-touch-hellip" class="anchor" name="stay-in-touch-hellip"&gt;&lt;/a&gt;Stay in touch&amp;hellip;&lt;/h2&gt;
-&lt;p&gt;As always, we welcome feedback and contributions, so please reach out to us on &lt;a href="https://stackoverflow.com/questions/tagged/spring-cloud-dataflow"&gt;Stack Overflow&lt;/a&gt; or &lt;a href="https://github.com/spring-cloud/spring-cloud-dataflow/issues"&gt;GitHub&lt;/a&gt; or via &lt;a href="https://gitter.im/spring-cloud/spring-cloud-dataflow"&gt;Gitter&lt;/a&gt;.&lt;/p&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>
