@@ -3,7 +3,7 @@
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
         <label for="name">Airport Code</label>
-        <input type="text" class="form-control" id="airportCode" required [(ngModel)]="airport.airportCode" name="airportCode">
+        <input [disabled]="true" type="text" class="form-control" id="airportCode" required [(ngModel)]="airport.airportCode" name="airportCode">
       </div>
   
       <div class="form-group">
