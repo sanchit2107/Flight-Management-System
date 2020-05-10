@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Airport } from '../model/app.airport';
+import { Airport } from '../model/airport.component';
 import { AirportService } from '../services/airport.service';
 import { Router } from '@angular/router';
 

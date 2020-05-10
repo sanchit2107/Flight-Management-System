@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Booking } from '../model/app.booking';
+import { Booking } from '../model/booking.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../services/booking.service';
 

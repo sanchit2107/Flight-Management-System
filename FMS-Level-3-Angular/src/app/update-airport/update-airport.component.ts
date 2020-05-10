@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Airport } from '../model/app.airport';
+import { Airport } from '../model/airport.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AirportService } from '../services/airport.service';
 

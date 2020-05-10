@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Airport } from '../model/app.airport';
+import { Airport } from '../model/airport.component';
 import { AirportService } from '../services/airport.service';
 
 @Component({
