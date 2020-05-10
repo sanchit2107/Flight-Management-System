@@ -21,6 +21,10 @@ import { CreateAirportComponent } from './create-airport/create-airport.componen
 import { AirportListComponent } from './airport-list/airport-list.component';
 import { AirportDetailsComponent } from './airport-details/airport-details.component';
 import { UpdateAirportComponent } from './update-airport/update-airport.component';
+import { CreateFlightComponent } from './create-flight/create-flight.component';
+import { FlightDetailsComponent } from './flight-details/flight-details.component';
+import { FlightListComponent } from './flight-list/flight-list.component';
+import { UpdateFlightComponent } from './update-flight/update-flight.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,11 @@ import { UpdateAirportComponent } from './update-airport/update-airport.componen
     CreateAirportComponent,
     AirportListComponent,
     AirportDetailsComponent,
-    UpdateAirportComponent
+    UpdateAirportComponent,
+    CreateFlightComponent,
+    FlightDetailsComponent,
+    FlightListComponent,
+    UpdateFlightComponent
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,10 @@ import { AirportListComponent } from './airport-list/airport-list.component';
 import { CreateAirportComponent } from './create-airport/create-airport.component';
 import { UpdateAirportComponent } from './update-airport/update-airport.component';
 import { AirportDetailsComponent } from './airport-details/airport-details.component';
+import { FlightListComponent } from './flight-list/flight-list.component';
+import { CreateFlightComponent } from './create-flight/create-flight.component';
+import { UpdateFlightComponent } from './update-flight/update-flight.component';
+import { FlightDetailsComponent } from './flight-details/flight-details.component';
 
 
 const routes: Routes = [
@@ -29,6 +33,10 @@ const routes: Routes = [
   {path: 'add', component: CreateAirportComponent },
   {path: 'update/:airportCode', component: UpdateAirportComponent },
   {path: 'details/:airportCode', component: AirportDetailsComponent },
+  {path: 'flights', component: FlightListComponent },
+  {path: 'addFlight', component: CreateFlightComponent },
+  {path: 'updateFlight/:flightNo', component: UpdateFlightComponent },
+  {path: 'flightDetails/:flightNo', component: FlightDetailsComponent },
 
 ];
 
