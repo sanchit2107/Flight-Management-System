@@ -1,0 +1,69 @@
+<style>
+  .wrapper{
+    min-height: 90vh;
+  }
+  a{
+    color:  #FF8040;
+  }
+</style>
+<div class="view" style="background-image: url('assets/aeroplane-bg.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+<nav class="navbar navbar-dark">
+    <div class="navbar-brand">
+      <img src="assets/aeroplane.png" width="40" height="40" class="d-inline-block align-top" alt="">
+      <b>Flight Reservation System</b>
+    </div>
+    <div>
+    <button type = "button" class ="btn btn-danger pull-right">LOGOUT</button>
+    </div>
+</nav>  
+<div class="wrapper">
+    <div class="container ">
+  
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link " data-toggle="tab" href="scheduledFlight/add" (click)="add()" >ADD</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="scheduledFlight/show" (click)="view()">VIEW</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="scheduledFlight/search" (click)="search()">SEARCH</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="scheduledFlight/modify" (click)="search()">MODIFY</a>
+      </li>
+    </ul>
+    <br><br>
+    <h3 class="font-weight-bold">Show Scheduled Flights</h3>
+    <table border="1" class="table table-striped table-dark">
+        <thead class="thead-dark">
+            <tr>
+                <th>Schedule Flight Number</th>
+                <th>Source Airport</th>
+                <th>Destination Airport</th>
+                <th>Departure Time</th>
+                <th>Arrival Time</th>
+                <th>Available Seats</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tr *ngFor="let sf of scheduleFlights">
+            <td>{{sf.scheduleFlightId}}</td>
+            <td>{{sf.schedule.srcAirport.airportLocation}}</td>
+            <td>{{sf.schedule.dstnAirport.airportLocation}}</td>
+            <td>{{sf.schedule.deptDateTime}}</td>
+            <td>{{sf.schedule.arrDateTime}}</td>
+            <td>{{sf.availableSeats}}</td>
+            <td>
+                <button type="button" (click)="removeScheduleFlight(sf.scheduleFlightId)" class="cncBtn btn btn-danger">Delete</button> 
+            </td>                
+        </tr>
+        </table>
+        <br>
+        
+    </div>
+</div>
+<footer class="navbar navbar-light bg-light fixed-bottom" style="padding: 10px;">
+    Flight Reservation System
+    <span style="float: right;">2020</span>
+</footer>   

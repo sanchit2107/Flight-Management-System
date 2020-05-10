@@ -1,0 +1,47 @@
+<nav class="navbar navbar-light bg-light">
+    <div class="navbar-brand">
+      <img src="assets/aeroplane.png" width="40" height="40" class="d-inline-block align-top" alt="">
+      <b>Flight Reservation System</b>
+    </div>
+    <div>
+    <button type = "button" class ="btn btn-primary pull-right" style="margin-right: 10px;">HOME</button>
+    <button type = "button" class ="btn btn-danger pull-right">LOGOUT</button>
+    </div>
+  </nav>
+  <div >
+      <section style="border: 2px solid black; padding: 20px; margin: 4%;">
+        <h5><b>Your Booking has been confirmed.</b></h5>
+        <b>Booking Id:</b> <br><br>
+        <div>
+            <b>Flight Details:</b><br>
+            Number:<br>
+            Source:<br>
+            Destination: <br>
+            Departure: <br>
+            Arrival: <br>
+        </div><br>
+        <div>
+            <b>Passenger Details:</b><br>
+            <table>
+                <tr *ngFor="index as i">
+                    <td>Passenger:<br>
+                        PNR: <br>
+                        Name: <br>
+                        Age: &nbsp; Gender: &nbsp; ID: 
+                    </td>
+                </tr>
+            </table>
+        </div><br>
+        <div>
+            <b>Contact Number:</b>
+        </div><br>
+        <div>
+            <b>Billing Address:</b>
+        </div>
+        
+      </section>
+  </div>
+  <footer class="navbar navbar-light bg-light fixed-bottom" style="padding: 10px;">
+    Flight Reservation System
+    <span style="float: right;">2020</span>
+</footer>
