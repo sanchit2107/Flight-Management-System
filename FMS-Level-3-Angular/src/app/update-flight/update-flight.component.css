@@ -1,0 +1,40 @@
+h3{
+    border:1px solid;
+    box-shadow: darkcyan;
+    
+}
+.btn{
+    padding-top: 1px;
+    padding-bottom: 3px;
+}
+div{
+    display: block;
+    text-align: center;
+}
+table{
+    margin-left: auto;
+    margin-right: auto;
+}
+td{
+    align-content: center;
+    border-radius: 20px;
+    border: 1px solid;
+    padding:10px;
+    width:130px;
+    height:60px;
+}
+form{
+    width:500px;
+    margin: 0 auto;
+    border: 1px solid;
+    box-shadow: darkgray;
+    align-content: center;
+    text-align: center;
+    box-sizing: content-box;
+    bottom: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+
+}

@@ -30,7 +30,7 @@ const routes: Routes = [
   {path: 'logout', component: LogoutComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'airports', component: AirportListComponent },
-  {path: 'add', component: CreateAirportComponent },
+  {path: 'addAirport', component: CreateAirportComponent },
   {path: 'update/:airportCode', component: UpdateAirportComponent },
   {path: 'details/:airportCode', component: AirportDetailsComponent },
   {path: 'flights', component: FlightListComponent },
