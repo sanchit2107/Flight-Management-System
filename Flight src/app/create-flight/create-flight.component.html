@@ -1,0 +1,38 @@
+<h3>Add a Flight</h3>
+<div [hidden]="submitted" style="width: 400px;">
+  <form (ngSubmit)="onSubmit()">
+    <!--<div class="form-group">
+      <label for="name">Flight Number</label>
+      <input type="text" class="form-control" id="flightNo" required [(ngModel)]="flight.flightNo" name="flightNo">
+    </div>-->
+    <div class="form-group">
+      <label for="name">Flight Number</label>
+      <input type="text" pattern="^\d{5}$" #flightNo="ngModel" [class.is-invalid]="flightNo.invalid && flightNo.touched" class="form-control" id="flightNo" required [(ngModel)]="flight.flightNo" name="flightNo">
+      <small class="text-danger" [class.d-none]="flightNo.valid || flightNo.untouched">Number is Required</small>
+    </div>
+
+    <div class="form-group">
+      <label for="name">Carrier Name</label>
+      <input type="text" #carrierName="ngModel" [class.is-invalid]="carrierName.invalid && carrierName.touched" class="form-control" id="carrierName" required [(ngModel)]="flight.carrierName" name="carrierName">
+      <small class="text-danger" [class.d-none]="carrierName.valid || carrierName.untouched">Carrier name is Required</small>
+    </div>
+
+    <div class="form-group">
+      <label for="name">Flight Model</label>
+      <input type="text" #flightModel="ngModel" [class.is-invalid]="flightModel.invalid && flightModel.touched" class="form-control" id="flightModel" required [(ngModel)]="flight.flightModel" name="flightModel">
+      <small class="text-danger" [class.d-none]="flightModel.valid || flightModel.untouched">Model is Required</small>
+    </div>
+    <div class="form-group">
+        <label for="name">Seat Capacity</label>
+        <input type="text" #seatCapacity="ngModel" [class.is-invalid]="seatCapacity.invalid && seatCapacity.touched" class="form-control" id="seatCapacity" required [(ngModel)]="flight.seatCapacity" name="seatCapacity">
+        <small class="text-danger" [class.d-none]="seatCapacity.valid || seatCapacity.untouched">Seat Capacity is Required</small>
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+</div>
+
+<div [hidden]="!submitted">
+  <h4>You submitted successfully!</h4>
+  <!--<button class="btn btn-success" (click)="newFlight()">Add</button>-->
+</div>

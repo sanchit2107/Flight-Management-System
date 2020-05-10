@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../model/app.user';
+import { User } from '../model/user.component';
 
 //Author: SANCHIT SINGHAL
 //Description: Performs Authentication and user management operations

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Booking } from '../booking';
-import { BookingService } from '../booking.service';
+import { Booking } from '../model/booking.component';
+import { BookingService } from '../services/booking.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -33,11 +33,11 @@ export class BookingListComponent implements OnInit {
   }
 
   bookingDetails(bookingId: number) {
-    this.router.navigate(['details', bookingId]);
+    this.router.navigate(['bookingDetails', bookingId]);
   }
 
   updateBooking(bookingId: number) {
-    this.router.navigate(['update', bookingId])
+    this.router.navigate(['updateBooking', bookingId])
     .then(() => {
       window.location.reload();
     });

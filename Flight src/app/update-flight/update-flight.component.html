@@ -1,0 +1,59 @@
+<!--<h3>Flight reservation system
+    <button type="submit" class="btn btn-danger btn-lg float-right">logout</button>
+</h3>-->
+<div class="container" style="width: 400px;">
+    <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name">Flight Number</label>
+            <input [disabled]="true" type="text" class="form-control" id="flightNo" required [(ngModel)]="flight.flightNo" name="flightNo">
+          </div>
+      <div class="form-group">
+        <label for="name">Carrier Name</label>
+        <input type="text" class="form-control" id="carrierName" required [(ngModel)]="flight.carrierName" name="carrierName">
+      </div>
+  
+      <div class="form-group">
+        <label for="name">Flight Model</label>
+        <input type="text" class="form-control" id="flightModel" required [(ngModel)]="flight.flightModel" name="flightModel">
+      </div>
+  
+      <div class="form-group">
+        <label for="name">Seat capacity</label>
+        <input type="text" class="form-control" id="seatCapacity" required [(ngModel)]="flight.seatCapacity" name="seatCapacity">
+      </div>
+  
+      <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+  </div>
+<!--<br><br>
+<div class="container">
+    <div class="row">
+        <table align-center>
+            <tr><td>Add</td><td>View</td><td>Serach</td><td>Update</td></tr>
+        </table>
+            <div class="form-bg">
+                <form #regForm='ngForm' align-center>
+                    <br/> 
+                    <div class="form-group">
+                        <input type="text" class="form-control"
+                        placeholder="Flight id: xxxx" required ngModel>
+                    </div> 
+                    <div class="form-group">
+                        <input type="text" class="form-control"
+                        placeholder="Flight Model: xxxx" required ngModel>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control"
+                        placeholder="Carrier Name: xxxx" required ngModel>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control"
+                        placeholder="Seat Capacity: xxxx" required ngModel>
+                    </div>
+                    <div class="align-center">
+                        <button type="submit" class="btn btn-success" [disabled]="!regForm.valid">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>-->

@@ -16,8 +16,15 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { SignupComponent } from './signup/signup.component';
-// import { PasswordStrengthBarModule } from 'ng2-password-strength-bar';
 import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
+import { CreateAirportComponent } from './create-airport/create-airport.component';
+import { AirportListComponent } from './airport-list/airport-list.component';
+import { AirportDetailsComponent } from './airport-details/airport-details.component';
+import { UpdateAirportComponent } from './update-airport/update-airport.component';
+import { CreateFlightComponent } from './create-flight/create-flight.component';
+import { FlightDetailsComponent } from './flight-details/flight-details.component';
+import { FlightListComponent } from './flight-list/flight-list.component';
+import { UpdateFlightComponent } from './update-flight/update-flight.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +38,15 @@ import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
     HomeComponent,
     LoginComponent,
     LogoutComponent,
-    SignupComponent
+    SignupComponent,
+    CreateAirportComponent,
+    AirportListComponent,
+    AirportDetailsComponent,
+    UpdateAirportComponent,
+    CreateFlightComponent,
+    FlightDetailsComponent,
+    FlightListComponent,
+    UpdateFlightComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +54,6 @@ import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
     NgbModule,
     FormsModule,
     HttpClientModule,
-    // PasswordStrengthBarModule
     PasswordStrengthMeterModule
   ],
   providers: [],
