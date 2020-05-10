@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Booking } from '../booking';
+import { Booking } from '../model/app.booking';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BookingService } from '../booking.service';
+import { BookingService } from '../services/booking.service';
 
 @Component({
   selector: 'app-booking-details',
