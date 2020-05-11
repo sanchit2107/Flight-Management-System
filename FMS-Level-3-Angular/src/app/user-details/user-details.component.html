@@ -1,0 +1,18 @@
+<h2>User Details</h2>
+
+<hr/>
+<div *ngIf="user">
+  <div>
+    <label><b>User ID:</b></label> {{user.userId}}
+  </div>
+  <div>
+    <label><b>User Phone: </b></label> {{user.userPhone}}
+  </div>
+  <div>
+    <label><b>User Role: </b></label> {{user.roles}}
+  </div>
+</div>
+
+<br>
+<br>
+<button (click)="list()" class="btn btn-primary">Back to User List</button><br>
