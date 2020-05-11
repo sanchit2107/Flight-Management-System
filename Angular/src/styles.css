@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+* { margin: 0; font-family: 'Roboto Slab', serif; }
+
+
+body{
+  background-image: url('/assets/bg.jpg');
+  background-repeat: no-repeat;
+  background-size: 100vw 75vh;
+  background-color: rgb(242, 242, 255);
+}
+hr{
+  border-color: darkgray;
+}
