@@ -16,6 +16,11 @@ import { FlightListComponent } from './flight-list/flight-list.component';
 import { CreateFlightComponent } from './create-flight/create-flight.component';
 import { UpdateFlightComponent } from './update-flight/update-flight.component';
 import { FlightDetailsComponent } from './flight-details/flight-details.component';
+import { AddScheduledFlightComponent } from './add-scheduled-flight/add-scheduled-flight.component';
+import { ShowScheduledFlightsComponent } from './show-scheduled-flights/show-scheduled-flights.component';
+import { SearchScheduledFlightComponent } from './search-scheduled-flight/search-scheduled-flight.component';
+import { WelcomeAdminComponent } from './welcome-admin/welcome-admin.component';
+import { ModifyScheduledFlightComponent } from './modify-scheduled-flight/modify-scheduled-flight.component';
 
 
 const routes: Routes = [
@@ -37,6 +42,11 @@ const routes: Routes = [
   {path: 'addFlight', component: CreateFlightComponent },
   {path: 'updateFlight/:flightNo', component: UpdateFlightComponent },
   {path: 'flightDetails/:flightNo', component: FlightDetailsComponent },
+  {path: 'scheduledFlight/add', component:AddScheduledFlightComponent},
+  {path: 'scheduledFlight/show', component:ShowScheduledFlightsComponent},
+  {path: 'scheduledFlight/search', component:SearchScheduledFlightComponent},
+  {path: 'welcomeAdmin', component:WelcomeAdminComponent},
+  {path: 'scheduledFlight/modify', component: ModifyScheduledFlightComponent}
 
 ];
 
@@ -45,3 +55,10 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+export const routingComponents= [
+  AddScheduledFlightComponent,
+  SearchScheduledFlightComponent,
+  ShowScheduledFlightsComponent,
+  WelcomeAdminComponent,
+  ModifyScheduledFlightComponent
+]

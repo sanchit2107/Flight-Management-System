@@ -25,6 +25,10 @@ import { CreateFlightComponent } from './create-flight/create-flight.component';
 import { FlightDetailsComponent } from './flight-details/flight-details.component';
 import { FlightListComponent } from './flight-list/flight-list.component';
 import { UpdateFlightComponent } from './update-flight/update-flight.component';
+import { SearchScheduledFlightComponent } from './search-scheduled-flight/search-scheduled-flight.component';
+import { AddScheduledFlightComponent } from './add-scheduled-flight/add-scheduled-flight.component';
+import { ShowScheduledFlightsComponent } from './show-scheduled-flights/show-scheduled-flights.component';
+import { ModifyScheduledFlightComponent } from './modify-scheduled-flight/modify-scheduled-flight.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +50,11 @@ import { UpdateFlightComponent } from './update-flight/update-flight.component';
     CreateFlightComponent,
     FlightDetailsComponent,
     FlightListComponent,
-    UpdateFlightComponent
+    UpdateFlightComponent,
+    SearchScheduledFlightComponent,
+    AddScheduledFlightComponent,
+    ModifyScheduledFlightComponent,
+    ShowScheduledFlightsComponent
   ],
   imports: [
     BrowserModule,

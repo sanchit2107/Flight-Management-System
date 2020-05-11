@@ -1,0 +1,71 @@
+<style>
+    .wrapper{
+      min-height: 90vh;
+    }
+    a{
+      color:  #FF8040;
+    }
+  </style>
+<div class="view" style="background-image: url('assets/aeroplane-bg.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+<nav class="navbar navbar-dark">
+    <div class="navbar-brand">
+      <img src="assets/aeroplane.png" width="40" height="40" class="d-inline-block align-top" alt="">
+      <b>Flight Reservation System</b>
+    </div>
+    <div>
+    <button type = "button" class ="btn btn-danger pull-right">LOGOUT</button>
+    </div>
+</nav>
+<div class="wrapper">
+    <div class="container ">
+  
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="scheduledFlight/add" (click)="add()" >ADD</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="scheduledFlight/show" (click)="view()">VIEW</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="scheduledFlight/search" (click)="search()">SEARCH</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="scheduledFlight/modify" (click)="search()">MODIFY</a>
+      </li>
+    </ul>
+   <br><br>
+<div class="container card shadow-lg p-3 mb-5 bg-white rounded">
+    <h3 class="font-weight-bold">Modify Schedule Flights</h3>
+    <section style="border: 2px solid black; padding: 20px;">
+        <form ngNativeValidate #form>
+            <label>Schedule Flight ID: </label>
+            <input (blur)="validateId()" #i type="number" class="form-control" type="number"  [(ngModel)]="scheduleFlightId" [ngModelOptions]="{standalone: true}" required>
+            <small *ngIf="idValid" style="color: red;">Invalid ID. Please enter an id between 1 to 999.</small><br>
+            <input type="submit" value="SEARCH" class="btn btn-primary" (click)="searchScheduleFlight(scheduleFlightId)" [disabled]="!scheduleFlightId">
+            <br><br>
+            <div *ngIf="show">
+                <label><b>Details: </b></label><br>
+                <label>Flight ID: </label>
+                <input type="number" #f class="form-control" value={{scheduleFlight.flight.flightNo}} required>
+                <div class="invalid-feedback">Please fill out this field.</div>
+                <br>
+                <label>Available Seats: </label>
+                <input type="number" #a class="form-control" value={{scheduleFlight.availableSeats}} required>
+                <div class="invalid-feedback">Please fill out this field.</div>
+                <br>
+                <label>Schedule ID: </label>
+                <input type="number" #s class="form-control" value={{scheduleFlight.schedule.scheduleId}} required>
+                <div class="invalid-feedback">Please fill out this field.</div>
+                <br>
+                <input type="submit" value="MODIFY" class="btn btn-success" (click)="form.checkValidity() ? modifyScheduledFlight(i.value,a.value,s.value,f.value) : null">
+            </div>
+        </form>
+    </section>
+</div>
+</div>   
+</div>
+<footer class="navbar navbar-light bg-light fixed bottom" style="padding: 10px;">
+    Flight Reservation System
+    <span style="float: right;">2020</span>
+</footer>   
+</div>

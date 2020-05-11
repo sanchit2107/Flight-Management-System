@@ -1,0 +1,54 @@
+<style>
+  #box{
+    width: 50%;
+    height: 50%;
+  }
+  #opacity-3 {
+  opacity:0.6!important;
+}
+
+</style>
+<div class="view" style="background-image: url('assets/aeroplane-bg.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+<nav class="navbar navbar-dark ">
+    <div class="navbar-brand">
+      <img src="assets/aeroplane.png" width="40" height="40" class="d-inline-block align-top" alt="">
+      <b>Flight Reservation System</b>
+    </div>
+    <button type = "button" class ="btn btn-danger pull-right">LOGOUT</button>
+  </nav>
+  <div style="padding: 50px;" class="d-flex align-items-center justify-content-center">
+     <div class="shadow-lg p-3 mb-5 bg-dark rounded" id="box" style="opacity: 1;">   
+      <div class="container">
+        <div class="row justify-content-center">
+            <h2  class="font-weight-bold" style="color: white">Welcome Admin!!</h2>
+        </div>
+      </div><br>
+      <div class="container">
+        <div class="content-center">
+            <div class="row">
+                <div class="col-sm-6" style="text-align: center;">
+                    <button type = "button" class = "btn btn-light">Add A Flight</button><br><br>
+                    <button type = "button" class = "btn btn-light">Search A Flight</button><br><br>
+                    <button type = "button" class = "btn btn-light">View Flights Available</button><br><br>
+                    <button type = "button" class = "btn btn-light">Add An Airport</button><br><br>
+                    <button type = "button" class = "btn btn-light">Search An Airport</button><br><br>
+                </div>
+                <div class="col-sm-6" style="text-align: center;">
+                <button type = "button" class = "btn btn-light" (click)="addScheduledFlight()">Schedule A Flight</button><br><br>
+                <button type = "button" class = "btn btn-light" (click)="searchScheduledFlight()">Search Scheduled Flight</button><br><br>
+                <button type = "button" class = "btn btn-light" (click)="viewScheduledFlight()">View Scheduled Flight</button><br><br>
+                <button type = "button" class = "btn btn-light" (click)="modifyScheduledFlight()">Modify Scheduled Flight</button><br><br>
+                <button type = "button" class = "btn btn-light">View Airports</button><br><br>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer class="navbar navbar-light bg-light" style="padding: 10px;">
+    Flight Reservation System
+    <span style="float: right;">2020</span>
+</footer>
+</div>
+  
