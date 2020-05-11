@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BookingListComponent } from './booking-list/booking-list.component';
-import { CreateBookingComponent } from './create-booking/create-booking.component';
-import { UpdateBookingComponent } from './update-booking/update-booking.component';
 import { BookingDetailsComponent } from './booking-details/booking-details.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
@@ -26,8 +24,6 @@ import { ModifyScheduledFlightComponent } from './modify-scheduled-flight/modify
 const routes: Routes = [
   {path: '', redirectTo: 'booking',pathMatch: 'full'},
   {path: 'bookings', component: BookingListComponent},
-  {path: 'addBooking', component: CreateBookingComponent},
-  {path: 'updateBooking/:id', component: UpdateBookingComponent},
   {path: 'bookingDetails/:id', component: BookingDetailsComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},

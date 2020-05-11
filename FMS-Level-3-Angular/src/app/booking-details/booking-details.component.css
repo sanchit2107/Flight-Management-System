@@ -1,0 +1,36 @@
+.wrapper{
+  min-height: 90vh;
+  padding-top: 75px;
+}
+.card{
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0%;
+  width: 80vw;
+  padding: 20px;
+}
+.card-title{
+  margin-bottom: 20px;
+}
+.confBtn{
+  border-radius: 0%;
+  width: 100%;
+}
+.passenger-input{
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.form-control{
+  border-radius: 0;
+  border-width: 2px;
+}
+.contact-details{
+  margin-top: 20px;
+}
+.addBtn{
+  border-radius: 0;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  margin-right: 15px;
+}

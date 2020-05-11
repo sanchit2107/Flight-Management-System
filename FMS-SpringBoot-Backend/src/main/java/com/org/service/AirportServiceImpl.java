@@ -7,12 +7,15 @@ import java.util.Optional;
 import com.org.model.Airport;
 import com.org.model.Flight;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.org.dao.AirportDao;
+import com.org.exceptions.InvalidAirportException;
 import com.org.exceptions.RecordAlreadyPresentException;
 import com.org.exceptions.RecordNotFoundException;
 
@@ -21,6 +24,7 @@ public class AirportServiceImpl implements AirportService {
 	@Autowired
 	AirportDao airportDao;
 
+	private static final Logger logger = LoggerFactory.getLogger(AirportServiceImpl.class);
 	/*
 	 * view all Airports
 	 */
@@ -72,5 +76,15 @@ public class AirportServiceImpl implements AirportService {
 		} else
 			throw new RecordNotFoundException("Airport with code: " + airportCode + " not exists");
 
+	}
+
+	@Override
+	public boolean compareAirport(Airport src, Airport dest) throws InvalidAirportException {
+		if (src.equals(dest)) {
+			logger.error("Airports Compared. Same.");
+			throw new InvalidAirportException("Both Airports are the same.");
+		}
+		logger.info("Airports Compared. Different.");
+		return false;
 	}
 }

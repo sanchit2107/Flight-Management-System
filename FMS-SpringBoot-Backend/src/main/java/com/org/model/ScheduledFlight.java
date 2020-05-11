@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class ScheduledFlight {
 
 	@Id
-	@Column(name = "schedule_flight_id")
+	@Column(name = "schFlight_id")
 	private BigInteger scheduleFlightId;
 
 	@OneToOne(fetch = FetchType.EAGER)
@@ -24,6 +24,10 @@ public class ScheduledFlight {
 	@Column(name = "available_seats")
 	@NotNull
 	private Integer availableSeats;
+	
+	@Column(name = "ticket_cost")
+//	@NotNull(message = "Ticket Cost is Empty")
+	private Double ticketCost;
 
 	@NotNull
 	@OneToOne(cascade = CascadeType.ALL)
@@ -90,6 +94,14 @@ public class ScheduledFlight {
 
 	public void setSchedule(Schedule schedule) {
 		this.schedule = schedule;
+	}
+	
+	public Double getTicketCost() {
+		return ticketCost;
+	}
+
+	public void setTicketCost(Double ticketCost) {
+		this.ticketCost = ticketCost;
 	}
 
 	@Override

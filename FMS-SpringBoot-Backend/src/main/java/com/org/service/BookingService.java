@@ -1,20 +1,26 @@
 package com.org.service;
 
 import java.math.BigInteger;
+import java.util.List;
 
-import org.springframework.http.ResponseEntity;
-
+import com.org.exceptions.FmsException;
+import com.org.exceptions.InvalidBookingException;
 import com.org.model.Booking;
+import com.org.model.ScheduledFlight;
+
 
 public interface BookingService {
 
-	public ResponseEntity<?> createBooking(Booking newBooking);
+	public Booking addBooking(Booking booking)throws Exception;
 
-	public Booking updateBooking(Booking newBooking);
+	public List<Booking> viewBooking()throws InvalidBookingException;
 
-	public String deleteBooking(BigInteger bookingId);
+	public Booking viewBooking(BigInteger bookingId)throws InvalidBookingException;
+	
+	public List<Booking> viewBookingsByUser(BigInteger userId)throws InvalidBookingException;
 
-	public Iterable<Booking> displayAllBooking();
+	public boolean deleteBooking(BigInteger bookingId)throws InvalidBookingException, FmsException;
 
-	public ResponseEntity<?> findBookingById(BigInteger bookingId);
+	public boolean validatePassengerCount(ScheduledFlight scheduleFlight, Integer passengerChange)throws InvalidBookingException;
+
 }

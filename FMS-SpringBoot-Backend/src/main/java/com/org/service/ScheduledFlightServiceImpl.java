@@ -1,18 +1,24 @@
 package com.org.service;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.org.model.Schedule;
+import com.org.model.Airport;
 import com.org.model.Booking;
 import com.org.dao.ScheduleDao;
 import com.org.dao.ScheduledFlightDao;
+import com.org.exceptions.FlightNotFoundException;
 import com.org.exceptions.RecordNotFoundException;
 import com.org.exceptions.ScheduledFlightNotFoundException;
 import com.org.model.ScheduledFlight;
@@ -31,6 +37,8 @@ public class ScheduledFlightServiceImpl implements ScheduledFlightService {
 
 	@Autowired
 	BookingService bookingService;
+	
+	private static final Logger logger = LoggerFactory.getLogger(ScheduledFlightService.class);
 
 	/*
 	 * Service method to add new Scheduled flight to database
@@ -109,6 +117,34 @@ public class ScheduledFlightServiceImpl implements ScheduledFlightService {
 			throw new ScheduledFlightNotFoundException("Enter a valid Flight Id");
 		else
 			return scheduleFlight.get();
+	}
+
+	@Override
+	public List<ScheduledFlight> viewScheduleFlights(Airport source, Airport destination, LocalDate flightDate)
+			throws FlightNotFoundException {
+		logger.info("" + source);
+		logger.info("" + destination);
+		logger.info("" + flightDate);
+		Iterable<ScheduledFlight> scheduleFlightList = dao.findAll();
+		logger.info("Retrieved list of all scheduled flights.");
+		List<ScheduledFlight> extractedFlightList = new ArrayList<>();
+		for (ScheduledFlight scheduleFlight : scheduleFlightList) {
+			if (scheduleFlight.getSchedule().getSrcAirport().equals(source)
+					&& scheduleFlight.getSchedule().getDstnAirport().equals(destination)) {
+				System.out.println("Schedule"+scheduleFlight.getSchedule().getDeptDateTime());
+				System.out.println("User"+flightDate);
+				if(scheduleFlight.getSchedule().getDeptDateTime().equals(flightDate))
+					extractedFlightList.add(scheduleFlight);
+			}
+		}
+		logger.info("Extracted list of scheduled flights as per parameters.");
+		System.out.println(extractedFlightList);
+		if (extractedFlightList.size() == 0) {
+			logger.error("No Flights Found.");
+			throw new FlightNotFoundException("No Flights Found");
+		}
+		logger.info("Returning list of scheduled flights.");
+		return extractedFlightList;
 	}
 
 }

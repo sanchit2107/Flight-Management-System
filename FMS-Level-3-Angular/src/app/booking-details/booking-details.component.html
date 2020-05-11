@@ -1,18 +1,55 @@
-<h2>Booking Details</h2>
+<!-- BODY -->
+<div class="wrapper">
+    <div class="card shadow-lg p-3 mb-5 bg-white">
+        <div class="card-body">
+            <h3 class="card-title">Booking Details:</h3>
+            <h5 style="margin-top: -20px;">You are booking for Flight Number {{flightId}}</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    Passenger Details:
+                    <form>
+                        <div *ngFor="let passenger of passengerList; let i=index" class="row passenger-input">
+                            <input type="number" class="form-control col-md-1" placeholder="{{i+1}}" disabled>
+                            <input (blur)="validateName();" [(ngModel)]="passengerList[i].passengerName" [ngModelOptions]="{standalone: true}" type="text" class="form-control col-md-5" id="passengerName" placeholder="Name" required>
+                            <input (blur)="validateAge();" min="{{minAge}}" max="{{maxAge}}" [(ngModel)]="passengerList[i].passengerAge" [ngModelOptions]="{standalone: true}"  type="number" class="form-control col-md-1" id="passengerAge" placeholder="Age" required>
+                            <select type="text" class="form-control col-md-1" id="passengerGender" placeholder="Gender" required>
+                                <option selected disabled>Gender</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                            <input (blur)="validateUIN(); enableButton();" [(ngModel)]="passengerList[i].passengerUIN" [ngModelOptions]="{standalone: true}"  type="number" class="form-control col-md-4" id="passengerUIN" placeholder="ID Number" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <small>*Maximum 4 passengers per booking</small>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="addBtn btn btn-info" (click)="addPassenger()">
+                                        <i class="material-icons">exposure_plus_1</i>
+                                </button>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="addBtn btn btn-danger" (click)="removePassenger()">
+                                        <i class="material-icons">exposure_neg_1</i>
+                                </button>
+                            </div>
 
-<hr/>
-<div *ngIf="booking">
-  <div>
-    <label><b>Booking ID:</b></label> {{booking.bookingId}}
-  </div>
-  <div>
-    <label><b>Booking Date: </b></label> {{booking.bookingDate}}
-  </div>
-  <div>
-    <label><b>No of Passengers: </b></label> {{booking.noOfPassengers}}
-  </div>
+                        </div>
+                        <div class="row" style="margin-top: 30px;">
+                            <div class="col-md-3" style="color: red;">
+                                <small *ngIf="!nameFlag" >Invalid Name Entered</small><br>
+                                <small *ngIf="!ageFlag">Invalid Age Entered</small><br>
+                                <small *ngIf="!uinFlag">Invalid ID Number Entered</small>
+                            </div>
+                            <div class="col-md-3 offset-md-6">
+                                <button type="button" class="confBtn btn btn-success" [disabled]="buttonDisable" (click)="addBooking()">CONFIRM</button>
+                                <small>By clicking Confirm you agree to our terms and conditions.</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<br>
-<br>
-<button (click)="list()" class="btn btn-primary">Back to Booking List</button><br>
+<!-- BODY -->

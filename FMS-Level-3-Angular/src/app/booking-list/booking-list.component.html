@@ -1,28 +1,66 @@
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h2>Booking List</h2>
-  </div>
-  <div class="panel-body">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Booking ID</th>
-          <th>Booking Date</th>
-          <th>No of Passengers</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let booking of bookings | async">
-          <td>{{booking.bookingId}}</td>
-          <td>{{booking.bookingDate}}</td>
-          <td>{{booking.noOfPassengers}}</td>
-          <td>
-            <button (click)="deleteBooking(booking.bookingId)" class="btn btn-danger">Delete</button>
-            <button (click)="updateBooking(booking.bookingId)" class="btn btn-info" style="margin-left: 10px">Update</button>
-            <button (click)="bookingDetails(booking.bookingId)" class="btn btn-info" style="margin-left: 10px">Details</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+    <!-- BODY -->
+    <div class="wrapper">
+      <div class="title">
+          <h3>Your Bookings:</h3>
+          <button type="button" class="sortBtn btn btn-info" (click)="sortByDeparture()">Sort by Journey Date</button>
+          <button type="button" class="sortBtn btn btn-info" (click)="sortByBookingDate()">Sort by Booking Date</button>
+          <small *ngIf="depSortFlag" style="color: white; font-weight: 700;">Sorted By Journey Date</small>
+          <small *ngIf="dateSortFlag" style="color: white; font-weight: 700;">Sorted By Booking Date</small>
+      </div>
+      <div *ngFor="let booking of bookingsList"  class="card shadow-lg p-3 mb-5 bg-white rounded">
+              <div class="card-body">
+                  <div *ngIf="booking.bookingState" class="row">
+                      <div class="col-md-10">
+                          <h3 class="card-title">
+                              Booking Id: {{booking.bookingId}}
+                          </h3>
+                      </div>
+                  </div>
+                  <div *ngIf="!booking.bookingState" class="row">
+                      <div class="col-md-10">
+                          <h3 class="card-title">Booking Id: {{booking.bookingId}}</h3>
+                      </div>
+                      <div class="col-md-2">
+                          <button type="button" class="upcBtn btn btn-danger">Cancelled</button>
+                      </div>
+                  </div>
+                  <span *ngIf="dateSortFlag" style="color: red;">Booked On: {{booking.bookingDate}}<br><br></span>
+                  <span *ngIf="!dateSortFlag">Booked On: {{booking.bookingDate}}<br><br></span>
+                  <strong>Journey Details:</strong> <br>
+                  Source: {{booking.scheduleFlight.schedule.srcAirport.airportName}}, {{booking.scheduleFlight.schedule.srcAirport.airportLocation}} <br>
+                  <span *ngIf="depSortFlag" style="color: red;">Departure: {{booking.scheduleFlight.schedule.deptDateTime}}</span>
+                  <span *ngIf="!depSortFlag">Departure: {{booking.scheduleFlight.schedule.deptDateTime}}</span><br>
+                  Destination: {{booking.scheduleFlight.schedule.dstnAirport.airportName}}, {{booking.scheduleFlight.schedule.dstnAirport.airportLocation}}<br>
+                  Arrival:{{booking.scheduleFlight.schedule.arrDateTime}} <br>
+
+                  <br><strong>Flight Details:</strong> <br>
+                  Flight Number: {{booking.scheduleFlight.flight.flightNo}} <br>
+                  Flight Model: {{booking.scheduleFlight.flight.flightModel}}<br>
+                  Carrier: {{booking.scheduleFlight.flight.carrierName}}<br>
+
+                  <br><strong>Passenger Details:</strong> <br>
+                  <div *ngFor="let passenger of booking.passengerList; let i=index;">
+                      Passenger {{i+1}}:<br>
+                      PNR: {{passenger.pnrNumber}} <br>
+                      Name: {{passenger.passengerName}}<br>
+                      Age: {{passenger.passengerAge}}<br>
+                      ID: {{passenger.passengerUIN}}<br>
+                  </div>
+                  <div *ngIf="booking.bookingState" class="row">
+                      <div class="col-md-2 offset-md-7">
+                          <button mwlConfirmationPopover
+                          placement="left"
+                          (confirm)="cancelTicket(booking.bookingId)"
+                          (cancel)="cancelClicked = true" type="button" class="cncBtn btn btn-danger">Cancel Ticket</button>
+                      </div>
+                      <div class="col-md-3">
+                          <button type="button" class="downBtn btn btn-primary" (click)="downloadTicket(booking.bookingId)">Download eTicket</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <ngb-pagination class="pagination" (pageChange)="p =$event"></ngb-pagination>
+          </div>
+      </div>
+      <!-- BODY -->

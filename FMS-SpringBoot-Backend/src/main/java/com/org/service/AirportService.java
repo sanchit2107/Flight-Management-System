@@ -1,5 +1,6 @@
 package com.org.service;
 
+import com.org.exceptions.InvalidAirportException;
 import com.org.model.Airport;
 
 public interface AirportService {
@@ -12,4 +13,6 @@ public interface AirportService {
 	public void modifyAirport(Airport airport);
 
 	public void removeAirport(String airportCode);
+	
+	public boolean compareAirport(Airport src, Airport dest)throws InvalidAirportException;
 }

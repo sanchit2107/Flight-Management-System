@@ -5,4 +5,8 @@
 
 .footer{
   background-image: linear-gradient(15deg, #00000025 0%, #00000025 100%);
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
 }

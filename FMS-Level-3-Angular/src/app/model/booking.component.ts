@@ -1,7 +1,15 @@
-export class Booking {
+import { ScheduledFlight } from "./scheduled-flight";
+import { Passenger } from "./passenger.component";
 
-  bookingId: number;
-  bookingDate: string;
-  noOfPassengers: number;
+export class Booking{
+
+    bookingId:number;
+    userId:number;
+    bookingDate:any;
+    ticketCost:number;
+    passengerCount:number;
+    bookingState:boolean;
+    scheduleFlight:ScheduledFlight;
+    passengerList:Passenger[];
 
 }
