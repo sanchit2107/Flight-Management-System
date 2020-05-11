@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
 
   username = 'admin';
   password = '';
-  user: User={"userId": 0, "userName":"", "userPassword":"", "userPhone": 0, "email":"", "active": null, "roles":""};
+  user: User={"userId": 0, "userName":"", "userPassword":"", "userPhone": 0, "userEmail":"", "active": null, "roles":""};
   invalidLogin = false;
 
   constructor(private router: Router,

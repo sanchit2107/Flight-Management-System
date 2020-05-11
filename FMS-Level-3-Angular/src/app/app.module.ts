@@ -29,6 +29,10 @@ import { SearchScheduledFlightComponent } from './search-scheduled-flight/search
 import { AddScheduledFlightComponent } from './add-scheduled-flight/add-scheduled-flight.component';
 import { ShowScheduledFlightsComponent } from './show-scheduled-flights/show-scheduled-flights.component';
 import { ModifyScheduledFlightComponent } from './modify-scheduled-flight/modify-scheduled-flight.component';
+import { UserDetailsComponent } from './user-details/user-details.component';
+import { CreateUserComponent } from './create-user/create-user.component';
+import { UpdateUserComponent } from './update-user/update-user.component';
+import { ListUserComponent } from './list-user/list-user.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +58,11 @@ import { ModifyScheduledFlightComponent } from './modify-scheduled-flight/modify
     SearchScheduledFlightComponent,
     AddScheduledFlightComponent,
     ModifyScheduledFlightComponent,
-    ShowScheduledFlightsComponent
+    ShowScheduledFlightsComponent,
+    UserDetailsComponent,
+    CreateUserComponent,
+    UpdateUserComponent,
+    ListUserComponent
   ],
   imports: [
     BrowserModule,
