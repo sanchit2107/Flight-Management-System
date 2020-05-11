@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent implements OnInit {
 
-  user: User={"userId": null, "userName":"", "userPassword":"", "userPhone": null, "email":"", "active": null, "roles":""};
+  user: User={"userId": null, "userName":"", "userPassword":"", "userPhone": null, "userEmail":"", "active": null, "roles":""};
 
   public barLabel: string = "Password strength:";
   public myColors = ['#DD2C00', '#FF6D00', '#FFD600', '#AEEA00', '#00C853'];
@@ -57,7 +57,7 @@ export class SignupComponent implements OnInit {
     //UserEmail Validation
     emailFlag:boolean=false;
     validateEmail(){
-        var flag=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email);
+        var flag=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.user.userEmail);
         if(!flag){
             this.emailFlag=true;
         }else{
