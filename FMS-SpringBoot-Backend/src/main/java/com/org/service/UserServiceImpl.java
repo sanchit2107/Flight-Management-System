@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.org.dao.UserDao;
 import com.org.exceptions.RecordAlreadyPresentException;
 import com.org.exceptions.RecordNotFoundException;
-import com.org.model.Users;
+import com.org.model.User;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,16 +21,16 @@ public class UserServiceImpl implements UserService {
 	UserDao userDao;
 	
 	@Override
-	public ResponseEntity<?> createUser(Users newUser) {
+	public ResponseEntity<?> createUser(User newUser) {
 		// TODO Auto-generated method stub
-		Optional<Users> findUserById = userDao.findById(newUser.getUserId());
+		Optional<User> findUserById = userDao.findById(newUser.getId());
 		try {
 			if (!findUserById.isPresent()) {
 				userDao.save(newUser);
-				return new ResponseEntity<Users>(newUser, HttpStatus.OK);
+				return new ResponseEntity<User>(newUser, HttpStatus.OK);
 			} else
 				throw new RecordAlreadyPresentException(
-						"User with Id: " + newUser.getUserId() + " already exists!!");
+						"User with Id: " + newUser.getId() + " already exists!!");
 		} catch (RecordAlreadyPresentException e) {
 
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -38,21 +38,21 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Users updateUser(Users updateUser) {
+	public User updateUser(User updateUser) {
 		// TODO Auto-generated method stub
-		Optional<Users> findUserById = userDao.findById(updateUser.getUserId());
+		Optional<User> findUserById = userDao.findById(updateUser.getId());
 		if (findUserById.isPresent()) {
 			userDao.save(updateUser);
 		} else
 			throw new RecordNotFoundException(
-					"User with Id: " + updateUser.getUserId() + " not exists!!");
+					"User with Id: " + updateUser.getId() + " not exists!!");
 		return updateUser;
 	}
 
 	@Override
-	public String deleteUser(BigInteger UserId) {
+	public String deleteUser(Long UserId) {
 		// TODO Auto-generated method stub
-		Optional<Users> findBookingById = userDao.findById(UserId);
+		Optional<User> findBookingById = userDao.findById(UserId);
 		if (findBookingById.isPresent()) {
 			userDao.deleteById(UserId);
 			return "User Deleted!!";
@@ -61,19 +61,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Iterable<Users> displayAllUser() {
+	public Iterable<User> displayAllUser() {
 		// TODO Auto-generated method stub
 		return userDao.findAll();
 	}
 
 	@Override
-	public ResponseEntity<?> findUserById(BigInteger userId) {
+	public ResponseEntity<?> findUserById(Long userId) {
 		// TODO Auto-generated method stub
-		Optional<Users> findById = userDao.findById(userId);
+		Optional<User> findById = userDao.findById(userId);
 		try {
 			if (findById.isPresent()) {
-				Users findUser = findById.get();
-				return new ResponseEntity<Users>(findUser, HttpStatus.OK);
+				User findUser = findById.get();
+				return new ResponseEntity<User>(findUser, HttpStatus.OK);
 			} else
 				throw new RecordNotFoundException("No record found with ID " + userId);
 		} catch (RecordNotFoundException e) {

@@ -4,17 +4,17 @@ import java.math.BigInteger;
 
 import org.springframework.http.ResponseEntity;
 
-import com.org.model.Users;
+import com.org.model.User;
 
 public interface UserService {
 
-	public ResponseEntity<?> createUser(Users newUser);
+	public ResponseEntity<?> createUser(User newUser);
 
-	public Users updateUser(Users newUser);
+	public User updateUser(User newUser);
 
-	public String deleteUser(BigInteger UserId);
+	public String deleteUser(Long UserId);
 
-	public Iterable<Users> displayAllUser();
+	public Iterable<User> displayAllUser();
 
-	public ResponseEntity<?> findUserById(BigInteger userId);
+	public ResponseEntity<?> findUserById(Long userId);
 }
