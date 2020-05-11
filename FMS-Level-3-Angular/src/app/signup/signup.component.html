@@ -20,7 +20,7 @@
               <small *ngIf="phoneFlag" style="color: red;">Invalid Phone Number</small>
           </div>
           <div class="row">
-              Email : <input (blur)="validateEmail(); enableButton();" class="form-control" type="email" name="email" [(ngModel)]="user.email">
+              Email : <input (blur)="validateEmail(); enableButton();" class="form-control" type="email" name="email" [(ngModel)]="user.userEmail">
               <small *ngIf="emailFlag" style="color: red;">Invalid Email</small>
           </div>
           <div class="row">

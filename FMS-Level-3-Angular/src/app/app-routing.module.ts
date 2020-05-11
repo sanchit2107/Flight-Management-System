@@ -21,6 +21,10 @@ import { ShowScheduledFlightsComponent } from './show-scheduled-flights/show-sch
 import { SearchScheduledFlightComponent } from './search-scheduled-flight/search-scheduled-flight.component';
 import { WelcomeAdminComponent } from './welcome-admin/welcome-admin.component';
 import { ModifyScheduledFlightComponent } from './modify-scheduled-flight/modify-scheduled-flight.component';
+import { CreateUserComponent } from './create-user/create-user.component';
+import { UpdateUserComponent } from './update-user/update-user.component';
+import { UserDetailsComponent } from './user-details/user-details.component';
+import { ListUserComponent } from './list-user/list-user.component';
 
 
 const routes: Routes = [
@@ -46,7 +50,11 @@ const routes: Routes = [
   {path: 'scheduledFlight/show', component:ShowScheduledFlightsComponent},
   {path: 'scheduledFlight/search', component:SearchScheduledFlightComponent},
   {path: 'welcomeAdmin', component:WelcomeAdminComponent},
-  {path: 'scheduledFlight/modify', component: ModifyScheduledFlightComponent}
+  {path: 'scheduledFlight/modify', component: ModifyScheduledFlightComponent},
+  {path: 'addUser', component: CreateUserComponent},
+  {path: 'updateUser/:id', component: UpdateUserComponent},
+  {path: 'userDetails/:id', component: UserDetailsComponent},
+  {path: 'users', component: ListUserComponent}
 
 ];
 
