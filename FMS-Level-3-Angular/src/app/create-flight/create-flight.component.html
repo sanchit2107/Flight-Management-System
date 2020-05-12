@@ -1,5 +1,5 @@
-<h3>Add a Flight</h3>
-<div [hidden]="submitted" style="width: 400px;">
+<h3 style="text-align: center;">Add Flight</h3>
+<div [hidden]="submitted" style="width: 400px; margin-left: auto; margin-right: auto;">
   <form (ngSubmit)="onSubmit()">
     <!--<div class="form-group">
       <label for="name">Flight Number</label>
@@ -7,24 +7,24 @@
     </div>-->
     <div class="form-group">
       <label for="name">Flight Number</label>
-      <input type="text" pattern="^\d{5}$" #flightNo="ngModel" [class.is-invalid]="flightNo.invalid && flightNo.touched" class="form-control" id="flightNo" required [(ngModel)]="flight.flightNo" name="flightNo">
-      <small class="text-danger" [class.d-none]="flightNo.valid || flightNo.untouched">Number is Required</small>
+      <input type="text" placeholder="Flight Number" pattern="^\d{5}$" #flightNo="ngModel" [class.is-invalid]="flightNo.invalid && flightNo.touched" class="form-control" id="flightNo" required [(ngModel)]="flight.flightNo" name="flightNo">
+      <small class="text-danger" [class.d-none]="flightNo.valid || flightNo.untouched">Number should contain 5 digits</small>
     </div>
 
     <div class="form-group">
       <label for="name">Carrier Name</label>
-      <input type="text" #carrierName="ngModel" [class.is-invalid]="carrierName.invalid && carrierName.touched" class="form-control" id="carrierName" required [(ngModel)]="flight.carrierName" name="carrierName">
+      <input type="text" placeholder="Carrier Name" #carrierName="ngModel" [class.is-invalid]="carrierName.invalid && carrierName.touched" class="form-control" id="carrierName" required [(ngModel)]="flight.carrierName" name="carrierName">
       <small class="text-danger" [class.d-none]="carrierName.valid || carrierName.untouched">Carrier name is Required</small>
     </div>
 
     <div class="form-group">
       <label for="name">Flight Model</label>
-      <input type="text" #flightModel="ngModel" [class.is-invalid]="flightModel.invalid && flightModel.touched" class="form-control" id="flightModel" required [(ngModel)]="flight.flightModel" name="flightModel">
+      <input type="text" placeholder="Flight MOdel" #flightModel="ngModel" [class.is-invalid]="flightModel.invalid && flightModel.touched" class="form-control" id="flightModel" required [(ngModel)]="flight.flightModel" name="flightModel">
       <small class="text-danger" [class.d-none]="flightModel.valid || flightModel.untouched">Model is Required</small>
     </div>
     <div class="form-group">
         <label for="name">Seat Capacity</label>
-        <input type="text" #seatCapacity="ngModel" [class.is-invalid]="seatCapacity.invalid && seatCapacity.touched" class="form-control" id="seatCapacity" required [(ngModel)]="flight.seatCapacity" name="seatCapacity">
+        <input type="text" placeholder="Seat Capacity" #seatCapacity="ngModel" [class.is-invalid]="seatCapacity.invalid && seatCapacity.touched" class="form-control" id="seatCapacity" required [(ngModel)]="flight.seatCapacity" name="seatCapacity">
         <small class="text-danger" [class.d-none]="seatCapacity.valid || seatCapacity.untouched">Seat Capacity is Required</small>
     </div>
 

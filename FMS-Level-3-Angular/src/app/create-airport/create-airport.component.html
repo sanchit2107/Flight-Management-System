@@ -1,21 +1,21 @@
-<h3>Add a Airport</h3>
-<div [hidden]="submitted" style="width: 400px;">
+<h3 style="text-align: center;">Add a Airport</h3>
+<div [hidden]="submitted" style="width: 400px; margin-left: auto;margin-right: auto;">
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Airport Code</label>
-      <input type="text" required #airportCode="ngModel" pattern="^[A-Z]{1,5}$" [class.is-invalid]="airportCode.invalid && airportCode.touched" class="form-control" id="airportCode" required [(ngModel)]="airport.airportCode" name="airportCode">
-      <small class="text-danger" [class.d-none]="airportCode.valid || airportCode.untouched">Code is required</small>
+      <input type="text" placeholder="Airport Code" required #airportCode="ngModel" pattern="^[A-Z]{1,5}$" [class.is-invalid]="airportCode.invalid && airportCode.touched" class="form-control" id="airportCode" required [(ngModel)]="airport.airportCode" name="airportCode">
+      <small class="text-danger" [class.d-none]="airportCode.valid || airportCode.untouched">Code should contain max 5 letters</small>
     </div>
 
     <div class="form-group">
       <label for="name">Airport Name</label>
-      <input type="text" required #airportName="ngModel" [class.is-invalid]="airportName.invalid && airportName.touched" class="form-control" id="airportName" required [(ngModel)]="airport.airportName" name="airportName">
+      <input type="text" placeholder="Airport Name" required #airportName="ngModel" [class.is-invalid]="airportName.invalid && airportName.touched" class="form-control" id="airportName" required [(ngModel)]="airport.airportName" name="airportName">
       <small class="text-danger" [class.d-none]="airportName.valid || airportName.untouched">Name is required</small>
     </div>
 
     <div class="form-group">
       <label for="name">Airport Location</label>
-      <input type="text" required #airportLocation="ngModel" [class.is-invalid]="airportLocation.invalid && airportLocation.touched" class="form-control" id="airportLocation" required [(ngModel)]="airport.airportLocation" name="airportLocation">
+      <input type="text" placeholder="Airport Location" required #airportLocation="ngModel" [class.is-invalid]="airportLocation.invalid && airportLocation.touched" class="form-control" id="airportLocation" required [(ngModel)]="airport.airportLocation" name="airportLocation">
       <small class="text-danger" [class.d-none]="airportLocation.valid || airportLocation.untouched">Location is required</small>
     </div>
 
