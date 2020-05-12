@@ -24,6 +24,7 @@
     "@angular/router": "~9.0.3",
     "@mdi/font": "^5.1.45",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
+    "@types/file-saver": "^2.0.1",
     "angular-password-strength-meter": "^2.0.0",
     "bootstrap": "^4.4.1",
     "file-saver": "^2.0.2",

@@ -27,6 +27,7 @@ import { SearchScheduledFlightComponent } from './search-scheduled-flight/search
 import { AddScheduledFlightComponent } from './add-scheduled-flight/add-scheduled-flight.component';
 import { ShowScheduledFlightsComponent } from './show-scheduled-flights/show-scheduled-flights.component';
 import { ModifyScheduledFlightComponent } from './modify-scheduled-flight/modify-scheduled-flight.component';
+import { BookingConfirmedComponent } from './booking-confirmed/booking-confirmed.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ModifyScheduledFlightComponent } from './modify-scheduled-flight/modify
     HeaderComponent,
     BookingListComponent,
     BookingDetailsComponent,
+    BookingConfirmedComponent,
     HomeComponent,
     LoginComponent,
     LogoutComponent,
