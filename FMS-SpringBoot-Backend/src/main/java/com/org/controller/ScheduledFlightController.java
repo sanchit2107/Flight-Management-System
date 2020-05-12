@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.org.exceptions.RecordNotFoundException;
 import com.org.exceptions.ScheduledFlightNotFoundException;
+import com.org.model.Airport;
 import com.org.model.Schedule;
 import com.org.model.ScheduledFlight;
 import com.org.service.AirportService;
