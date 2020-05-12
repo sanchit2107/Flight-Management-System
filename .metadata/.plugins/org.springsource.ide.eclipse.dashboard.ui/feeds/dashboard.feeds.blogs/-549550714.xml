@@ -5,7 +5,266 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2020-05-07T23:30:00Z</updated>
+  <updated>2020-05-12T04:30:00Z</updated>
+  <entry>
+    <title>Getting Started With RSocket: Servers Calling Clients</title>
+    <link rel="alternate" href="https://spring.io/blog/2020/05/12/getting-started-with-rsocket-servers-calling-clients" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Ben Wilcock</name>
+    </author>
+    <id>tag:spring.io,2020-05-11:4065</id>
+    <updated>2020-05-12T04:30:00Z</updated>
+    <content type="html">&lt;p&gt;&lt;strong&gt;Reading Time: about 7 minutes.&lt;/strong&gt;&lt;br/&gt;&lt;strong&gt;Coding Time: about 20 minutes.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;ve been following my &lt;a href="https://spring.io/blog/2020/03/02/getting-started-with-rsocket-spring-boot-server"&gt;series&lt;/a&gt; on &lt;a href="https://rsocket.io"&gt;RSocket&lt;/a&gt;, you&amp;rsquo;ve heard me refer to &amp;ldquo;clients and servers&amp;rdquo; many times. But, with RSocket, the line between client and server is &lt;em&gt;blurry&lt;/em&gt;. With Rsocket, servers can send messages to clients, and clients can respond to these requests in the same way a server would.&lt;/p&gt;
+&lt;p&gt;In fact, the &lt;a href="http://rsocket.io/docs/Protocol#terminology"&gt;RSocket docs&lt;/a&gt; don&amp;rsquo;t use the terms &amp;lsquo;client&amp;rsquo; or &amp;lsquo;server.&amp;rsquo; The docs use the terms &amp;lsquo;requester&amp;rsquo; and &amp;lsquo;responder&amp;rsquo; instead. In RSocket, any component can act as a requester, and any component can act as a responder or even both at the same time. In RSocket, all this back-and-forth communication between requesters and responders takes place over a single &amp;lsquo;bi-directional&amp;rsquo; connection.&lt;/p&gt;
+&lt;p&gt;Today, you&amp;rsquo;re going to take advantage of these features by programming your rsocket-client to respond to requests coming from the server. In the server-side code, you&amp;rsquo;ll listen out for client connection events, and when a connection event happens, you&amp;rsquo;ll store the new client in a list of connected clients. You&amp;rsquo;ll also ask every client to stream telemetry messages back to the server for as long as their connection is alive. &lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;If you&amp;rsquo;ve been following the &lt;a href="https://spring.io/blog/2020/03/02/getting-started-with-rsocket-spring-boot-server"&gt;series&lt;/a&gt;, you can code along by following the directions below. The code is also available to download from &lt;a href="https://github.com/benwilcock/spring-rsocket-demo"&gt;GitHub&lt;/a&gt;. &lt;/p&gt;
+&lt;/blockquote&gt;&lt;h2&gt;&lt;a href="#step-1-update-spring-boot-and-rsocket" class="anchor" name="step-1-update-spring-boot-and-rsocket"&gt;&lt;/a&gt;Step 1: Update Spring Boot and RSocket&lt;/h2&gt;
+&lt;p&gt;First, some housekeeping. &lt;a href="https://spring.io/projects/spring-boot"&gt;Spring Boot&lt;/a&gt; and the &lt;a href="https://github.com/rsocket/rsocket-java"&gt;RSocket Java&lt;/a&gt; library were both updated recently. These updates include the usual round of bug fixes, enhancements, and deprecations, so it&amp;rsquo;s in our interest to upgrade. &lt;/p&gt;
+&lt;p&gt;Working in the &lt;code&gt;&amp;lt;parent&amp;gt;&lt;/code&gt; section of the Maven &lt;code&gt;pom.xml&lt;/code&gt;, change the &lt;code&gt;spring-boot-starter-parent&lt;/code&gt; to version &lt;code&gt;2.2.7.RELEASE&lt;/code&gt; as shown below. You&amp;rsquo;ll need to do this twice, as you have two separate projects — &lt;code&gt;rsocket-client&lt;/code&gt; and &lt;code&gt;rsocket-server&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint xml"&gt;&amp;lt;parent&amp;gt;&#xD;
+  &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;&#xD;
+  &amp;lt;artifactId&amp;gt;spring-boot-starter-parent&amp;lt;/artifactId&amp;gt;&#xD;
+  &amp;lt;version&amp;gt;2.2.7.RELEASE&amp;lt;/version&amp;gt;&#xD;
+  &amp;lt;relativePath/&amp;gt; &amp;lt;!-- lookup parent from repository --&amp;gt;&#xD;
+&amp;lt;/parent&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To refresh your code, run the following command in the root folder of both projects:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint bash"&gt;./mvnw clean compile
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now you can move on to the coding task.&lt;/p&gt;&lt;h2&gt;&lt;a href="#step-2-add-a-request-response-message-handler-to-the-client" class="anchor" name="step-2-add-a-request-response-message-handler-to-the-client"&gt;&lt;/a&gt;Step 2: Add A Request-Response Message Handler To The Client&lt;/h2&gt;
+&lt;p&gt;The client needs to be able to respond to messages coming from the server. In the &lt;code&gt;rsocket-client&lt;/code&gt; project&amp;rsquo;s &lt;code&gt;RSocketShellClient.java&lt;/code&gt;, add a new inner class called &lt;code&gt;ClientHandler&lt;/code&gt; as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint java"&gt;@Slf4j&#xD;
+class ClientHandler {&#xD;
+ &#xD;
+ @MessageMapping(&amp;quot;client-status&amp;quot;)&#xD;
+ public Flux&amp;lt;String&amp;gt; statusUpdate(String status) {&#xD;
+   log.info(&amp;quot;Connection {}&amp;quot;, status);&#xD;
+   return Flux.interval(Duration.ofSeconds(5)).map(index -&amp;gt; String.valueOf(Runtime.getRuntime().freeMemory()));&#xD;
+ }&#xD;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This class contains a single method called &lt;code&gt;statusUpdate()&lt;/code&gt; decorated with a &lt;code&gt;@MessageMapping&lt;/code&gt; annotation like the ones in the &lt;code&gt;rsocket-server&lt;/code&gt; project. The client uses this class and this method to capture and respond to requests coming in from the server. The response itself is a stream of messages. Every 5 seconds, the client tells the server its current free memory. Think of this as client telemetry data.&lt;/p&gt;
+&lt;p&gt;For this to work, you must &amp;lsquo;register&amp;rsquo; this class with your RSocket connection. You&amp;rsquo;ll do this in the next section.&lt;/p&gt;&lt;h2&gt;&lt;a href="#step-3-register-the-clienthandler-in-the-client-s-constructor" class="anchor" name="step-3-register-the-clienthandler-in-the-client-s-constructor"&gt;&lt;/a&gt;Step 3: Register The ClientHandler In The Client’s Constructor&lt;/h2&gt;
+&lt;p&gt;Before the client can respond to messages coming from the server, it must register the &lt;code&gt;ClientHandler&lt;/code&gt; with the RSocket connection. The revised constructor code is listed below. Notice the change to the constructor&amp;rsquo;s method signature to add the &lt;code&gt;RSocketStrategies&lt;/code&gt; variable. Spring supplies this variable to your constructor. Replace your old constructor code, with the new code listed below.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint java"&gt;public RSocketShellClient(RSocketRequester.Builder rsocketRequesterBuilder, RSocketStrategies strategies) {&#xD;
+ &#xD;
+ // (1)&#xD;
+ String client = UUID.randomUUID().toString();&#xD;
+ log.info(&amp;quot;Connecting using client ID: {}&amp;quot;, client);&#xD;
+  &#xD;
+ // (2)&#xD;
+ SocketAcceptor responder = RSocketMessageHandler.responder(strategies, new ClientHandler());&#xD;
+  &#xD;
+ // (3) &#xD;
+ this.rsocketRequester = rsocketRequesterBuilder&#xD;
+ .setupRoute(&amp;quot;shell-client&amp;quot;)&#xD;
+ .setupData(client)&#xD;
+ .rsocketStrategies(strategies)&#xD;
+ .rsocketConnector(connector -&amp;gt; connector.acceptor(responder))&#xD;
+ .connectTcp(&amp;quot;localhost&amp;quot;, 7000)&#xD;
+ .block();&#xD;
+  &#xD;
+ // (4)&#xD;
+ this.rsocketRequester.rsocket()&#xD;
+ .onClose()&#xD;
+ .doOnError(error -&amp;gt; log.warn(&amp;quot;Connection CLOSED&amp;quot;))&#xD;
+ .doFinally(consumer -&amp;gt; log.info(&amp;quot;Client DISCONNECTED&amp;quot;))&#xD;
+ .subscribe();&#xD;
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the code above, you first generate and store a unique ID that identifies this client instance (1). Next, you create a new &lt;code&gt;SocketAcceptor&lt;/code&gt; using the RSocket &lt;code&gt;strategies&lt;/code&gt; plus a new &lt;code&gt;ClientHandler&lt;/code&gt; instance (2). Then use the &lt;code&gt;RSocketRequesterBuilder&lt;/code&gt; to register the new &lt;code&gt;SocketAcceptor&lt;/code&gt; (3). And finally, make sure that disconnection is handled gracefully by handling the RSocket &lt;code&gt;onClose()&lt;/code&gt; events (4). &lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s it for the client-side code. Let&amp;rsquo;s move on to the server-side changes.&lt;/p&gt;&lt;h2&gt;&lt;a href="#step-4-remember-clients-on-the-server" class="anchor" name="step-4-remember-clients-on-the-server"&gt;&lt;/a&gt;Step 4: Remember Clients On The Server&lt;/h2&gt;
+&lt;p&gt;The first thing to do in the &lt;code&gt;rsocket-server&lt;/code&gt; project is to create a collection of &lt;code&gt;RSocketRequester&lt;/code&gt; clients by adding a class-level variable to the &lt;code&gt;RSocketController.java&lt;/code&gt; class as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint java"&gt;private final List&amp;lt;RSocketRequester&amp;gt; CLIENTS = new ArrayList&amp;lt;&amp;gt;();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, add a connection handler by adding a new method like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint java"&gt;  @ConnectMapping(&amp;quot;shell-client&amp;quot;)&#xD;
+ void connectShellClientAndAskForTelemetry&#xD;
+(RSocketRequester requester, @Payload String client) {&#xD;
+ // The code for the method will go HERE&#xD;
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;@ConnectMapping&lt;/code&gt; annotation lets you listen to client connection events as they happen. Using this event, you can schedule two pieces of work. The first is to add each new client to the &lt;code&gt;CLIENTS&lt;/code&gt; list. The second is to call out to each client and start their telemetry streams. &lt;/p&gt;
+&lt;p&gt;Add the following code to the method you just created:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint java"&gt;requester.rsocket()&#xD;
+        .onClose() // (1)&#xD;
+        .doFirst(() -&amp;gt; { &#xD;
+            log.info(&amp;quot;Client: {} CONNECTED.&amp;quot;, client);&#xD;
+            CLIENTS.add(requester); // (2)&#xD;
+        })&#xD;
+        .doOnError(error -&amp;gt; { &#xD;
+            log.warn(&amp;quot;Channel to client {} CLOSED&amp;quot;, client); // (3)&#xD;
+        })&#xD;
+        .doFinally(consumer -&amp;gt; { &#xD;
+            CLIENTS.remove(requester);&#xD;
+            log.info(&amp;quot;Client {} DISCONNECTED&amp;quot;, client); // (4)&#xD;
+        })&#xD;
+        .subscribe();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The first thing to notice is the call to the &lt;code&gt;requester.rsocket().onClose()&lt;/code&gt; method (1). This method returns a reactive &lt;code&gt;Mono&lt;/code&gt; object, which contains all the callbacks you need. &lt;/p&gt;
+&lt;p&gt;The mono&amp;rsquo;s &lt;code&gt;doFirst()&lt;/code&gt; method gets called &lt;em&gt;before&lt;/em&gt; any calls to &lt;code&gt;subscribe()&lt;/code&gt;, but after the initial creation of the mono. Use this method to add the client&amp;rsquo;s &lt;code&gt;requester&lt;/code&gt; object to the &lt;code&gt;CLIENTS&lt;/code&gt; list (2). &lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;This code might feel counter-intuitive — calling &lt;code&gt;onClose()&lt;/code&gt; while a client&amp;rsquo;s connecting and then using the resulting mono to store a reference to the new client. Sometimes, event-driven API&amp;rsquo;s can feel a bit odd. But think of it as the mono for this RSocket connection sending you an &amp;ldquo;I&amp;rsquo;m alive&amp;rdquo; event. You&amp;rsquo;re using that creation event to trigger the storage of each client&amp;rsquo;s reference in the list.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;RSocket calls the mono&amp;rsquo;s &lt;code&gt;doOnError()&lt;/code&gt; method whenever there is a problem with the connection. This includes situations where the client has chosen to close the connection. You can use the &lt;code&gt;error&lt;/code&gt; variable provided to decide what action to take. In the code above, the error simply gets logged as a warning (3).&lt;/p&gt;
+&lt;p&gt;The mono&amp;rsquo;s &lt;code&gt;doFinally()&lt;/code&gt; method is triggered when the RSocket connection has closed. This method is the ideal place to run the code that removes the client from the list &lt;code&gt;CLIENTS&lt;/code&gt; (4).&lt;/p&gt;
+&lt;p&gt;Finally, &lt;code&gt;subscribe()&lt;/code&gt; activates the reactive code you&amp;rsquo;ve added to the mono and signals that you&amp;rsquo;re ready to process the events.&lt;/p&gt;&lt;h2&gt;&lt;a href="#step-5-ask-for-free-memory-readings-from-clients" class="anchor" name="step-5-ask-for-free-memory-readings-from-clients"&gt;&lt;/a&gt;Step 5: Ask For Free Memory Readings From Clients&lt;/h2&gt;
+&lt;p&gt;As each client connects, request a stream of telemetry readings. To do this, working once more in the &lt;code&gt;connectShellClientAndAskForTelemetry()&lt;/code&gt; method, you need to send a request to the &lt;code&gt;client-status&lt;/code&gt; message handler you added earlier. The code for this is as follows: &lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint java"&gt;requester.route(&amp;quot;client-status&amp;quot;)&#xD;
+        .data(&amp;quot;OPEN&amp;quot;)&#xD;
+        .retrieveFlux(String.class)&#xD;
+        .doOnNext(s -&amp;gt; log.info(&amp;quot;Client: {} Free Memory: {}.&amp;quot;,client,s))&#xD;
+        .subscribe();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Using the &lt;code&gt;requester&lt;/code&gt;, target the route &lt;code&gt;&amp;quot;client-status&amp;quot;&lt;/code&gt;. Send the string &lt;code&gt;&amp;quot;OPEN&amp;quot;&lt;/code&gt; as the message data, and retrieve a &lt;code&gt;Flux&lt;/code&gt; of type &lt;code&gt;String&lt;/code&gt;. Each string that arrives contains the client&amp;rsquo;s current free memory reading. Log this reading to the console. Finally, don&amp;rsquo;t forget to &lt;code&gt;subscribe()&lt;/code&gt; to activate your reactive code. &lt;/p&gt;&lt;h2&gt;&lt;a href="#step-6-build-and-run-the-rsocket-server" class="anchor" name="step-6-build-and-run-the-rsocket-server"&gt;&lt;/a&gt;Step 6: Build And Run The RSocket Server&lt;/h2&gt;
+&lt;p&gt;It&amp;rsquo;s time to test your code. Open a terminal window and move to the &lt;code&gt;rsocket-server&lt;/code&gt; directory and run the server as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint bash"&gt;cd rsocket-server&#xD;
+./mvnw clean package spring-boot:run -DskipTests=true
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The server starts up on &lt;code&gt;localhost&lt;/code&gt; port &lt;code&gt;7000&lt;/code&gt;.&lt;/p&gt;&lt;h2&gt;&lt;a href="#step-7-build-and-run-the-rsocket-client" class="anchor" name="step-7-build-and-run-the-rsocket-client"&gt;&lt;/a&gt;Step 7: Build And Run The RSocket Client&lt;/h2&gt;
+&lt;p&gt;Open a &lt;em&gt;second&lt;/em&gt; terminal window and move to the &lt;code&gt;rsocket-client&lt;/code&gt; directory. From there, build and run the client as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint bash"&gt;cd rsocket-client&#xD;
+./mvnw clean package spring-boot:run -DskipTests=true
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;&lt;a href="#how-it-works" class="anchor" name="how-it-works"&gt;&lt;/a&gt;How it Works&lt;/h2&gt;
+&lt;p&gt;Once booted, you&amp;rsquo;ll notice that both the client and the server components have new log entries in the console. In the &lt;code&gt;rsocket-client&lt;/code&gt; window, you&amp;rsquo;ll see log entries showing the unique ID of the client — in the form of a UUID — and an &lt;code&gt;&amp;quot;OPEN&amp;quot;&lt;/code&gt; connection status as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;Connecting using client ID: 0acc1c60-4bc4-444d-bb82-eb6b510f4168&#xD;
+Connection OPEN&#xD;
+Started RsocketShellClientApplication in 1.516 seconds (JVM running for 1.814)&#xD;
+shell:&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Wait at least 10 seconds and then type &lt;code&gt;exit&lt;/code&gt; at the &lt;code&gt;shell:&amp;gt;&lt;/code&gt; prompt. The rsocket-client now disconnects from the server and shuts down.&lt;/p&gt;
+&lt;p&gt;Now switch to the &lt;code&gt;rsocket-server&lt;/code&gt; window. The log entries look something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint txt"&gt;Started RsocketServerApplication in 0.945 seconds (JVM running for 1.248)&#xD;
+Client: 0acc1c60-4bc4-444d-bb82-eb6b510f4168 CONNECTED.&#xD;
+Client: 0acc1c60-4bc4-444d-bb82-eb6b510f4168 Free Memory: 211317712.&#xD;
+Channel to client 0acc1c60-4bc4-444d-bb82-eb6b510f4168 CLOSED&#xD;
+Client 0acc1c60-4bc4-444d-bb82-eb6b510f4168 DISCONNECTED
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As the client connects, it&amp;rsquo;s added to the list of clients, and the console prints its client ID and the status &amp;ldquo;CONNECTED&amp;rdquo;. Then, every 5 seconds, the log shows the client&amp;rsquo;s current &amp;lsquo;free memory&amp;rsquo; reading. Finally, as the client disconnects, it&amp;rsquo;s RSocket channel&amp;rsquo;s status becomes &amp;ldquo;CLOSED&amp;rdquo; and the client is &amp;ldquo;DISCONNECTED.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;You can stop the &lt;code&gt;rsocket-server&lt;/code&gt; process by pressing &lt;code&gt;Ctrl-C&lt;/code&gt; in its terminal window.&lt;/p&gt;&lt;h2&gt;&lt;a href="#final-thoughts" class="anchor" name="final-thoughts"&gt;&lt;/a&gt;Final Thoughts&lt;/h2&gt;
+&lt;p&gt;The ability to call out to clients in is very powerful. It’s ideal for all kinds of scenarios, including mobile, internet-of-things, or microservices. And because all this can happen over TCP or WebSockets, you already have all the infrastructure you need without resorting to heavyweight solutions like message brokers. &lt;/p&gt;
+&lt;p&gt;You covered a lot of ground here. You learned how to turn servers into &amp;lsquo;requesters&amp;rsquo; and clients into &amp;lsquo;responders.&amp;rsquo; You discovered how to listen into connection events. You also learned a little bit about how to handle errors and events coming from rsocket connections. And, although in this exercise, you chose &amp;lsquo;request-stream&amp;rsquo; as your server-client communication, you could use any of the four RSocket interaction modes, depending on your needs. &lt;/p&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
+  <entry>
+    <title>Spring Cloud Task 2.3.0-M1 is now available!</title>
+    <link rel="alternate" href="https://spring.io/blog/2020/05/11/spring-cloud-task-2-3-0-m1-is-now-available" />
+    <category term="releases" label="Releases" />
+    <author>
+      <name>Michael Minella</name>
+    </author>
+    <id>tag:spring.io,2020-05-11:4067</id>
+    <updated>2020-05-11T22:26:52Z</updated>
+    <content type="html">&lt;p&gt;We are pleased to announce that Spring Cloud Task 2.3.0-M1 is now available on Github and the Spring download repository. Many thanks to all of those who contributed to this release.&lt;/p&gt;&lt;h2&gt;&lt;a href="#what-rsquo-s-new" class="anchor" name="what-rsquo-s-new"&gt;&lt;/a&gt;What&amp;rsquo;s New?&lt;/h2&gt;
+&lt;p&gt;Spring Cloud Task 2.3.0-M1 is intended to be the version of the framework aligned with Spring Boot 2.3. Updates from 2.2.x include:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Updates to all dependencies.&lt;/li&gt;
+  &lt;li&gt;Support for specifying a &lt;code&gt;PlatformTransactionManager&lt;/code&gt; to be used by Spring Cloud Task.&lt;/li&gt;
+  &lt;li&gt;A starter for singl-step Spring Batch jobs.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Let&amp;rsquo;s walk through these updates in more detail.&lt;/p&gt;&lt;h2&gt;&lt;a href="#update-to-all-dependencies" class="anchor" name="update-to-all-dependencies"&gt;&lt;/a&gt;Update to All Dependencies&lt;/h2&gt;
+&lt;p&gt;As stated earlier, this is first milestone release that brings Spring Cloud Task into alignment with Spring Boot 2.3. This includes updating all dependencies to be in alignment with Spring Boot and Spring Cloud.&lt;/p&gt;&lt;h2&gt;&lt;a href="#support-for-specifying-a-code-platformtransactionmanager-code-to-be-used-by-spring-cloud-task" class="anchor" name="support-for-specifying-a-code-platformtransactionmanager-code-to-be-used-by-spring-cloud-task"&gt;&lt;/a&gt;Support for specifying a &lt;code&gt;PlatformTransactionManager&lt;/code&gt; to be used by Spring Cloud Task&lt;/h2&gt;
+&lt;p&gt;When using more than one &lt;code&gt;DataSource&lt;/code&gt;, Spring Cloud Task provides the ability to specify which &lt;code&gt;DataSource&lt;/code&gt; is to be used by the framework&amp;rsquo;s &lt;code&gt;TaskRepository&lt;/code&gt;. However, previously, there was no easy way to configure which &lt;code&gt;PlatformTransactionManager&lt;/code&gt; to use. This release now exposes updates to allow specific configuration of a &lt;code&gt;PlatformTransactionManager&lt;/code&gt; for the framework to use.&lt;/p&gt;&lt;h2&gt;&lt;a href="#starter-for-single-step-batch-jobs" class="anchor" name="starter-for-single-step-batch-jobs"&gt;&lt;/a&gt;Starter for Single-step Batch Jobs&lt;/h2&gt;
+&lt;p&gt;One area where we are expanding Spring Cloud Task&amp;rsquo;s functionality for 2.3 is the addition of a starter that will let users configure a single-step Spring Batch job through properties alone. This release includes the capabilities to configure a job through properties that can read and write from a flat file through properties. Let&amp;rsquo;s take a look at an example of how this would work.&lt;/p&gt;
+&lt;p&gt;To use this starter, first add it to your Spring Boot based project as a dependency, as shown below:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;...&#xD;
+&amp;lt;dependency&amp;gt;&#xD;
+	&amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;&#xD;
+	&amp;lt;artifactId&amp;gt;spring-cloud-starter-single-step-batch-job&amp;lt;/artifactId&amp;gt;&#xD;
+	&amp;lt;version&amp;gt;2.3.0-M1&amp;lt;/version&amp;gt;&#xD;
+&amp;lt;/dependency&amp;gt;&#xD;
+...&#xD;
+&amp;lt;repository&amp;gt;&#xD;
+	&amp;lt;id&amp;gt;Spring Milestone&amp;lt;/id&amp;gt;&#xD;
+	&amp;lt;url&amp;gt;https://repo.spring.io/lib-milestones-local/&amp;lt;/url&amp;gt;&#xD;
+&amp;lt;/repository&amp;gt;&#xD;
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;...&#xD;
+maven { url &amp;#39;https://repo.spring.io/lib-milestones-local/&amp;#39; }&#xD;
+...&#xD;
+compile &amp;quot;org.springframework.cloud:spring-cloud-starter-single-step-batch-job:2.3.0-M1&amp;quot;&#xD;
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;With the starter added to your project (assuming you&amp;rsquo;ve already created the Spring Boot main class with the &lt;code&gt;@EnableBatchProcessing&lt;/code&gt; annotation on it), the only other work you need to do is to configure your job. Say you have the following input file:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;customer1,100&#xD;
+customer2,101&#xD;
+customer3,102&#xD;
+customer4,103&#xD;
+customer5,104&#xD;
+customer6,105&#xD;
+customer7,106&#xD;
+customer8,107&#xD;
+customer9,108
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the above input file, the first column in the CSV is a customer name, and the second column is the balance. If we wanted to configure a job to read in the file and reformat it by reversing the columns, we would create an &lt;code&gt;application.yml&lt;/code&gt;, as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;spring:&#xD;
+  batch:&#xD;
+      job:&#xD;
+        jobName: sample&#xD;
+        stepName: step1&#xD;
+        chunkSize: 5&#xD;
+        flatfilereader:&#xD;
+          delimited: true&#xD;
+          names: customer,number&#xD;
+          name: itemReader&#xD;
+          resource: /input.csv&#xD;
+        flatfilewriter:&#xD;
+          formatted: true&#xD;
+          format: &amp;quot;%s has a balance of %s&amp;quot;&#xD;
+          name: itemWriter&#xD;
+          names: customer,number&#xD;
+          resource: file:///tmp/output.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you are familiar with Spring Batch, this configuration should look familiar to you. We begin by defining the name of the job and the name of the step within it. We also provide a chunk size to indicate how many records per transaction to process. From there, we configure an &lt;code&gt;ItemReader&lt;/code&gt; and &lt;code&gt;ItemWriter&lt;/code&gt; (&lt;code&gt;FlatFileItemReader&lt;/code&gt; and &lt;code&gt;FlatFileItemWriter&lt;/code&gt;, respectively) for our step to use. If we want, we can also implement an &lt;code&gt;ItemProcessor&lt;/code&gt;, and the starter will autowire it into our step.&lt;/p&gt;
+&lt;p&gt;With the above configured, our batch job will read our file in and write it out in the requested format. The output from the sample file above would look something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;customer1 has a balance of 100&#xD;
+customer2 has a balance of 101&#xD;
+customer3 has a balance of 102&#xD;
+customer4 has a balance of 103&#xD;
+customer5 has a balance of 104&#xD;
+customer6 has a balance of 105&#xD;
+customer7 has a balance of 106&#xD;
+customer8 has a balance of 107&#xD;
+customer9 has a balance of 108
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This milestone includes auto-configuration for the &lt;code&gt;FlatFileItemReader&lt;/code&gt; and &lt;code&gt;FlatFileItemWriter&lt;/code&gt;. For our GA release (scheduled later this year), we expect to have the following all available as auto-configured options:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;FlatFileItemReader&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;FlatFileItemWriter&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;JdbcPagingItemReader&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;JdbcCursorItemReader&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;JdbcBatchItemWriter&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;KafkaItemReader&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;KafkaItemWriter&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;AmqpItemReader&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;AmqpItemWriter&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If there are others you feel should be on the list, be sure to let us know on Github!&lt;/p&gt;&lt;h2&gt;&lt;a href="#what-do-you-think" class="anchor" name="what-do-you-think"&gt;&lt;/a&gt;What Do You Think?&lt;/h2&gt;
+&lt;p&gt;We look forward to your feedback on these new features in &lt;a href="https://github.com/spring-cloud/spring-cloud-task/issues"&gt;Github&lt;/a&gt;, &lt;a href="http://stackoverflow.com/tags/spring-cloud-task"&gt;StackOverflow&lt;/a&gt;, &lt;a href="https://gitter.im/spring-cloud/spring-cloud-task"&gt;Gitter&lt;/a&gt;, or directly on Twitter &lt;a href="https://twitter.com/michaelminella"&gt;@michaelminella&lt;/a&gt;!&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://cloud.spring.io/spring-cloud-task/"&gt;Spring Cloud Task Home&lt;/a&gt; | &lt;a href="https://github.com/spring-cloud/spring-cloud-task"&gt;Source on GitHub&lt;/a&gt; | &lt;a href="http://docs.spring.io/spring-cloud-task/docs/2.3.0-M1/reference/htmlsingle/"&gt;Reference Documentation&lt;/a&gt;&lt;/p&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
+  <entry>
+    <title>Spring Security OAuth2 Auto-config 2.3.0.RC1, 2.2.7, 2.1.14 Released</title>
+    <link rel="alternate" href="https://spring.io/blog/2020/05/11/spring-security-oauth2-auto-config-2-3-0-rc1-2-2-7-2-1-14-released" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Rob Winch</name>
+    </author>
+    <id>tag:spring.io,2020-05-11:4066</id>
+    <updated>2020-05-11T18:57:08Z</updated>
+    <content type="html">&lt;div class="paragraph"&gt;
+&lt;p&gt;On behalf of the community, I&amp;#8217;m pleased to announce the release of Spring Security OAuth2 Auto-config 2.3.0.RC1 (&lt;a href="https://github.com/spring-projects/spring-security-oauth2-boot/releases/tag/2.3.0.RC1"&gt;release notes&lt;/a&gt;), 2.2.7.RELEASE (&lt;a href="https://github.com/spring-projects/spring-security-oauth2-boot/releases/tag/2.2.7.RELEASE"&gt;release notes&lt;/a&gt;), 2.1.14.RELEASE (&lt;a href="https://github.com/spring-projects/spring-security-oauth2-boot/releases/tag/2.1.14.RELEASE"&gt;release notes&lt;/a&gt;). The release delivers dependency updates to be compatible with the last versions of Spring Boot. Users are encouraged to update to the latest patch release.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;a href="https://projects.spring.io/spring-security/"&gt;Project Site&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-security-oauth2-boot/docs/current/reference/htmlsingle/"&gt;Reference&lt;/a&gt; | &lt;a href="https://stackoverflow.com/questions/tagged/spring-security"&gt;Help&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>A Bootiful Podcast: Spring and Java community member Eddú Meléndez on his journey to contributing to Spring</title>
     <link rel="alternate" href="https://spring.io/blog/2020/05/07/a-bootiful-podcast-spring-and-java-community-member-edd-mel-ndez-on-his-journey-to-contributing-to-spring" />
@@ -200,6 +459,40 @@ Spring Security 5.4.0-M1! You can find the complete details in the &lt;a href="h
 &lt;p&gt;This release includes &lt;a href="https://github.com/spring-projects/spring-boot/releases/tag/v2.1.14.RELEASE"&gt;61 bug fixes, enhancements, documentation improvements, and dependency upgrades&lt;/a&gt;. Thanks to all those who have contributed with issue reports and pull requests.&lt;/p&gt;&lt;h3&gt;&lt;a href="#how-can-you-help" class="anchor" name="how-can-you-help"&gt;&lt;/a&gt;How can you help?&lt;/h3&gt;
 &lt;p&gt;If you&amp;rsquo;re interested in helping out, check out the &lt;a href="https://github.com/spring-projects/spring-boot/labels/status%3A%20ideal-for-contribution"&gt;&amp;ldquo;ideal for contribution&amp;rdquo; tag&lt;/a&gt; in the issue repository. If you have general questions, please ask on &lt;a href="http://stackoverflow.com"&gt;stackoverflow.com&lt;/a&gt; using the &lt;a href="http://stackoverflow.com/tags/spring-boot"&gt;&lt;code&gt;spring-boot&lt;/code&gt; tag&lt;/a&gt; or chat with the community on &lt;a href="https://gitter.im/spring-projects/spring-boot"&gt;Gitter&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://spring.io/projects/spring-boot/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot"&gt;GitHub&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot/issues"&gt;Issues&lt;/a&gt; | &lt;a href="http://docs.spring.io/spring-boot/docs/2.1.14.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-boot"&gt;Stack Overflow&lt;/a&gt; | &lt;a href="https://gitter.im/spring-projects/spring-boot"&gt;Gitter&lt;/a&gt;&lt;/p&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
+  <entry>
+    <title>Spring Security 5.3.2, 5.2.4, 5.1.10, 5.0.16, 4.2.16 Released</title>
+    <link rel="alternate" href="https://spring.io/blog/2020/05/07/spring-security-5-3-2-5-2-4-5-1-10-5-0-16-4-2-16-released" />
+    <category term="releases" label="Releases" />
+    <author>
+      <name>Rob Winch</name>
+    </author>
+    <id>tag:spring.io,2020-05-06:4056</id>
+    <updated>2020-05-07T12:00:00Z</updated>
+    <content type="html">&lt;div class="paragraph"&gt;
+&lt;p&gt;On behalf of the community, I&amp;#8217;m pleased to announce the release of Spring Security 5.3.2 (&lt;a href="https://github.com/spring-projects/spring-security/releases/tag/5.3.2.RELEASE"&gt;release notes&lt;/a&gt;),  5.2.4 (&lt;a href="https://github.com/spring-projects/spring-security/releases/tag/5.2.4.RELEASE"&gt;release notes&lt;/a&gt;), 5.1.10 (&lt;a href="https://github.com/spring-projects/spring-security/releases/tag/5.1.10.RELEASE"&gt;release notes&lt;/a&gt;) , 5.0.16 (&lt;a href="https://github.com/spring-projects/spring-security/releases/tag/5.0.16.RELEASE"&gt;release notes&lt;/a&gt;), 4.2.16 (&lt;a href="https://github.com/spring-projects/spring-security/releases/tag/4.2.16.RELEASE"&gt;release notes&lt;/a&gt;). These releases deliver bug fixes along with some minor improvements. Users are encouraged to update to the latest patch release.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;a href="http://projects.spring.io/spring-security/"&gt;Project Site&lt;/a&gt; | &lt;a href="http://docs.spring.io/spring-security/site/docs/current/reference/html5/"&gt;Reference&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-security"&gt;Help&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
+  <entry>
+    <title>Spring LDAP 2.3.3 Released</title>
+    <link rel="alternate" href="https://spring.io/blog/2020/05/07/spring-ldap-2-3-3-released" />
+    <category term="releases" label="Releases" />
+    <author>
+      <name>Rob Winch</name>
+    </author>
+    <id>tag:spring.io,2020-05-06:4057</id>
+    <updated>2020-05-07T12:00:00Z</updated>
+    <content type="html">&lt;div class="paragraph"&gt;
+&lt;p&gt;On behalf of the community, I&amp;#8217;m pleased to announce the release of Spring LDAP 2.3.3 (&lt;a href="https://github.com/spring-projects/spring-ldap/releases/tag/2.3.RELEASE"&gt;release notes&lt;/a&gt;). The release delivers bug fixes along with some minor improvements. Users are encouraged to update to the latest patch release.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;a href="http://projects.spring.io/spring-ldap/"&gt;Project Site&lt;/a&gt; | &lt;a href="http://docs.spring.io/spring-ldap/site/docs/current/reference/htmlsingle/"&gt;Reference&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-security"&gt;Help&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
   <entry>
@@ -888,178 +1181,6 @@ https://wavefront.surf/us/cY69hp561D&#xD;
 &lt;p&gt;Speaking of integrations, I promised I&amp;rsquo;d show you some of the other integrations available. So, here it is, your moment of zen: the &lt;em&gt;insane&lt;/em&gt; list of &lt;em&gt;other&lt;/em&gt; integrations for the rare sort who is &lt;em&gt;not&lt;/em&gt; Spring Boot (huh?):&lt;/p&gt;
 &lt;img src = "https://raw.githubusercontent.com/spring-tips/wavefront/master/assets/integrations.png"/&gt;
 &lt;p&gt;Still here? &amp;hellip;Why? Get! You&amp;rsquo;ve got places to be, production deploys to savor, growth to measure. Take what you&amp;rsquo;ve learned here today and integrate Wavefront into your application. If you&amp;rsquo;re using &lt;a href="https://tanzu.vmware.com/kubernetes-grid"&gt;Tanzu Enterprise-ready Kubernetes Grid (Kubernetes)&lt;/a&gt;, &lt;a href="https://tanzu.vmware.com/application-service"&gt;Tanzu Application Service (Cloud Foundry)&lt;/a&gt;, or &lt;a href="https://azure.microsoft.com/en-us/services/spring-cloud/"&gt;Azure Spring Cloud&lt;/a&gt;, then this should be an especially tantalizing opportunity. Finally, an observability platform that can scale like your Spring Boot-based microservices do. So, go. Go try out Wavefront. Get to production, faster, and safer.&lt;/p&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>This Week in Spring - April 28th, 2020</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/04/29/this-week-in-spring-april-28th-2020" />
-    <category term="engineering" label="Engineering" />
-    <author>
-      <name>Josh Long</name>
-    </author>
-    <id>tag:spring.io,2020-04-29:4046</id>
-    <updated>2020-04-29T00:49:21Z</updated>
-    <content type="html">&lt;p&gt;Hi, Spring fans! Welcome to another installment of &lt;em&gt;This Week in Spring&lt;/em&gt;! It&amp;rsquo;s already April 28th, 2020. I can&amp;rsquo;t even believe it. &lt;/p&gt;
-&lt;p&gt;The time sure is flying, not just since the last time we spoke in this little blog of ours, but also since I first started writing these roundups the first week of January 2011. In four short months, it&amp;rsquo;ll have been ten years since I officially joined the Spring team! Crazy.&lt;/p&gt;
-&lt;p&gt;It&amp;rsquo;s also the case that time has flown by since this #COVID19 crisis forced much of the world into lockdown. I am an eternal optimist, and I was wondering if this COVID19 crisis was going to have a silver lining. For us here at the Long household, it&amp;rsquo;s been a gift for me to be able to hang out with my family. My little girl is making really good progress learning how to program, too. She&amp;rsquo;s already good with basic control flow, variables, functions, etc., all just since we went into lockdown. I&amp;rsquo;ve become a homeschooling parent. It&amp;rsquo;s been a lot of fun renewing my maths fundamentals with her. She&amp;rsquo;s a remarkable kid. &lt;/p&gt;
-&lt;p&gt;Anyway, I hope you are taking this time to be with your family and expand your skillset. I think that&amp;rsquo;s very valuable. I get lots of emails and tweets (usually direct messages) from folks all over the world every day. They warm my heart - I &lt;em&gt;love&lt;/em&gt; our active community! Today, I got a nice email from a student in Ho Chi Minh, Vietnam, who asks what he can do to expand his Spring skills. I want to relay to you what I told him, basically:&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;Spring is a &lt;em&gt;big&lt;/em&gt; universe. It&amp;rsquo;s impossible to know everything. But, you try a little bit of everything to increase your exposure. I would suggest going to &lt;a href="http://Spring.io/guides"&gt;spring.io/guides&lt;/a&gt; and trying each of the guides. Each one takes maybe 15 - 30 minutes. Try each one every day. That way, you will know what is possible. From there, you can focus more on a particular subject as the applications that you&amp;rsquo;re building requires it.&lt;/p&gt;
-  &lt;p&gt;[As to how I learned:] I just practice, practice, practice :) Many people know more than I do. I have been using it for years, full time, and I still don&amp;rsquo;t know everything. You don&amp;rsquo;t need to know &lt;em&gt;everything&lt;/em&gt;. You only need to know that which is required to support a particular application, and &lt;em&gt;why&lt;/em&gt; it is required. The guides will help you here, as well. It will help you to understand the different possibilities. You will also have to learn the ideas that motivate the frameworks. So, before you learn about Spring Batch, learn a little about batch processing in general. Before you learn about Spring Integration, learn a little about enterprise integration patterns (EIP) and messaging. Before you learn about Spring Data, learn a little about SQL and NoSQL data stores. Before you learn about Spring MVC, learn a little about HTTP and the MVC pattern. Before you learn Reactor and Spring Webflux, learn about Reactive programming. And so on. &lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;I hope this helps you all in your journey, as well. &lt;/p&gt;
-&lt;p&gt;Anyway, my friends, there&amp;rsquo;s a &lt;em&gt;lot&lt;/em&gt; of good stuff today so let&amp;rsquo;s get to it! &lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/04/28/spring-data-neumann-rc2-moore-sr7-and-lovelace-sr17"&gt;Spring Data Neumann RC2, Moore SR7, and Lovelace SR17&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/04/28/spring-framework-5-2-6-5-1-15-5-0-17-and-4-3-27-available-now"&gt;Spring Framework 5.2.6, 5.1.15, 5.0.17, and 4.3.27 available now&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/04/27/announcing-spring-cloud-stream-horsham-sr4-3-0-4-release-and-spring-cloud-hoxton-sr4"&gt;Announcing Spring Cloud Stream Horsham.SR4 (3.0.4.RELEASE) and Spring Cloud Hoxton.SR4&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/04/24/a-bootiful-podcast-linux-kernel-hacker-steve-rostedt-on-what-our-busy-spring-applications-look-like-from-the-kernel-s-perspective"&gt;A Bootiful Podcast: Linux Kernel Hacker Steve Rostedt on what our busy Spring applications look like from the Kernel&amp;rsquo;s perspective&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/04/23/spring-cloud-data-flow-2-5-0-rc1-released"&gt;Spring Cloud Data Flow 2.5.0.RC1 Released&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/04/23/spring-tips-configuration"&gt;Spring Tips: Configuration&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/04/22/spring-tools-4-6-1-released"&gt;Spring Tools 4.6.1 released&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://spring.io/blog/2020/04/22/spring-hateoas-brings-you-new-ways-to-configure-clients"&gt;Spring HATEOAS brings you new ways to configure clients&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Piotr Mi?kowski has done a nice job introducing &lt;a href="https://www.youtube.com/watch?v=XIkSWHX38Tg&amp;feature=emb_title"&gt;Spring Cloud Gateway in this YouTube video&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;This looks super interesting! Native images, very much like the ones we just looked at in this &lt;a href="http://bit.ly/spring-tips-playlist"&gt;Spring Tips&lt;/a&gt; installment &lt;a href="https://www.youtube.com/watch?v=u1XJTI1PVLw"&gt;on our Spring Graal Feature&lt;/a&gt;, are coming to the JDK itself as part of this this new effort, &lt;a href="https://mail.openjdk.java.net/pipermail/discuss/2020-April/005429.html"&gt;Project Leyden&lt;/a&gt;. Pretty cool, right? Also of note, Leyden refers to a &lt;a href="https://en.wikipedia.org/wiki/Leyden_jar"&gt;Leyden jar&lt;/a&gt;, an antique electrical instrument which stores a high voltag electric charge between two electrical conductors. How cool!&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://blogs.vmware.com/opensource/2020/04/27/building-a-community-part-1-openness-and-transparency/"&gt;Building a Community for Your Company’s Open Source Projects – Part 1: Openness and Transparency&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://technology.amis.nl/2020/04/10/spring-blocking-vs-non-blocking-r2dbc-vs-jdbc-and-webflux-vs-web-mvc/"&gt;Spring: Blocking vs non-blocking: R2DBC vs JDBC and WebFlux vs Web MVC&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://twitter.com/gregturn/status/1254407735355023361?s=12"&gt;twitter.com&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://reflectoring.io/spring-robust-sqs-client/"&gt;Building a Robust SQS Client with Spring Boot&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://twitter.com/linux_china/status/1253915371234455552?s=12"&gt;twitter.com&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://docs.qovery.com/guides/tutorial/deploy-spring-boot-with-postgresql/"&gt;Deploy Spring Boot with PostgreSQL on Qovery &lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://www.infoq.com/presentations/resilience4j/?itm_source=infoq&amp;itm_medium=popular_content_link&amp;itm_campaign=popularContent_news_clk"&gt;Building Robust and Resilient Apps Using Spring Boot and Resilience4j&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://twitter.com/maciejwalkowiak/status/1253025708525391872?s=12"&gt;The Springdoc team moves quickly! Springdoc is an interesting alternative to Springfox that supports the integration of Swagger and OpenAPI into Spring-based applications&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://medium.com/@rashmishehana_48965/going-reactive-with-spring-webflux-40128f3d5bad"&gt;Going Reactive With Spring Webflux - Rashmi Shehana - Medium&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Did you hear the news? SpringOne is now all-online, all-free! Join us September 1 for the show of a lifetime!&lt;/li&gt;
-  &lt;li&gt;You should watch this &lt;a href="http://oracl.info/XAGI50zjBB3"&gt; replay of the Java Language Features&lt;/a&gt; session by Stuart Marks at the inaugural #DevDotNextDigital conference.&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://paketo.io/"&gt;Introducing Paketo.io Buildpacks&lt;/a&gt;. Build and patch containerized apps so that you can spend all your time on the thing that matters the most - developing great software.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Data Neumann RC2, Moore SR7, and Lovelace SR17</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/04/28/spring-data-neumann-rc2-moore-sr7-and-lovelace-sr17" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Mark Paluch</name>
-    </author>
-    <id>tag:spring.io,2020-04-28:4045</id>
-    <updated>2020-04-28T13:43:00Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the team, I&amp;rsquo;m pleased to announce Spring Data releases &lt;code&gt;Neumann RC2&lt;/code&gt;, &lt;code&gt;Moore SR7&lt;/code&gt;, and &lt;code&gt;Lovelace SR17&lt;/code&gt;. This triple-feature is built on top of today&amp;rsquo;s &lt;a href="https://spring.io/blog/2020/04/28/spring-framework-5-2-6-5-1-15-5-0-17-and-4-3-27-available-now"&gt;Spring Framework releases &lt;code&gt;5.2.6&lt;/code&gt; (&lt;code&gt;Neumann&lt;/code&gt; and &lt;code&gt;Moore&lt;/code&gt;) and &lt;code&gt;5.1.15&lt;/code&gt; (&lt;code&gt;Lovelace&lt;/code&gt;)&lt;/a&gt;. &lt;/p&gt;
-&lt;p&gt;Spring Data &lt;code&gt;Neumann RC2&lt;/code&gt; contains &lt;a href="https://jira.spring.io/issues/?filter=16833"&gt;96 new features, improvements, and fixes&lt;/a&gt;. Spring Data &lt;code&gt;Moore SR7&lt;/code&gt; ships with &lt;a href="https://jira.spring.io/issues/?filter=16831"&gt;40 fixes and improvements&lt;/a&gt;. Finally, Spring Data &lt;code&gt;Lovelace SR17&lt;/code&gt; includes &lt;a href="https://jira.spring.io/issues/?filter=16740"&gt;39 selected fixes&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Spring Data &lt;code&gt;Neumann RC2&lt;/code&gt; ships with numerous improvements and new features. The most interesting amongst these are:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Query Derivation for Spring Data JDBC.&lt;/li&gt;
-  &lt;li&gt;Refinements in the reactive resource lookup for Spring Data Cassandra and Spring Data MongoDB, introducing a deferred lookup for &lt;code&gt;Session&lt;/code&gt; with a &lt;code&gt;MongoDatabase&lt;/code&gt; that allows for routing implementations that use the Subscriber Context.&lt;/li&gt;
-  &lt;li&gt;Embedded Types in Spring Data Cassandra&lt;/li&gt;
-  &lt;li&gt;Additional Entity Callbacks in Spring Data Elasticsearch&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Spring Data &lt;code&gt;Neumann RC2&lt;/code&gt; is the last planned release candidate of the Neumann release train before shipping a GA release in early May. This is a good opportunity to upgrade your dependencies and report any issues before the GA release. Expect Spring Boot releases in the next few days that pick up these Spring Data releases for your convenience.&lt;/p&gt;
-&lt;p&gt;Finally, here are the links to the individual modules along with their documentation:&lt;/p&gt;&lt;h2&gt;&lt;a href="#neumann-rc2" class="anchor" name="neumann-rc2"&gt;&lt;/a&gt;Neumann RC2&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Spring Data Commons 2.3 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-commons/2.3.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/commons/docs/2.3.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/commons/docs/2.3.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/commons/docs/2.3.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data JDBC 2.0 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-jdbc/2.0.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jdbc/docs/2.0.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jdbc/docs/2.0.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jdbc/docs/2.0.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data JPA 2.3 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-jpa/2.3.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jpa/docs/2.3.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jpa/docs/2.3.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jpa/docs/2.3.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data MongoDB 3.0 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-mongodb/3.0.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/mongodb/docs/3.0.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/mongodb/docs/3.0.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/mongodb/docs/3.0.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data KeyValue 2.3 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-keyvalue/2.3.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/keyvalue/docs/2.3.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/keyvalue/docs/2.3.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/keyvalue/docs/2.3.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data for Apache Cassandra 3.0 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-cassandra/3.0.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/cassandra/docs/3.0.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/cassandra/docs/3.0.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/cassandra/docs/3.0.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data for Apache Solr 4.2 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-solr/4.2.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/solr/docs/4.2.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/solr/docs/4.2.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/solr/docs/4.2.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data for Apache Geode 2.3 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-geode/2.3.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/geode/docs/2.3.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/geode/docs/2.3.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/geode/docs/2.3.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Neo4j 5.3 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-neo4j/5.3.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/neo4j/docs/5.3.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/neo4j/docs/5.3.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/neo4j/docs/5.3.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data R2DBC 1.1 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-r2dbc/1.1.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/r2dbc/docs/1.1.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/r2dbc/docs/1.1.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/r2dbc/docs/1.1.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data LDAP 2.3 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-ldap/2.3.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/ldap/docs/2.3.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/ldap/docs/2.3.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/ldap/docs/2.3.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Envers 2.3 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-envers/2.3.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/envers/docs/2.3.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/envers/docs/2.3.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/envers/docs/2.3.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data REST 3.3 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-rest-webmvc/3.3.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/rest/docs/3.3.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/rest/docs/3.3.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/rest/docs/3.3.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Redis 2.3 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-redis/2.3.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/redis/docs/2.3.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/redis/docs/2.3.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/redis/docs/2.3.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Elasticsearch 4.0 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-elasticsearch/4.0.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/elasticsearch/docs/4.0.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/elasticsearch/docs/4.0.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/elasticsearch/docs/4.0.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Couchbase 4.0 RC2 - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-couchbase/4.0.0.RC2"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/4.0.0.RC2/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/4.0.0.RC2/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/4.0.0.RC2/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;h2&gt;&lt;a href="#moore-sr7" class="anchor" name="moore-sr7"&gt;&lt;/a&gt;Moore SR7&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Spring Data Commons 2.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-commons/2.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/commons/docs/2.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/commons/docs/2.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/commons/docs/2.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data JDBC 1.1.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-jdbc/1.1.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jdbc/docs/1.1.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jdbc/docs/1.1.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jdbc/docs/1.1.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data JPA 2.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-jpa/2.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jpa/docs/2.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jpa/docs/2.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jpa/docs/2.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data MongoDB 2.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-mongodb/2.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/mongodb/docs/2.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/mongodb/docs/2.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/mongodb/docs/2.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data KeyValue 2.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-keyvalue/2.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/keyvalue/docs/2.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/keyvalue/docs/2.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/keyvalue/docs/2.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data for Apache Cassandra 2.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-cassandra/2.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/cassandra/docs/2.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/cassandra/docs/2.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/cassandra/docs/2.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data for Apache Solr 4.1.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-solr/4.1.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/solr/docs/4.1.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/solr/docs/4.1.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/solr/docs/4.1.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data for Apache Geode 2.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-geode/2.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/geode/docs/2.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/geode/docs/2.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/geode/docs/2.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Neo4j 5.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-neo4j/5.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/neo4j/docs/5.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/neo4j/docs/5.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/neo4j/docs/5.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data LDAP 2.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-ldap/2.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/ldap/docs/2.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/ldap/docs/2.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/ldap/docs/2.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Envers 2.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-envers/2.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/envers/docs/2.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/envers/docs/2.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data REST 3.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-rest-webmvc/3.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/rest/docs/3.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/rest/docs/3.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/rest/docs/3.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Gemfire 2.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-gemfire/2.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/gemfire/docs/2.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/gemfire/docs/2.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/gemfire/docs/2.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Redis 2.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-redis/2.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/redis/docs/2.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/redis/docs/2.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/redis/docs/2.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Elasticsearch 3.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-elasticsearch/3.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/elasticsearch/docs/3.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/elasticsearch/docs/3.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/elasticsearch/docs/3.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Couchbase 3.2.7 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-couchbase/3.2.7.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/3.2.7.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/3.2.7.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/3.2.7.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;h2&gt;&lt;a href="#lovelace-sr17" class="anchor" name="lovelace-sr17"&gt;&lt;/a&gt;Lovelace SR17&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Spring Data Commons 2.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-commons/2.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/commons/docs/2.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/commons/docs/2.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/commons/docs/2.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data JDBC 1.0.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-jdbc/1.0.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jdbc/docs/1.0.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jdbc/docs/1.0.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jdbc/docs/1.0.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data JPA 2.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-jpa/2.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jpa/docs/2.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jpa/docs/2.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jpa/docs/2.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data MongoDB 2.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-mongodb/2.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/mongodb/docs/2.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/mongodb/docs/2.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/mongodb/docs/2.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data KeyValue 2.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-keyvalue/2.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/keyvalue/docs/2.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/keyvalue/docs/2.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/keyvalue/docs/2.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data for Apache Cassandra 2.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-cassandra/2.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/cassandra/docs/2.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/cassandra/docs/2.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/cassandra/docs/2.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data for Apache Solr 4.0.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-solr/4.0.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/solr/docs/4.0.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/solr/docs/4.0.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/solr/docs/4.0.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data for Apache Geode 2.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-geode/2.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/geode/docs/2.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/geode/docs/2.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/geode/docs/2.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Neo4j 5.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-neo4j/5.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/neo4j/docs/5.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/neo4j/docs/5.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/neo4j/docs/5.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data LDAP 2.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-ldap/2.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/ldap/docs/2.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/ldap/docs/2.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/ldap/docs/2.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Envers 2.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-envers/2.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/envers/docs/2.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/envers/docs/2.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data REST 3.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-rest-webmvc/3.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/rest/docs/3.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/rest/docs/3.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/rest/docs/3.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Gemfire 2.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-gemfire/2.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/gemfire/docs/2.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/gemfire/docs/2.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/gemfire/docs/2.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Redis 2.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-redis/2.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/redis/docs/2.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/redis/docs/2.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/redis/docs/2.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Elasticsearch 3.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-elasticsearch/3.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/elasticsearch/docs/3.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/elasticsearch/docs/3.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/elasticsearch/docs/3.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data Couchbase 3.1.17 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-couchbase/3.1.17.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/3.1.17.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/3.1.17.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/3.1.17.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Framework 5.2.6, 5.1.15, 5.0.17, and 4.3.27 available now</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/04/28/spring-framework-5-2-6-5-1-15-5-0-17-and-4-3-27-available-now" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Stéphane Nicoll</name>
-    </author>
-    <id>tag:spring.io,2020-04-28:4044</id>
-    <updated>2020-04-28T10:36:35Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the team and everyone who has contributed, I am pleased to announce a full round of Spring Framework releases.&lt;/p&gt;
-&lt;p&gt;Spring Framework 5.2.6 includes &lt;a href="https://github.com/spring-projects/spring-framework/releases/tag/v5.2.6.RELEASE"&gt;46 fixes and improvements&lt;/a&gt;. Spring Framework 5.1.15 includes &lt;a href="https://github.com/spring-projects/spring-framework/releases/tag/v5.1.15.RELEASE"&gt;16 selected fixes and improvements&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Maintenance releases for &lt;code&gt;5.0.x&lt;/code&gt; (&lt;code&gt;5.0.17&lt;/code&gt;) and &lt;code&gt;4.3.x&lt;/code&gt; (&lt;code&gt;4.3.27&lt;/code&gt;) with &lt;a href="https://github.com/spring-projects/spring-framework/releases/tag/v5.0.17.RELEASE"&gt;12 selected fixes and improvements&lt;/a&gt; and &lt;a href="https://github.com/spring-projects/spring-framework/releases/tag/v4.3.27.RELEASE"&gt;5 selected fixes and improvements&lt;/a&gt; respectively are also available today.&lt;/p&gt;
-&lt;p&gt;As usual, we&amp;rsquo;ll follow up shortly with corresponding Spring Boot releases (&lt;code&gt;2.2.7&lt;/code&gt; and &lt;code&gt;2.1.14&lt;/code&gt;) as well as a release candidate for Spring Boot 2.3!&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://projects.spring.io/spring-framework/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-framework"&gt;GitHub&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-framework/issues"&gt;Issues&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/spring-framework-reference"&gt;Documentation&lt;/a&gt;&lt;/p&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Announcing Spring Cloud Stream Horsham.SR4 (3.0.4.RELEASE) and Spring Cloud Hoxton.SR4</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/04/27/announcing-spring-cloud-stream-horsham-sr4-3-0-4-release-and-spring-cloud-hoxton-sr4" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Oleg Zhurakousky</name>
-    </author>
-    <id>tag:spring.io,2020-04-27:4043</id>
-    <updated>2020-04-27T17:27:00Z</updated>
-    <content type="html">&lt;p&gt;We are pleased to announce the release of the Spring Cloud Stream Horsham.SR4 (3.0.4.RELEASE) release train which is available as part of Spring Cloud Hoxton.SR4 and builds on Spring Boot 2.2.6 and Spring Cloud Function 3.0.6.RELEASE which was also just released.&lt;/p&gt;
-&lt;p&gt;Spring Cloud Stream Horsham.SR4 modules are available for use in the &lt;a href="https://repo.maven.apache.org/maven2/org/springframework/cloud/"&gt;Maven Central&lt;/a&gt; repository. &lt;/p&gt;
-&lt;p&gt;This release contains several fixes and enhancements primarily driven by user&amp;rsquo;s feedback, so thank you.&lt;br/&gt;For more details please follow these links:&lt;br/&gt;- &lt;a href="https://github.com/spring-cloud/spring-cloud-stream/issues?q=label%3A%22Backport+Horsham%22+is%3Aclosed"&gt;Spring Cloud Stream Core&lt;/a&gt;&lt;br/&gt;- &lt;a href="https://github.com/spring-cloud/spring-cloud-stream-binder-rabbit/issues?q=label%3A%22Backport+Horsham.SR3%22+is%3Aclosed"&gt;Spring Cloud Stream Rabbit Binder&lt;/a&gt;&lt;br/&gt;- &lt;a href="https://github.com/spring-cloud/spring-cloud-function/issues?q=label%3A3.0.x-backport+is%3Aclosed"&gt;Spring Cloud Function&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;As mentioned, Spring Cloud Hoxton.SR4 was also released, but it only contains updates to Spring Cloud Stream and Spring Cloud Function.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;As always, we welcome feedback and contributions, so please reach out to us on &lt;a href="https://stackoverflow.com/questions/tagged/spring-cloud-stream"&gt;Stackoverflow&lt;/a&gt; or &lt;a href="https://github.com/spring-cloud/spring-cloud-stream/"&gt;GitHub&lt;/a&gt; and or &lt;a href="https://gitter.im/spring-cloud/spring-cloud-stream"&gt;Gitter&lt;/a&gt;&lt;/p&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>A Bootiful Podcast: Linux Kernel Hacker Steve Rostedt on what our busy Spring applications look like from the Kernel's perspective</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/04/24/a-bootiful-podcast-linux-kernel-hacker-steve-rostedt-on-what-our-busy-spring-applications-look-like-from-the-kernel-s-perspective" />
-    <category term="engineering" label="Engineering" />
-    <author>
-      <name>Josh Long</name>
-    </author>
-    <id>tag:spring.io,2020-04-24:4041</id>
-    <updated>2020-04-24T01:13:58Z</updated>
-    <content type="html">&lt;iframe title="Linux Kernel hacker and Real Time patch founder Steve Rostedt on how the kernel sees our busy Spring applications" src="https://www.podbean.com/media/player/ethav-da3d69?from=usersite&amp;vjs=1&amp;skin=1&amp;fonts=Helvetica&amp;auto=0&amp;download=1" height="315" width="100%" style="border: none;" scrolling="no" data-name="pb-iframe-player"&gt;&lt;/iframe&gt;
-&lt;p&gt;Hi, Spring fans! In this episode &lt;a href="http://twitter.com/starbuxman"&gt;Josh Long (@starbuxman)&lt;/a&gt; talks to Linux kernel hacker and Linux Real-Time patch founder Steve Rostedt on observing the Linux kernel and on what it sees when it looks at our busy Java and Spring applications. &lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Steve is on IRC on #LINUX-RT on OFT&lt;/li&gt;
-  &lt;li&gt;&lt;a href="http://LWN.net"&gt;LWN.net&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>
