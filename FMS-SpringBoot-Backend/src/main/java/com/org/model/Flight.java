@@ -101,8 +101,8 @@ public class Flight {
 
 	@Override
 	public String toString() {
-		return "Flight [flightNo=" + flightNo + ", carrierName=" + carrierName + ", flightModel=" + flightModel
-				+ ", seatCapacity=" + seatCapacity + "]";
+		return "Flight [flightNo=" + flightNo + ",carrierName=" + carrierName + ",flightModel=" + flightModel
+				+ ",seatCapacity=" + seatCapacity + "]";
 	}
 
 	@Override
