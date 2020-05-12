@@ -1,5 +1,7 @@
 package com.org.service;
 
+import org.springframework.http.ResponseEntity;
+
 import com.org.model.Airport;
 
 public interface AirportService {
@@ -7,9 +9,9 @@ public interface AirportService {
 
 	public Airport viewAirport(String airportCode);
 
-	public void addAirport(Airport airport);
+	public ResponseEntity<?> addAirport(Airport airport);
 
-	public void modifyAirport(Airport airport);
+	public Airport modifyAirport(Airport airport);
 
-	public void removeAirport(String airportCode);
+	public String removeAirport(String airportCode);
 }
