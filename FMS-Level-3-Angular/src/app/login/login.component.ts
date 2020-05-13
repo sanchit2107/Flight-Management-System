@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../model/user.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 import { ThrowStmt } from '@angular/compiler';
+import { UserLogin } from '../model/user-login.component';
+import { UserService } from '../services/user.service';
+import { GlobalService } from '../services/global.service';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -11,49 +15,45 @@ import { ThrowStmt } from '@angular/compiler';
 })
 export class LoginComponent implements OnInit {
 
-  username = 'admin';
-  password = '';
-  user: User={"userId": 0, "userName":"", "userPassword":"", "userPhone": 0, "userEmail":"", "active": null, "roles":""};
-  invalidLogin = false;
+  users: User[];
+  currentUser: User;
+  userLogin: UserLogin;
 
-  constructor(private router: Router,
-    private loginservice: AuthenticationService) { }
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private userService: UserService,
+              private globalService: GlobalService,
+              private loginService: LoginService) {
+    this.currentUser = new User();
+    this.userLogin = new UserLogin();
+  }
+
+  onSubmit(): void {
+    this.userLogin.userName = this.currentUser.userName;
+    this.userLogin.password = this.currentUser.userPassword;
+
+    this.loginService.userLogin(this.userLogin)
+      .subscribe(value => {
+        if (value != null) {
+          alert(this.globalService.getLoginStatus());
+          this.globalService.setCurrentUser(value);
+          this.globalService.setLoginStatus(true);
+          if (value.userType == 'Admin') {
+            this.router.navigate(['/adminpanel']);
+          } else if (value.userType == 'User') {
+            this.router.navigate(['/userpanel']);
+            this.globalService.setCurrentUser(value);
+          } else {
+            this.globalService.setLoginStatus(false);
+          }
+        } else {
+          this.globalService.setLoginStatus(false);
+        }
+        alert('2' + this.globalService.getLoginStatus());
+      });
+  }
 
   ngOnInit(): void {
-  }
-
-  // Check user for authenticatoin
-  checkLogin() {
-    if(this.loginservice.authenticate(this.username, this.password)) {
-      this.loginservice.getRole(this.username).subscribe((data: User)=> {
-        this.user = data;
-        this.redirect();
-      });
-    }
-    else {
-      console.log("Invalid Login Credentials..");
-      this.invalidLogin = true;
-    }
-  }
-
-  // Redirect based on the user role
-  redirect() {
-    if(this.user.roles === 'ROLE_CUSTOMER') {
-      sessionStorage.setItem('role', 'customer');
-      sessionStorage.setItem('userId', String(this.user.userId));
-      this.invalidLogin = false;
-      this.router.navigate(["/userpanel"]).then(()=> {
-        window.location.reload();
-      });
-    }
-    else if(this.user.roles === 'ROLE_ADMIN') {
-      sessionStorage.setItem('role', 'admin');
-      sessionStorage.setItem('userId', String(this.user.userId));
-      this.invalidLogin = false;
-      this.router.navigate(["adminpanel"]).then(()=> {
-        window.location.reload();
-      });
-    }
   }
 
 }

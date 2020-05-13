@@ -1,9 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-// import { AuthenticationService } from './_service/app.authenticationservice';
-
-//Author: Devang
-//Description: Component for header
-//Created On: 21/10/2019
+import {Component, OnInit, Input} from '@angular/core';
+import { GlobalService } from '../services/global.service';
 
 @Component({
     selector: 'app-header',
@@ -17,20 +13,21 @@ export class HeaderComponent implements OnInit{
     user:boolean;
     admin:boolean;
 
-    constructor(){}
+    @Input() title: string;
+    loginStatus: boolean;
 
-    ngOnInit(){
-        this.user=false;
-        this.admin=false;
-        if(sessionStorage.getItem('role')==='user'){
-            this.user=true;
-        }else if(sessionStorage.getItem('role')==='admin'){
-            this.admin=true;
-        }
-        // this.buttonFlag=this.authenticationService.isUserLoggedIn();
-        this.username=sessionStorage.getItem('username');
-        if(this.username!=null)
-            this.username=this.username.toUpperCase();
+    constructor(private globalService: GlobalService) {
+      this.loginStatus = this.globalService.getLoginStatus();
+    }
+
+    changeLoginState(ls: boolean) {
+      this.globalService.setLoginStatus(ls);
+      this.loginStatus = this.globalService.getLoginStatus();
+      alert('logout' + this.globalService.getLoginStatus());
+    }
+
+    ngOnInit(): void {
+      this.loginStatus = this.globalService.getLoginStatus();
     }
 
 }

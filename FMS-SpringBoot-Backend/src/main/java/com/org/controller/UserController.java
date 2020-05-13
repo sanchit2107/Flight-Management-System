@@ -50,14 +50,14 @@ public class UserController {
 
 	@GetMapping("/searchUser/{id}")
 	@ExceptionHandler(RecordNotFoundException.class)
-	public ResponseEntity<?> searchUserByID(@PathVariable("id") BigInteger userId) {
+	public ResponseEntity<?> searchUserByID(@PathVariable("id") int userId) {
 
 		return userService.findUserById(userId);
 	}
 
 	@DeleteMapping("/deleteUser/{id}")
 	@ExceptionHandler(RecordNotFoundException.class)
-	public void deleteBookingByID(@PathVariable("id") BigInteger userId) {
+	public void deleteBookingByID(@PathVariable("id") int userId) {
 
 		userService.deleteUser(userId);
 	}

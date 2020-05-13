@@ -1,31 +1,49 @@
 package com.org.model;
 
-import java.math.BigInteger;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Users {
-	private String userType;
-	@Id
-	private BigInteger userId;
-	private String userName;
-	private String userPassword;
-	private BigInteger userPhone;
-	private String userEmail;
+	 @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int userId;//auto generated, not to be taken as input by user.
+
+    @Column(name = "userType", nullable = false)
+    @NotNull(message = "User type can't be blank, choose either 'Customer' or 'Admin'.")
+    private String userType;
+
+    @Column(name = "userName", nullable = false, unique = true)
+    @NotNull(message = "User name can't be empty")
+    private String userName;
+
+    @Column(name = "userPassword", nullable = false)
+    @NotNull(message = "User password can't be empty")
+    private String userPassword;
+
+    @Column(name = "userPhone", nullable = false, unique = true)
+    @NotNull(message = "User phone number can't be empty")
+    private String userPhone;
+
+    @Column(name = "userEmail", nullable = false, unique = true)
+    @NotNull(message = "User userEmail can't be empty")
+    private String userEmail;
+
 
 	/**
 	 * Parameterized Constructors of Users
 	 */
-	public Users(String userName, String userPassword, BigInteger userPhone, String userEmail, String userType,
-			BigInteger userId) {
+	public Users(String userName, String userPassword, String userPhone, String userEmail, String userType,
+			int userId) {
 		this.userName = userName;
 		this.userPassword = userPassword;
 		this.userPhone = userPhone;
 		this.userEmail = userEmail;
 		this.userType = userType;
-		this.userId = userId;
 	}
 
 	/**
@@ -42,11 +60,11 @@ public class Users {
 		this.userType = userType;
 	}
 
-	public BigInteger getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(BigInteger userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
@@ -66,11 +84,11 @@ public class Users {
 		this.userPassword = userPassword;
 	}
 
-	public BigInteger getUserPhone() {
+	public String getUserPhone() {
 		return userPhone;
 	}
 
-	public void setUserPhone(BigInteger userPhone) {
+	public void setUserPhone(String userPhone) {
 		this.userPhone = userPhone;
 	}
 

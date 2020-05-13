@@ -33,6 +33,15 @@ import { UserDetailsComponent } from './user-details/user-details.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { ListUserComponent } from './list-user/list-user.component';
+import { SignupSuccessComponent } from './signup/signup-success/signup-success.component';
+import { AirportService } from './services/airport.service';
+import { AuthguardService } from './services/authguard.service';
+import { BookingService } from './services/booking.service';
+import { FlightService } from './services/flight.service';
+import { LoginService } from './services/login.service';
+import { GlobalService } from './services/global.service';
+import { ScheduledFlightService } from './services/scheduled-flight.service';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -62,7 +71,9 @@ import { ListUserComponent } from './list-user/list-user.component';
     UserDetailsComponent,
     CreateUserComponent,
     UpdateUserComponent,
-    ListUserComponent
+    ListUserComponent,
+    SignupSuccessComponent
+
   ],
   imports: [
     BrowserModule,
@@ -72,7 +83,16 @@ import { ListUserComponent } from './list-user/list-user.component';
     HttpClientModule,
     PasswordStrengthMeterModule
   ],
-  providers: [],
+  providers: [
+    AirportService,
+    AuthguardService,
+    BookingService,
+    FlightService,
+    GlobalService,
+    LoginService,
+    ScheduledFlightService,
+    UserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

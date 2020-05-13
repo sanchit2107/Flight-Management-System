@@ -25,6 +25,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { ListUserComponent } from './list-user/list-user.component';
+import { SignupSuccessComponent } from './signup/signup-success/signup-success.component';
 
 
 const routes: Routes = [
@@ -54,7 +55,8 @@ const routes: Routes = [
   {path: 'addUser', component: CreateUserComponent},
   {path: 'updateUser/:id', component: UpdateUserComponent},
   {path: 'userDetails/:id', component: UserDetailsComponent},
-  {path: 'users', component: ListUserComponent}
+  {path: 'users', component: ListUserComponent},
+  {path: 'signupsuccess', component: SignupSuccessComponent}
 
 ];
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from './authentication.service';
+import { GlobalService } from './global.service';
 
 //Author: SANCHIT SINGHAL
 //Description: Performs Routing for invalid user
@@ -11,14 +12,19 @@ import { AuthenticationService } from './authentication.service';
 })
 export class AuthguardService {
 
-  constructor(private router: Router, private authSerivce: AuthenticationService) { }
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private globalService: GlobalService) {
+}
 
-  // Routes to error page if user is not logged in
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if(this.authSerivce.isUserLoggedIn()) {
+  canActivate() {
+    alert('AuthGaurd activated');
+    if (this.globalService.getLoginStatus()) {
       return true;
+    } else {
+      alert('Login required to access the page.')
+      this.router.navigate(['/login']);
+      return false;
     }
-    this.router.navigate(['login']);
-    return false;
   }
 }

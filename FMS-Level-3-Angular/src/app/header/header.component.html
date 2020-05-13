@@ -24,8 +24,12 @@
           </button>
       </li>
       <li *ngIf="!buttonFlag" class="nav-item">
-          <button class="btn btn-success">
-              <a href="login">LOG IN</a>
+          <button routerLink="/login" class="btn btn-success" type="submit" [hidden]="loginStatus"
+          (click)="loginStatus = true">
+              LOG IN
+          </button>
+          <button routerLink="/signup" class="btn btn-info" type="submit" [hidden]="loginStatus">
+              SIGN UP
           </button>
       </li>
       <li *ngIf="buttonFlag" class="nav-item">

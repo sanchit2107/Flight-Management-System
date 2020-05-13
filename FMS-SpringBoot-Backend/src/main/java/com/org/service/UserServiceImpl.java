@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String deleteUser(BigInteger UserId) {
+	public String deleteUser(int UserId) {
 		// TODO Auto-generated method stub
 		Optional<Users> findBookingById = userDao.findById(UserId);
 		if (findBookingById.isPresent()) {
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseEntity<?> findUserById(BigInteger userId) {
+	public ResponseEntity<?> findUserById(int userId) {
 		// TODO Auto-generated method stub
 		Optional<Users> findById = userDao.findById(userId);
 		try {
