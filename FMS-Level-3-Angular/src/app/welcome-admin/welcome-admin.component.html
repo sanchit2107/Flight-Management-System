@@ -27,18 +27,16 @@
         <div class="content-center">
             <div class="row">
                 <div class="col-sm-6" style="text-align: center;">
-                    <button type = "button" class = "btn btn-light">Add A Flight</button><br><br>
-                    <button type = "button" class = "btn btn-light">Search A Flight</button><br><br>
-                    <button type = "button" class = "btn btn-light">View Flights Available</button><br><br>
-                    <button type = "button" class = "btn btn-light">Add An Airport</button><br><br>
-                    <button type = "button" class = "btn btn-light">Search An Airport</button><br><br>
+                    <button type = "button" class = "btn btn-light" (click)="addFlight()">Add A Flight</button><br><br>
+                    <button type = "button" class = "btn btn-light" (click)="viewFlight()">View Flights Available</button><br><br>
+                    <button type = "button" class = "btn btn-light" (click)="addAirport()">Add An Airport</button><br><br>
+                    <button type = "button" class = "btn btn-light" (click)="viewAirport()">View Airports Available</button><br><br>
                 </div>
                 <div class="col-sm-6" style="text-align: center;">
                 <button type = "button" class = "btn btn-light" (click)="addScheduledFlight()">Schedule A Flight</button><br><br>
                 <button type = "button" class = "btn btn-light" (click)="searchScheduledFlight()">Search Scheduled Flight</button><br><br>
                 <button type = "button" class = "btn btn-light" (click)="viewScheduledFlight()">View Scheduled Flight</button><br><br>
                 <button type = "button" class = "btn btn-light" (click)="modifyScheduledFlight()">Modify Scheduled Flight</button><br><br>
-                <button type = "button" class = "btn btn-light">View Airports</button><br><br>
             </div>
         </div>
     </div>
