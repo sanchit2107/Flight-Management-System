@@ -27,6 +27,23 @@ export class WelcomeAdminComponent implements OnInit {
 
   modifyScheduledFlight(): void{
     this.router.navigate(['scheduledFlight/modify']);
-}
+  }
+
+  addFlight(): void{
+    this.router.navigate(['addFlight']);
+  }
+
+  viewFlight(): void{
+    this.router.navigate(['flights']);
+  }
+
+  addAirport(): void{
+    this.router.navigate(['addAirport']);
+  }
+
+  viewAirport(): void{
+    this.router.navigate(['airports']);
+  }
+  
 
 }
