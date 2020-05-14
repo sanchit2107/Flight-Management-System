@@ -24,8 +24,6 @@ import { BookingConfirmedComponent } from './booking-confirmed/booking-confirmed
 
 const routes: Routes = [
   {path: '', redirectTo: 'booking',pathMatch: 'full'},
-  {path: 'bookings', component: BookingListComponent},
-  {path: 'bookingDetails/:id', component: BookingDetailsComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
@@ -44,7 +42,9 @@ const routes: Routes = [
   {path: 'scheduledFlight/search', component:SearchScheduledFlightComponent},
   {path: 'welcomeAdmin', component:WelcomeAdminComponent},
   {path: 'scheduledFlight/modify', component: ModifyScheduledFlightComponent},
-  {path: 'bookingConfirmed', component: BookingConfirmedComponent}
+  {path: 'bookingConfirmed/:bookingId', component: BookingConfirmedComponent},
+  {path: 'showBookings', component: BookingListComponent},
+  {path: 'booking/bookTicket/:flightId', component: BookingDetailsComponent}
 
 ];
 

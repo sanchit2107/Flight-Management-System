@@ -50,9 +50,9 @@
       <name>Andy Clement</name>
     </author>
     <id>tag:spring.io,2020-05-01:4052</id>
-    <updated>2020-05-13T14:43:56Z</updated>
+    <updated>2020-05-13T14:43:00Z</updated>
     <content type="html">&lt;div class="paragraph"&gt;
-&lt;p&gt;&lt;a href="https://azure.microsoft.com/en-us/services/spring-cloud/"&gt;Azure Spring Cloud&lt;/a&gt; is a new Platform as a Service offering for Microservices apps. It is a fully managed service jointly built, operated, and supported by Pivotal and Microsoft to simplify spring boot based microservices development and management. In this blog, we will walk through how you can accelerate your development with Azure Spring Cloud and IntelliJ IDEA.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://azure.microsoft.com/en-us/services/spring-cloud/"&gt;Azure Spring Cloud&lt;/a&gt; is a new Platform as a Service offering for Microservices apps. It is a fully managed service jointly built, operated, and supported by VMware and Microsoft to simplify spring boot based microservices development and management. In this blog, we will walk through how you can accelerate your development with Azure Spring Cloud and IntelliJ IDEA.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="sect1"&gt;
 &lt;h2 id="requirements"&gt;&lt;a class="anchor" href="#requirements"&gt;&lt;/a&gt;Requirements&lt;/h2&gt;
@@ -66,7 +66,7 @@
 &lt;p&gt;&lt;a href="https://www.jetbrains.com/idea/download/#section=windows"&gt;IntelliJ IDEA, Community/Ultimate Edition, version 2020.1/2019.3 installed&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;a href="https://azure.microsoft.com/en-us/free/"&gt;An Azure Account&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://azure.microsoft.com/en-us/free/"&gt;An Azure Account - click here to create a free trial account&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;a href="https://docs.microsoft.com/en-us/azure/developer/java/toolkit-for-intellij/create-hello-world-web-app#installation-and-sign-in"&gt;Azure Toolkit for IntelliJ installed and signed-in&lt;/a&gt;&lt;/p&gt;
