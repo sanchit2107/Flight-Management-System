@@ -15,7 +15,7 @@ export class CreateAirportComponent implements OnInit {
 
   ngOnInit(){
   }
-  newEmployee(): void {
+  newAirport(): void {
     this.submitted = false;
     this.airport = new Airport();
   }

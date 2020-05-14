@@ -1,22 +1,23 @@
+<button type = "button" class ="btn btn-danger float-right" style="padding-left: 1px;padding-right: 1px;margin-right:2px">LOGOUT</button>
 <div class="panel panel-primary">
     <div class="panel-heading">
-      <h2>List of Airports</h2>
+      <h2 style="color:aliceblue;text-align: center;"><b>List of Airports</b></h2>
     </div>
     <div class="panel-body">
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>AirportCode</th>
-            <th>AirportName</th>
-            <th>AirportLocation</th>
-            <th>Action</th>
+            <th style="color:aliceblue;">AIRPORT CODE</th>
+            <th style="color:aliceblue;">AIRPORT NAME</th>
+            <th style="color:aliceblue;">AIRPORT LOCATION</th>
+            <th style="color:aliceblue;">ACTION</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let airport of airports | async">
-            <td>{{airport.airportCode}}</td>
-            <td>{{airport.airportName}}</td>
-            <td>{{airport.airportLocation}}</td>
+            <td><b style="color:aliceblue;">{{airport.airportCode}}</b></td>
+            <td><b style="color:aliceblue;">{{airport.airportName}}</b></td>
+            <td><b style="color:aliceblue;">{{airport.airportLocation}}</b></td>
             <td><button (click)="removeAirport(airport.airportCode)" class="btn btn-danger">Delete</button>
               <button (click)="modifyAirport(airport.airportCode)" class="btn btn-info" style="margin-left: 10px">update</button>
                 <button (click)="airportDetails(airport.airportCode)" class="btn btn-info" style="margin-left: 10px">Details</button>

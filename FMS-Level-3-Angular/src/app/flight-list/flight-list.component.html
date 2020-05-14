@@ -1,24 +1,25 @@
+<button type = "button" class ="btn btn-danger float-right" style="padding-left: 1px;padding-right: 1px;margin-right:2px">LOGOUT</button>
 <div class="panel panel-primary">
     <div class="panel-heading">
-      <h2>List of Flights</h2>
+      <h2 style="text-align: center;color: aliceblue;">List of Flights</h2>
     </div>
     <div class="panel-body">
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Flight Number</th>
-            <th>Carrier Name</th>
-            <th>Flight Model</th>
-            <th>Seat Capacity</th>
-            <th>Actions</th>
+            <th style="color:beige">FLIGHT NUMBER</th>
+            <th style="color:beige">CARRIER NAME</th>
+            <th style="color:beige">FLIGHT MODEL</th>
+            <th style="color:beige">SEAT CAPACITY</th>
+            <th style="color:beige">ACTIONS</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let flight of flights|async">
-            <td>{{flight.flightNo}}</td>
-            <td>{{flight.carrierName}}</td>
-            <td>{{flight.flightModel}}</td>
-            <td>{{flight.seatCapacity}}</td>
+            <td><b style="color:beige">{{flight.flightNo}}</b></td>
+            <td><b style="color:beige">{{flight.carrierName}}</b></td>
+            <td><b style="color:beige">{{flight.flightModel}}</b></td>
+            <td><b style="color:beige">{{flight.seatCapacity}}</b></td>
             <td><button (click)="removeFlight(flight.flightNo)" class="btn btn-danger">Delete</button>
                 <button (click)="modifyFlight(flight.flightNo)" class="btn btn-info" style="margin-left: 10px">Update</button>
                 <button (click)="flightDetails(flight.flightNo)" class="btn btn-info" style="margin-left: 10px">Details</button>
