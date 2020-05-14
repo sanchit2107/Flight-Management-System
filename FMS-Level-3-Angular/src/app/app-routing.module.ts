@@ -19,6 +19,7 @@ import { ShowScheduledFlightsComponent } from './show-scheduled-flights/show-sch
 import { SearchScheduledFlightComponent } from './search-scheduled-flight/search-scheduled-flight.component';
 import { WelcomeAdminComponent } from './welcome-admin/welcome-admin.component';
 import { ModifyScheduledFlightComponent } from './modify-scheduled-flight/modify-scheduled-flight.component';
+import { BookingConfirmedComponent } from './booking-confirmed/booking-confirmed.component';
 
 
 const routes: Routes = [
@@ -42,7 +43,8 @@ const routes: Routes = [
   {path: 'scheduledFlight/show', component:ShowScheduledFlightsComponent},
   {path: 'scheduledFlight/search', component:SearchScheduledFlightComponent},
   {path: 'welcomeAdmin', component:WelcomeAdminComponent},
-  {path: 'scheduledFlight/modify', component: ModifyScheduledFlightComponent}
+  {path: 'scheduledFlight/modify', component: ModifyScheduledFlightComponent},
+  {path: 'bookingConfirmed', component: BookingConfirmedComponent}
 
 ];
 

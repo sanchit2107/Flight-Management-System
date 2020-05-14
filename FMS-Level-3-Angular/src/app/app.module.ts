@@ -28,6 +28,7 @@ import { AddScheduledFlightComponent } from './add-scheduled-flight/add-schedule
 import { ShowScheduledFlightsComponent } from './show-scheduled-flights/show-scheduled-flights.component';
 import { ModifyScheduledFlightComponent } from './modify-scheduled-flight/modify-scheduled-flight.component';
 import { BookingConfirmedComponent } from './booking-confirmed/booking-confirmed.component';
+import { UserpanelComponent } from './services/userpanel/userpanel.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { BookingConfirmedComponent } from './booking-confirmed/booking-confirmed
     SearchScheduledFlightComponent,
     AddScheduledFlightComponent,
     ModifyScheduledFlightComponent,
-    ShowScheduledFlightsComponent
+    ShowScheduledFlightsComponent,
+    UserpanelComponent
   ],
   imports: [
     BrowserModule,
