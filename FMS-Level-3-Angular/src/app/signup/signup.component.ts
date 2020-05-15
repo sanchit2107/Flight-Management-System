@@ -34,7 +34,7 @@ export class SignupComponent implements OnInit {
   // UserName Validations
   nameFlag: boolean= false;
   validateName() {
-    var flag =  /^[a-zA-Z ]+$/.test(this.user.userName);
+    var flag =  /^[a-zA-Z]+$/.test(this.user.userName);
     if(!flag) {
       this.nameFlag=true;
     }
