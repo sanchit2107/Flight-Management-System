@@ -5,7 +5,20 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2020-05-14T13:05:40Z</updated>
+  <updated>2020-05-14T22:24:22Z</updated>
+  <entry>
+    <title>VMWare COO Sanjay Poonen</title>
+    <link rel="alternate" href="https://spring.io/blog/2020/05/14/vmware-coo-sanjay-poonen" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2020-05-14:4073</id>
+    <updated>2020-05-14T22:24:22Z</updated>
+    <content type="html">&lt;p&gt;Hi, Spring fans! In this episode &lt;a href="http://twitter.com/Starbuxman"&gt;Josh Long (@starbuxman)&lt;/a&gt; talks to industry legend VMWare COO &lt;a href="http://twitter.com/Spoonen"&gt;Sanjay Poonen (@spoonen)&lt;/a&gt;.&lt;/p&gt;
+&lt;iframe title="VMWare COO Sanjay Poonen" src="https://www.podbean.com/media/player/n9mva-dc7ac0?from=usersite&amp;vjs=1&amp;skin=1&amp;fonts=Helvetica&amp;auto=0&amp;download=1" height="315" width="100%" style="border: none;" scrolling="no" data-name="pb-iframe-player"&gt;&lt;/iframe&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>Spring Session Dragonfruit-RELEASE Released</title>
     <link rel="alternate" href="https://spring.io/blog/2020/05/14/spring-session-dragonfruit-release-released" />
@@ -1059,29 +1072,6 @@ $ ls -l target/*.zip&#xD;
 -rw-rw-r-- 1 dsyer dsyer 26284838 Apr 21 09:28 target/function-aws-0.0.1-SNAPSHOT-native-zip.zip
 &lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;&lt;a href="#conclusion" class="anchor" name="conclusion"&gt;&lt;/a&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;Using Spring Cloud Function is a very convenient way to develop functions that run on AWS and other platforms. If you also use the experimental Spring Graal Native Feature project to compile the result to a native binary executable they can run faster than the same application on a regular JVM. Note that there is &lt;a href="https://github.com/spring-projects-experimental/spring-graal-native/tree/master/spring-graal-native-samples/function-netty"&gt;another sample&lt;/a&gt; in the Spring Graal Native Feature project that makes a function into a standalone web application (there is also a functional bean registration version of the same sample). You can run that on a lot of platforms that allow you to &amp;ldquo;bring your own container&amp;rdquo;.&lt;/p&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Boot 2.3.0.RC1 available now</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/05/01/spring-boot-2-3-0-rc1-available-now" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Phil Webb</name>
-    </author>
-    <id>tag:spring.io,2020-05-01:4051</id>
-    <updated>2020-05-01T05:31:01Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the team and everyone that contributed, I am pleased to announce that the first release candidate of Spring Boot 2.3 is available now from &lt;a href="https://repo.spring.io/milestone/"&gt;our milestone repository&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;This release closes over &lt;a href="https://github.com/spring-projects/spring-boot/releases/tag/v2.3.0.RC1"&gt;70 issues and pull requests&lt;/a&gt;. Thanks to all those who have contributed.&lt;/p&gt;
-&lt;p&gt;Highlights of this milestone include:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Auto-configuration of a Wavefront sender bean.&lt;/li&gt;
-  &lt;li&gt;Easier configuration of the data/time converts used by web applications.&lt;/li&gt;
-  &lt;li&gt;Automatic creation of the &lt;code&gt;developmentOnly&lt;/code&gt; configuration in Gradle.&lt;/li&gt;
-  &lt;li&gt;Java buildpack support from the newly created &lt;a href="https://paketo.io/"&gt;Paketo&lt;/a&gt; project.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;For a complete list of changes and upgrade instructions, please see the &lt;a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.3.0-RC1-Release-Notes"&gt;Spring Boot 2.3 Release Notes&lt;/a&gt; on the wiki and the &lt;a href="http://docs.spring.io/spring-boot/docs/2.3.0.RC1/reference/html/"&gt;updated reference documentation&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Barring any unforeseen circumstances, our current plan is to release 2.3.0 GA on May 14, so please give the RC a try if you can. To bootstrap a new project, you can head over to &lt;a href="https://start.spring.io"&gt;https://start.spring.io&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://projects.spring.io/spring-boot/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot"&gt;GitHub&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot/issues"&gt;Issues&lt;/a&gt; | &lt;a href="http://docs.spring.io/spring-boot/docs/2.3.0.RC1/reference/html"&gt;Documentation&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-boot"&gt;Stack Overflow&lt;/a&gt; | &lt;a href="https://gitter.im/spring-projects/spring-boot"&gt;Gitter&lt;/a&gt;&lt;/p&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>
