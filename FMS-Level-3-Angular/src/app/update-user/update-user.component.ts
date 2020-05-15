@@ -10,7 +10,7 @@ import { UserService } from '../services/user.service';
 })
 export class UpdateUserComponent implements OnInit {
 
-  submitted: false;
+  
   userId: number;
   user: User;
 
@@ -24,13 +24,13 @@ export class UpdateUserComponent implements OnInit {
     this.userService.getUser(this.userId)
     .subscribe(data => {
       console.log(data);
+      this.user=data;
     },
-    error => console.log(error)
-    );
+    error => console.log(error));
   }
 
   updateUser(){
-    this.userService.updateUser(this.user)
+    this.userService.updateUser(this.userId, this.user)
     .subscribe(data => console.log(data), error => console.log(error));
     this.user = new User();
     this.gotoList();

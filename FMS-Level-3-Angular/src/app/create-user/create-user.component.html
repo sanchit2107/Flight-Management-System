@@ -1,32 +1,43 @@
 <h3>Create Users</h3>
-<div [hidden]="submitted" style="width: 400px;">
-  <form (ngSubmit)="onSubmit()">
+<div [hidden]="submitted" style="width: 400px; margin: auto;">
+  <form #userForm="ngForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="name">User Id</label>
+      <input type="text" required #userId="ngModel" pattern="^[0-9]{3,6}$" [class.is-invalid]="userId.invalid && userId.touched" class="form-control" id="userId" required [(ngModel)]="user.userId" name="userId">
+      <small class="text-danger" [class.d-none]="userId.valid || userId.untouched">User Id should be between 3 to 6 digits!</small>
+    </div>
+    
     <div class="form-group">
       <label for="name">User Name</label>
-      <input type="text" class="form-control" id="userName" required [(ngModel)]="user.userName" name="userName">
+      <input type="text" required #userName="ngModel" pattern="^[A-Z,a-z]{3,15}$" [class.is-invalid]="userName.invalid && userName.touched"class="form-control" id="userName" required [(ngModel)]="user.userName" name="userName">
+      <small class="text-danger" [class.d-none]="userName.valid || userName.untouched">UserName should contain 3 to 15 characters</small>
     </div>
 
     <div class="form-group">
-      <label for="name">User Password</label>
-      <input type="password" class="form-control" id="userPassword" required [(ngModel)]="user.userPassword" name="userPassword">
+      <label for="name">Password</label>
+      <input type="text"  required #userPassword="ngModel" pattern="^(?=.[0-9])(?=.[!@#$%^&])[a-zA-Z0-9!@#$%^&]{7,15}$" [class.is-invalid]="userPassword.invalid && userPassword.touched" class="form-control" id="userPassword" required [(ngModel)]="user.userPassword" name="userPassword">
+      <small class="text-danger" [class.d-none]="userPassword.valid || userPassword.untouched">Password should contain atleast one numeric and a special character! </small>
     </div>
 
     <div class="form-group">
-      <label for="name">User Phone</label>
-      <input type="tel" class="form-control" id="userPhone" required [(ngModel)]="user.userPhone" name="userPhone">
+      <label for="name">Phone</label>
+      <input type="tel" required #userPhone="ngModel" pattern="[6-9]{1}[0-9]{9}" [class.is-invalid]="userPhone.invalid && userPhone.touched" class="form-control" id="userPhone" required [(ngModel)]="user.userPhone" name="userPhone">
+      <small class="text-danger" [class.d-none]="userPhone.valid || userPhone.untouched">Enter a valid phone number</small>
     </div>
 
     <div class="form-group">
         <label for="name">User Email</label>
-        <input type="email" class="form-control" id="userEmail" required [(ngModel)]="user.userEmail" name="userEmail">
+        <input type="email" required #userEmail="ngModel" pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$" [class.is-invalid]="userEmail.invalid && userEmail.touched" class="form-control" id="userEmail" required [(ngModel)]="user.userEmail" name="userEmail">
+        <small class="text-danger" [class.d-none]="userEmail.valid || userEmail.untouched">Enter a valid email</small>
       </div>
 
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="name">User Role</label>
         <input type="text" class="form-control" id="userRole" required [(ngModel)]="user.roles" name="userRole">
-      </div>
+      </div> -->
 
-    <button type="submit" class="btn btn-success">Submit</button>
+    <button type="submit" [disabled]="userForm.form.invalid" class="btn btn-success">Submit</button>
   </form>
 </div>
 

@@ -1,9 +1,9 @@
 <h3>Update User</h3>
-<div [hidden]="submitted" style="width: 400px;">
+<div class="container" style="width: 300px; margin: auto;">
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">User ID</label>
-      <input type="text" class="form-control" id="bookingId" required [(ngModel)]="user.userId" name="userId">
+      <input [disabled]="true" type="text" class="form-control" id="userId" required [(ngModel)]="user.userId" name="userId">
     </div>
 
     <div class="form-group">

@@ -11,11 +11,11 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   createUser(user: object): Observable<Object>{
-    return this.http.post(`${this.baseUrl}/addUser`, user);
+    return this.http.post(`${this.baseUrl}/createUser`, user);
   }
 
-  updateUser(user: object): Observable<Object>{
-    return this.http.put(`${this.baseUrl}/updateUser/`, user);
+  updateUser(userId: number, value: any): Observable<Object>{
+    return this.http.put(`${this.baseUrl}/updateUser/`, value);
   }
 
   deleteUser(id: number): Observable<any>{
