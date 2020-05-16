@@ -9,21 +9,19 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./update-user.component.css']
 })
 export class UpdateUserComponent implements OnInit {
-
-  
   userId: number;
   user: User;
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService) { }
 
-  ngOnInit(): void {
+  ngOnInit(){
     this.user = new User();
 
     this.userId = this.route.snapshot.params['userId'];
 
     this.userService.getUser(this.userId)
     .subscribe(data => {
-      console.log(data);
+      console.log(data)
       this.user=data;
     },
     error => console.log(error));
