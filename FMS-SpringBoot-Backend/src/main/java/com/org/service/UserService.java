@@ -10,11 +10,11 @@ public interface UserService {
 
 	public ResponseEntity<?> createUser(Users newUser);
 
-	public Users updateUser(Users newUser);
+	public void updateUser(Users newUser);
 
-	public String deleteUser(BigInteger UserId);
+	public void deleteUser(Integer UserId);
 
 	public Iterable<Users> displayAllUser();
 
-	public ResponseEntity<?> findUserById(BigInteger userId);
+	public Users findUserById(Integer userId);
 }

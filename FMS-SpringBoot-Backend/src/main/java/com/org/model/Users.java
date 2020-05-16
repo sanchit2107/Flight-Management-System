@@ -2,14 +2,20 @@ package com.org.model;
 
 import java.math.BigInteger;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Users {
-	private String userType;
 	@Id
-	private BigInteger userId;
+//	@GeneratedValue(strategy=GenerationType.AUTO)
+//	@Column(name="user_id")
+	private Integer userId;
+	private String userType;
+	
 	private String userName;
 	private String userPassword;
 	private BigInteger userPhone;
@@ -18,14 +24,12 @@ public class Users {
 	/**
 	 * Parameterized Constructors of Users
 	 */
-	public Users(String userName, String userPassword, BigInteger userPhone, String userEmail, String userType,
-			BigInteger userId) {
+	public Users(String userName, String userPassword, BigInteger userPhone, String userEmail, String userType) {
 		this.userName = userName;
 		this.userPassword = userPassword;
 		this.userPhone = userPhone;
 		this.userEmail = userEmail;
 		this.userType = userType;
-		this.userId = userId;
 	}
 
 	/**
@@ -42,11 +46,11 @@ public class Users {
 		this.userType = userType;
 	}
 
-	public BigInteger getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(BigInteger userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -81,4 +85,11 @@ public class Users {
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
+	
+//	@Override
+//	public String toString() {
+//		return "Users{userId='\" + userId + '\\'' + \"," + "userName='" + userName + '\'' + ","
+//				+ " userPassword='" + userPassword + '\'' + ", userPhone='" + userPhone + '\'' + ","
+//				+ "	userEmail='" + userEmail + '\'' +'}';
+//	}
 }

@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ import com.org.exceptions.RecordAlreadyPresentException;
 import com.org.exceptions.RecordNotFoundException;
 import com.org.model.Users;
 import com.org.service.UserService;
-
+@CrossOrigin("http://localhost:4200")
 @ComponentScan(basePackages = "com")
 @RestController
 @RequestMapping("/user")
@@ -42,22 +43,19 @@ public class UserController {
 	}
 
 	@PutMapping("/updateUser")
-	@ExceptionHandler(RecordNotFoundException.class)
 	public void updateUser(@RequestBody Users updateUser) {
 
 		userService.updateUser(updateUser);
 	}
 
 	@GetMapping("/searchUser/{id}")
-	@ExceptionHandler(RecordNotFoundException.class)
-	public ResponseEntity<?> searchUserByID(@PathVariable("id") BigInteger userId) {
+	public Users findUserById(@PathVariable("id") Integer userId) {
 
 		return userService.findUserById(userId);
 	}
 
 	@DeleteMapping("/deleteUser/{id}")
-	@ExceptionHandler(RecordNotFoundException.class)
-	public void deleteBookingByID(@PathVariable("id") BigInteger userId) {
+	public void deleteUser(@PathVariable("id") Integer userId) {
 
 		userService.deleteUser(userId);
 	}
