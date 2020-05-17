@@ -1,6 +1,5 @@
 package com.org.model;
 
-import java.math.BigInteger;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,20 +10,20 @@ import javax.persistence.Id;
 @Entity
 public class Users {
 	@Id
-//	@GeneratedValue(strategy=GenerationType.AUTO)
-//	@Column(name="user_id")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+
 	private Integer userId;
 	private String userType;
 	
 	private String userName;
 	private String userPassword;
-	private BigInteger userPhone;
+	private long userPhone;
 	private String userEmail;
 
 	/**
 	 * Parameterized Constructors of Users
 	 */
-	public Users(String userName, String userPassword, BigInteger userPhone, String userEmail, String userType) {
+	public Users(String userName, String userPassword, long userPhone, String userEmail, String userType) {
 		this.userName = userName;
 		this.userPassword = userPassword;
 		this.userPhone = userPhone;
@@ -70,11 +69,11 @@ public class Users {
 		this.userPassword = userPassword;
 	}
 
-	public BigInteger getUserPhone() {
+	public long getUserPhone() {
 		return userPhone;
 	}
 
-	public void setUserPhone(BigInteger userPhone) {
+	public void setUserPhone(long userPhone) {
 		this.userPhone = userPhone;
 	}
 

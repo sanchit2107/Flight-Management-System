@@ -1,6 +1,5 @@
 package com.org.controller;
 
-import java.math.BigInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -29,7 +28,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	@PostMapping("/createUser")
+	@PostMapping("/addUser")
 	@ExceptionHandler(RecordAlreadyPresentException.class)
 	public void addUser(@RequestBody Users newUser) {
 
@@ -42,7 +41,7 @@ public class UserController {
 		return userService.displayAllUser();
 	}
 
-	@PutMapping("/updateUser")
+	@PutMapping("/modifyUser")
 	public void updateUser(@RequestBody Users updateUser) {
 
 		userService.updateUser(updateUser);

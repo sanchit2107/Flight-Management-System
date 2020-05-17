@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.org</groupId>
-	<artifactId>FMS-SpringBoot-Backend</artifactId>
+	<artifactId>FMS</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>FMS-SpringBoot-Backend</name>
+	<name>FMS</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
