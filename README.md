@@ -57,6 +57,8 @@ The Flight Reservation System does not currently include the following features:
 
 [Vaibhav229](https://github.com/ShaiviSinha)
 
+[Anca Simon](https://github.com/ancasimon)
+
 ## For Developers
 #### Access the App
 1. Install Angular CLI if not already installed in your system.
