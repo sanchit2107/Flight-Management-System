@@ -4,8 +4,8 @@
 ##  🌐  Description
 The Flight Reservation System is a Java-based solution that allows users to quickly book flights and manage booking information, updates, and cancellations easily. It consolidates data from different airline carriers and thus provides all the necessary details and rates in real-time. In addition, administrators of flight data can also quickly view, create, and update any information about flights, bookings, routes, and schedules. 
 
+## DipuKumar
 
-##  💻  Technologies 
 #### Backend Technologies:
 1. Java 8
 1. Spring Boot
@@ -48,16 +48,7 @@ The Flight Reservation System does not currently include the following features:
 1. Processing payments
 
 
-##  🤝  Contributors
-[Sanchit Singhal](https://github.com/sanchit2107)
 
-[Shaivi Sinha](https://github.com/ShaiviSinha)
-
-[Shivani Luthra](https://github.com/Shivaniluthra)
-
-[Vaibhav229](https://github.com/ShaiviSinha)
-
-[Anca Simon](https://github.com/ancasimon)
 
 ## For Developers
 #### Access the App
